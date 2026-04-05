@@ -1,0 +1,14 @@
+{
+  "name": "repo-slop-analyzer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic Bun + TypeScript CLI for finding AI-associated slop patterns in codebases.",
+  "scripts": {
+    "scan": "bun run src/cli.ts scan .",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "typescript": "^5.8.3"
+  }
+}
