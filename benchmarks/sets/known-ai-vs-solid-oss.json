@@ -87,6 +87,17 @@
       "notes": "Review-first terminal diff viewer that serves as a lower-slop AI-generated benchmark example."
     },
     {
+      "id": "vinext",
+      "repo": "cloudflare/vinext",
+      "url": "https://github.com/cloudflare/vinext.git",
+      "cohort": "explicit-ai",
+      "ref": "28980b01f1692b47756a6768fc5733712c290f84",
+      "createdAt": "2026-02-24T05:07:41Z",
+      "stars": 7709,
+      "provenance": "README: \"The vast majority of the code, tests, and documentation were written by AI (Claude Code). Humans direct architecture, priorities, and design decisions, but have not reviewed most of the code line-by-line.\"",
+      "notes": "Polished, company-backed Vite-based reimplementation of the Next.js API surface built as an AI-driven software-development experiment."
+    },
+    {
       "id": "ni",
       "repo": "antfu-collective/ni",
       "url": "https://github.com/antfu-collective/ni.git",
@@ -185,6 +196,11 @@
       "aiRepoId": "openusage",
       "solidRepoId": "umami",
       "notes": "Full-stack analytics-adjacent SaaS-style app comparison and negative control."
+    },
+    {
+      "aiRepoId": "vinext",
+      "solidRepoId": "vite",
+      "notes": "AI-built Vite-based framework layer vs the mature Vite baseline."
     }
   ]
 }

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "benchmarkSetId": "known-ai-vs-solid-oss",
   "benchmarkSetName": "Known AI repos vs older solid OSS repos",
-  "generatedAt": "2026-04-07T13:46:17.638Z",
+  "generatedAt": "2026-04-07T14:58:53.873Z",
   "analyzerVersion": "0.1.0",
   "configMode": "default",
   "repos": [
@@ -522,6 +522,93 @@
         {
           "path": "src/core",
           "score": 3.16,
+          "findingCount": 1
+        }
+      ]
+    },
+    {
+      "id": "vinext",
+      "repo": "cloudflare/vinext",
+      "cohort": "explicit-ai",
+      "ref": "28980b01f1692b47756a6768fc5733712c290f84",
+      "summary": {
+        "fileCount": 1129,
+        "directoryCount": 486,
+        "findingCount": 112,
+        "repoScore": 418.3027247262541,
+        "physicalLineCount": 150365,
+        "logicalLineCount": 59523,
+        "functionCount": 2917,
+        "normalized": {
+          "scorePerFile": 0.3705072849656812,
+          "scorePerKloc": 7.027581350507435,
+          "scorePerFunction": 0.14340168828462602,
+          "findingsPerFile": 0.09920283436669619,
+          "findingsPerKloc": 1.8816255901080254,
+          "findingsPerFunction": 0.03839561193006513
+        }
+      },
+      "blendedScore": 2.038727885587404,
+      "ruleCounts": {
+        "defensive.needless-try-catch": 40,
+        "structure.pass-through-wrappers": 29,
+        "tests.duplicate-mock-setup": 18,
+        "structure.directory-fanout-hotspot": 15,
+        "defensive.async-noise": 4,
+        "structure.barrel-density": 3,
+        "structure.over-fragmentation": 3
+      },
+      "topFiles": [
+        {
+          "path": "tests/features.test.ts",
+          "score": 13,
+          "findingCount": 2
+        },
+        {
+          "path": "packages/vinext/src/shims/navigation.ts",
+          "score": 12,
+          "findingCount": 2
+        },
+        {
+          "path": "packages/vinext/src/server/dev-server.ts",
+          "score": 11.5,
+          "findingCount": 3
+        },
+        {
+          "path": "tests/pages-page-data.test.ts",
+          "score": 10.75,
+          "findingCount": 3
+        },
+        {
+          "path": "packages/vinext/src/server/prod-server.ts",
+          "score": 10,
+          "findingCount": 2
+        }
+      ],
+      "topDirectories": [
+        {
+          "path": "tests/fixtures/app-basic/app",
+          "score": 10.287878787878789,
+          "findingCount": 2
+        },
+        {
+          "path": "tests/fixtures/app-basic/app/nextjs-compat/dynamic",
+          "score": 10.166666666666668,
+          "findingCount": 2
+        },
+        {
+          "path": "tests/fixtures/pages-basic/pages/api",
+          "score": 10.166666666666666,
+          "findingCount": 2
+        },
+        {
+          "path": "tests/fixtures/pages-basic/pages",
+          "score": 6,
+          "findingCount": 1
+        },
+        {
+          "path": "packages/vinext/src/shims",
+          "score": 4.705882352941177,
           "findingCount": 1
         }
       ]
@@ -1065,16 +1152,16 @@
   ],
   "cohorts": {
     "explicit-ai": {
-      "repoCount": 7,
+      "repoCount": 8,
       "medians": {
-        "scorePerFile": 1.0041666666666667,
-        "scorePerKloc": 9.411853436454392,
-        "scorePerFunction": 0.21859410430839002,
-        "findingsPerFile": 0.29640831758034025,
-        "findingsPerKloc": 2.797432943886786,
-        "findingsPerFunction": 0.07702510193053987
+        "scorePerFile": 0.7954147602760007,
+        "scorePerKloc": 8.681254762931083,
+        "scorePerFunction": 0.20894136109728445,
+        "findingsPerFile": 0.23589072595434923,
+        "findingsPerKloc": 2.3416890808342776,
+        "findingsPerFunction": 0.06812927570394589
       },
-      "blendedScoreMedian": 4.1038426510392165
+      "blendedScoreMedian": 3.5332731260207124
     },
     "mature-oss": {
       "repoCount": 8,
@@ -1114,6 +1201,19 @@
         "findingsPerFile": 7.832872163807416,
         "findingsPerKloc": 1.8031812372629616,
         "findingsPerFunction": 3.977596741344195
+      }
+    },
+    {
+      "aiRepoId": "vinext",
+      "solidRepoId": "vite",
+      "notes": "AI-built Vite-based framework layer vs the mature Vite baseline.",
+      "ratios": {
+        "scorePerFile": 1.4280523984075815,
+        "scorePerKloc": 0.8806995148002101,
+        "scorePerFunction": 0.8871219015571703,
+        "findingsPerFile": 1.2923423786134147,
+        "findingsPerKloc": 0.7970052829082112,
+        "findingsPerFunction": 0.8028173403559072
       }
     }
   ]

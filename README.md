@@ -93,13 +93,13 @@ The repo ships with a **pinned, recreatable benchmark set** comparing known AI-g
 
 | Metric | AI median | Mature OSS median | Ratio |
 |---|---:|---:|---:|
-| Blended score | **4.10** | **1.00** | **4.10x** |
-| Score / file | **1.00** | **0.18** | **5.45x** |
-| Score / KLOC | **9.41** | **4.04** | **2.33x** |
-| Score / function | **0.22** | **0.08** | **2.68x** |
-| Findings / file | **0.30** | **0.06** | **5.01x** |
-| Findings / KLOC | **2.80** | **1.06** | **2.64x** |
-| Findings / function | **0.08** | **0.02** | **3.38x** |
+| Blended score | **3.53** | **1.00** | **3.53x** |
+| Score / file | **0.80** | **0.18** | **4.31x** |
+| Score / KLOC | **8.68** | **4.04** | **2.15x** |
+| Score / function | **0.21** | **0.08** | **2.56x** |
+| Findings / file | **0.24** | **0.06** | **3.98x** |
+| Findings / KLOC | **2.34** | **1.06** | **2.21x** |
+| Findings / function | **0.07** | **0.02** | **2.99x** |
 
 ### Pinned benchmark snapshot
 
@@ -114,6 +114,7 @@ Ordered by blended score.
 | [`FullAgent/fulling`](https://github.com/FullAgent/fulling) | ai | `d95060f` | **2.96** | 0.52 | 9.41 | 0.16 | 2.80 |
 | [`emdash-cms/emdash`](https://github.com/emdash-cms/emdash) | ai | `dbaf8c6` | **2.45** | 0.59 | 5.22 | 0.18 | 1.56 |
 | [`vitejs/vite`](https://github.com/vitejs/vite) | mature-oss | `bdc53ab` | **2.07** | 0.26 | 7.98 | 0.08 | 2.36 |
+| [`cloudflare/vinext`](https://github.com/cloudflare/vinext) | ai | `28980b0` | **2.04** | 0.37 | 7.03 | 0.10 | 1.88 |
 | [`withastro/astro`](https://github.com/withastro/astro) | mature-oss | `2c9bf5e` | **1.80** | 0.24 | 5.04 | 0.08 | 1.71 |
 | [`modem-dev/hunk`](https://github.com/modem-dev/hunk) | ai | `b37663f` | **1.60** | 0.38 | 4.71 | 0.11 | 1.40 |
 | [`egoist/tsup`](https://github.com/egoist/tsup) | mature-oss | `b906f86` | **1.31** | 0.21 | 3.61 | 0.08 | 1.42 |

@@ -34,6 +34,7 @@ Blended score = geometric mean of the six normalized-metric ratios versus the ma
 | [robinebers/openusage](https://github.com/robinebers/openusage) | `857f537` | 0.2y | 1715 | **4.10** | 139 | 22270 | 491 | 1.27 | 7.95 | 0.36 | 0.30 | 1.89 | 0.09 |
 | [FullAgent/fulling](https://github.com/FullAgent/fulling) | `d95060f` | 0.5y | 2413 | **2.96** | 219 | 12154 | 574 | 0.52 | 9.41 | 0.20 | 0.16 | 2.80 | 0.06 |
 | [emdash-cms/emdash](https://github.com/emdash-cms/emdash) | `dbaf8c6` | 0.0y | 7842 | **2.45** | 1072 | 120432 | 3513 | 0.59 | 5.22 | 0.18 | 0.18 | 1.56 | 0.05 |
+| [cloudflare/vinext](https://github.com/cloudflare/vinext) | `28980b0` | 0.1y | 7709 | **2.04** | 1129 | 59523 | 2917 | 0.37 | 7.03 | 0.14 | 0.10 | 1.88 | 0.04 |
 | [modem-dev/hunk](https://github.com/modem-dev/hunk) | `b37663f` | 0.1y | 352 | **1.60** | 166 | 13564 | 752 | 0.38 | 4.71 | 0.08 | 0.11 | 1.40 | 0.03 |
 
 ## Mature OSS cohort
@@ -53,13 +54,13 @@ Blended score = geometric mean of the six normalized-metric ratios versus the ma
 
 | Metric | AI median | Solid median | Ratio |
 |---|---:|---:|---:|
-| Blended score | **4.10** | **1.00** | **4.10x** |
-| Score / file | **1.00** | **0.18** | **5.45x** |
-| Score / KLOC | **9.41** | **4.04** | **2.33x** |
-| Score / function | **0.22** | **0.08** | **2.68x** |
-| Findings / file | **0.30** | **0.06** | **5.01x** |
-| Findings / KLOC | **2.80** | **1.06** | **2.64x** |
-| Findings / function | **0.08** | **0.02** | **3.38x** |
+| Blended score | **3.53** | **1.00** | **3.53x** |
+| Score / file | **0.80** | **0.18** | **4.31x** |
+| Score / KLOC | **8.68** | **4.04** | **2.15x** |
+| Score / function | **0.21** | **0.08** | **2.56x** |
+| Findings / file | **0.24** | **0.06** | **3.98x** |
+| Findings / KLOC | **2.34** | **1.06** | **2.21x** |
+| Findings / function | **0.07** | **0.02** | **2.99x** |
 
 ## Spot-check pairings
 
@@ -67,16 +68,17 @@ Blended score = geometric mean of the six normalized-metric ratios versus the ma
 |---|---|---:|---:|---:|---:|---:|---:|
 | `devworkbench` | `hyper` | 1.69x | 10.25x | 17.11x | 2.96x | 17.97x | 30.01x |
 | `openusage` | `umami` | 10.59x | 2.44x | 5.38x | 7.83x | 1.80x | 3.98x |
+| `vinext` | `vite` | 1.43x | 0.88x | 0.89x | 1.29x | 0.80x | 0.80x |
 
 ## Top rule families by cohort
 
 ### AI cohort
-- `tests.duplicate-mock-setup` — 1057 (30.1%)
-- `defensive.needless-try-catch` — 878 (25.0%)
-- `structure.pass-through-wrappers` — 674 (19.2%)
-- `structure.barrel-density` — 454 (12.9%)
-- `defensive.async-noise` — 326 (9.3%)
-- `structure.directory-fanout-hotspot` — 97 (2.8%)
+- `tests.duplicate-mock-setup` — 1075 (29.7%)
+- `defensive.needless-try-catch` — 918 (25.3%)
+- `structure.pass-through-wrappers` — 703 (19.4%)
+- `structure.barrel-density` — 457 (12.6%)
+- `defensive.async-noise` — 330 (9.1%)
+- `structure.directory-fanout-hotspot` — 112 (3.1%)
 
 ### Mature OSS cohort
 - `defensive.needless-try-catch` — 148 (36.5%)
