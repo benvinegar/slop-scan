@@ -93,13 +93,13 @@ The repo ships with a **pinned, recreatable benchmark set** comparing known AI-g
 
 | Metric | AI median | Mature OSS median | Ratio |
 |---|---:|---:|---:|
-| Blended score | **3.53** | **1.00** | **3.53x** |
-| Score / file | **0.80** | **0.18** | **4.31x** |
-| Score / KLOC | **8.68** | **4.04** | **2.15x** |
-| Score / function | **0.21** | **0.08** | **2.56x** |
-| Findings / file | **0.24** | **0.06** | **3.98x** |
-| Findings / KLOC | **2.34** | **1.06** | **2.21x** |
-| Findings / function | **0.07** | **0.02** | **2.99x** |
+| Blended score | **4.10** | **1.00** | **4.10x** |
+| Score / file | **1.00** | **0.18** | **5.45x** |
+| Score / KLOC | **9.41** | **4.04** | **2.33x** |
+| Score / function | **0.22** | **0.08** | **2.68x** |
+| Findings / file | **0.28** | **0.06** | **4.67x** |
+| Findings / KLOC | **2.80** | **1.06** | **2.64x** |
+| Findings / function | **0.08** | **0.02** | **3.38x** |
 
 ### Pinned benchmark snapshot
 
@@ -108,6 +108,7 @@ Ordered by blended score.
 | Repository | Cohort | Ref | Blended | Score/file | Score/KLOC | Findings/file | Findings/KLOC |
 |---|---|---|---:|---:|---:|---:|---:|
 | [`garrytan/gstack`](https://github.com/garrytan/gstack) | ai | `6cc094c` | **6.68** | 2.12 | 19.67 | 0.45 | 4.17 |
+| [`redwoodjs/agent-ci`](https://github.com/redwoodjs/agent-ci) | ai | `4de00d6` | **4.95** | 1.05 | 11.64 | 0.28 | 3.07 |
 | [`jiayun/DevWorkbench`](https://github.com/jiayun/DevWorkbench) | ai | `ea50862` | **4.81** | 1.00 | 10.76 | 0.44 | 4.69 |
 | [`openclaw/openclaw`](https://github.com/openclaw/openclaw) | ai | `44cf747` | **4.15** | 1.01 | 10.31 | 0.30 | 3.02 |
 | [`robinebers/openusage`](https://github.com/robinebers/openusage) | ai | `857f537` | **4.10** | 1.27 | 7.95 | 0.30 | 1.89 |

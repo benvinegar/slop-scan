@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "benchmarkSetId": "known-ai-vs-solid-oss",
   "benchmarkSetName": "Known AI repos vs older solid OSS repos",
-  "generatedAt": "2026-04-07T14:58:53.873Z",
+  "generatedAt": "2026-04-07T17:45:32.881Z",
   "analyzerVersion": "0.1.0",
   "configMode": "default",
   "repos": [
@@ -614,6 +614,70 @@
       ]
     },
     {
+      "id": "agent-ci",
+      "repo": "redwoodjs/agent-ci",
+      "cohort": "explicit-ai",
+      "ref": "4de00d69487e275d5bc37e30f7818a9303b22352",
+      "summary": {
+        "fileCount": 94,
+        "directoryCount": 24,
+        "findingCount": 26,
+        "repoScore": 98.62500000000004,
+        "physicalLineCount": 17222,
+        "logicalLineCount": 8474,
+        "functionCount": 220,
+        "normalized": {
+          "scorePerFile": 1.0492021276595749,
+          "scorePerKloc": 11.63854142081662,
+          "scorePerFunction": 0.4482954545454547,
+          "findingsPerFile": 0.2765957446808511,
+          "findingsPerKloc": 3.0682086381873965,
+          "findingsPerFunction": 0.11818181818181818
+        }
+      },
+      "blendedScore": 4.95120015740743,
+      "ruleCounts": {
+        "defensive.needless-try-catch": 21,
+        "tests.duplicate-mock-setup": 3,
+        "structure.barrel-density": 1,
+        "structure.directory-fanout-hotspot": 1
+      },
+      "topFiles": [
+        {
+          "path": "packages/cli/src/cli.ts",
+          "score": 8,
+          "findingCount": 1
+        },
+        {
+          "path": "packages/cli/src/docker/shutdown.ts",
+          "score": 8,
+          "findingCount": 1
+        },
+        {
+          "path": "packages/cli/src/runner/local-job.ts",
+          "score": 8,
+          "findingCount": 1
+        },
+        {
+          "path": "packages/dtu-github-actions/src/server/routes/actions/index.ts",
+          "score": 8,
+          "findingCount": 1
+        },
+        {
+          "path": "packages/cli/src/docker/service-containers.ts",
+          "score": 7,
+          "findingCount": 1
+        }
+      ],
+      "topDirectories": [
+        {
+          "path": "packages/cli/src/output",
+          "score": 3.125,
+          "findingCount": 1
+        }
+      ]
+    },
+    {
       "id": "ni",
       "repo": "antfu-collective/ni",
       "cohort": "mature-oss",
@@ -1152,16 +1216,16 @@
   ],
   "cohorts": {
     "explicit-ai": {
-      "repoCount": 8,
+      "repoCount": 9,
       "medians": {
-        "scorePerFile": 0.7954147602760007,
-        "scorePerKloc": 8.681254762931083,
-        "scorePerFunction": 0.20894136109728445,
-        "findingsPerFile": 0.23589072595434923,
-        "findingsPerKloc": 2.3416890808342776,
-        "findingsPerFunction": 0.06812927570394589
+        "scorePerFile": 1.0041666666666667,
+        "scorePerKloc": 9.411853436454392,
+        "scorePerFunction": 0.21859410430839002,
+        "findingsPerFile": 0.2765957446808511,
+        "findingsPerKloc": 2.797432943886786,
+        "findingsPerFunction": 0.07702510193053987
       },
-      "blendedScoreMedian": 3.5332731260207124
+      "blendedScoreMedian": 4.1038426510392165
     },
     "mature-oss": {
       "repoCount": 8,

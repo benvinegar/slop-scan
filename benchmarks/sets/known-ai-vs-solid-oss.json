@@ -98,6 +98,17 @@
       "notes": "Polished, company-backed Vite-based reimplementation of the Next.js API surface built as an AI-driven software-development experiment."
     },
     {
+      "id": "agent-ci",
+      "repo": "redwoodjs/agent-ci",
+      "url": "https://github.com/redwoodjs/agent-ci.git",
+      "cohort": "explicit-ai",
+      "ref": "4de00d69487e275d5bc37e30f7818a9303b22352",
+      "createdAt": "2026-02-09T20:24:25Z",
+      "stars": 120,
+      "provenance": "User-provided provenance: repo is almost entirely Claude-authored.",
+      "notes": "Local GitHub Actions orchestration layer for agent workflows; useful benchmark for command-heavy CI tooling with strong AI involvement."
+    },
+    {
       "id": "ni",
       "repo": "antfu-collective/ni",
       "url": "https://github.com/antfu-collective/ni.git",
