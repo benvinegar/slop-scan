@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Deterministic CLI for finding AI-associated slop patterns in JavaScript and TypeScript repositories.",
   "bin": {
-    "repo-slop-analyzer": "./bin/repo-slop-analyzer.js"
+    "repo-slop-analyzer": "bin/repo-slop-analyzer.js"
   },
   "files": [
     "bin",
