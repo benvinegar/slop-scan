@@ -1,4 +1,4 @@
-# slop-analyzer
+# slop-scan
 
 A deterministic Bun + TypeScript CLI for finding **AI-associated slop patterns** in a repository.
 

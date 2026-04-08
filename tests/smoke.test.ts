@@ -5,6 +5,7 @@ import { formatHelp, run } from "../src/cli";
 
 describe("project scaffold", () => {
   test("help text mentions scan command", () => {
+    expect(formatHelp()).toContain("slop-scan");
     expect(formatHelp()).toContain("scan");
     expect(formatHelp()).toContain("--lint");
     expect(formatHelp()).toContain("pluggable registry");

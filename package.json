@@ -1,10 +1,10 @@
 {
-  "name": "slop-analyzer",
+  "name": "slop-scan",
   "version": "0.1.2",
   "type": "module",
   "description": "Deterministic CLI for finding AI-associated slop patterns in JavaScript and TypeScript repositories.",
   "bin": {
-    "slop-analyzer": "bin/slop-analyzer.js"
+    "slop-scan": "bin/slop-scan.js"
   },
   "files": [
     "bin",
@@ -13,11 +13,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benvinegar/slop-analyzer.git"
+    "url": "git+https://github.com/benvinegar/slop-scan.git"
   },
-  "homepage": "https://github.com/benvinegar/slop-analyzer#readme",
+  "homepage": "https://github.com/benvinegar/slop-scan#readme",
   "bugs": {
-    "url": "https://github.com/benvinegar/slop-analyzer/issues"
+    "url": "https://github.com/benvinegar/slop-scan/issues"
   },
   "keywords": [
     "ai",

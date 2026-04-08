@@ -1,10 +1,10 @@
-# slop-analyzer
+# slop-scan
 
 Deterministic CLI for finding **AI-associated slop patterns** in JavaScript and TypeScript repositories.
 
 Scan a repo, surface the hotspots, and compare codebases using normalized slop metrics.
 
-> `slop-analyzer` is a **slop analyzer**, not an authorship detector. It reports explainable patterns and suspicious density. It does **not** claim who wrote the code.
+> `slop-scan` is a **slop scanner**, not an authorship detector. It reports explainable patterns and suspicious density. It does **not** claim who wrote the code.
 
 ## Why use it
 
@@ -25,14 +25,14 @@ Scan a repo, surface the hotspots, and compare codebases using normalized slop m
 Install globally with npm:
 
 ```bash
-npm install -g slop-analyzer
+npm install -g slop-scan
 ```
 
 Install it in a project and run it with npm tools:
 
 ```bash
-npm install --save-dev slop-analyzer
-npx slop-analyzer scan .
+npm install --save-dev slop-scan
+npx slop-scan scan .
 ```
 
 For local development in this repo:
@@ -46,19 +46,19 @@ bun install
 Scan the current repo:
 
 ```bash
-slop-analyzer scan .
+slop-scan scan .
 ```
 
 Scan the current repo in lint mode:
 
 ```bash
-slop-analyzer scan . --lint
+slop-scan scan . --lint
 ```
 
 Scan another repo and get JSON:
 
 ```bash
-slop-analyzer scan /path/to/repo --json
+slop-scan scan /path/to/repo --json
 ```
 
 Recreate the pinned benchmark set from a source checkout:
@@ -72,7 +72,7 @@ bun run benchmark:update
 Use `--lint` when you want human-readable findings in local runs, CI logs, or PR checks.
 
 ```bash
-slop-analyzer scan . --lint
+slop-scan scan . --lint
 ```
 
 Example output:
@@ -89,13 +89,13 @@ medium  Found 3 duplicated function signatures  structure.duplicate-function-sig
 Use `--json` when you want full-fidelity output for scripts, CI, or post-processing.
 
 ```bash
-slop-analyzer scan . --json
+slop-scan scan . --json
 ```
 
 Example CI check:
 
 ```bash
-slop-analyzer scan . --json | jq -e '.summary.findingCount == 0'
+slop-scan scan . --json | jq -e '.summary.findingCount == 0'
 ```
 
 The CLI currently exits non-zero for CLI/runtime errors, not for findings.
@@ -188,7 +188,7 @@ Full benchmark assets:
 
 ## Configuration
 
-The analyzer reads `repo-slop.config.json` from the scan root.
+The analyzer reads `slop-scan.config.json` from the scan root.
 
 ```json
 {
@@ -207,7 +207,7 @@ Supported today:
 
 ## How it works
 
-`slop-analyzer` is built as a pluggable engine:
+`slop-scan` is built as a pluggable engine:
 - language plugins
 - fact providers
 - rule plugins

@@ -76,7 +76,7 @@ describe("fixture regression suite", () => {
     expect(output.stdout).toContain("medium  File is primarily a barrel with 2 re-export statements  structure.barrel-density");
     expect(output.stdout).toContain("  at src/index.ts:1:1");
     expect(output.stdout).toContain("8 findings");
-    expect(output.stdout).not.toContain("slop-analyzer report");
+    expect(output.stdout).not.toContain("slop-scan report");
   });
 
   test("CLI rejects --json and --lint together", () => {

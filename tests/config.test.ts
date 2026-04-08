@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { analyzeRepository } from "../src/core/engine";
 import type { AnalyzerConfig } from "../src/config";
-import { DEFAULT_CONFIG } from "../src/config";
+import { DEFAULT_CONFIG, loadConfig } from "../src/config";
 import { createDefaultRegistry } from "../src/default-registry";
 
 const tempDirs: string[] = [];
@@ -14,7 +14,7 @@ afterEach(async () => {
 });
 
 async function createTempRepo(): Promise<string> {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "repo-slop-analyzer-config-"));
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "slop-scan-config-"));
   tempDirs.push(rootDir);
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
@@ -58,5 +58,29 @@ describe("rule config support", () => {
     expect(baseline.findings).toHaveLength(1);
     expect(weighted.findings).toHaveLength(1);
     expect(weighted.findings[0]?.score).toBeCloseTo((baseline.findings[0]?.score ?? 0) * 2, 6);
+  });
+
+  test("loadConfig reads slop-scan.config.json", async () => {
+    const rootDir = await createTempRepo();
+    await writeFile(
+      path.join(rootDir, "slop-scan.config.json"),
+      JSON.stringify({ ignores: ["src/comments.ts"] }),
+    );
+
+    const config = await loadConfig(rootDir);
+
+    expect(config.ignores).toEqual(["src/comments.ts"]);
+  });
+
+  test("loadConfig falls back to repo-slop.config.json", async () => {
+    const rootDir = await createTempRepo();
+    await writeFile(
+      path.join(rootDir, "repo-slop.config.json"),
+      JSON.stringify({ ignores: ["src/comments.ts"] }),
+    );
+
+    const config = await loadConfig(rootDir);
+
+    expect(config.ignores).toEqual(["src/comments.ts"]);
   });
 });

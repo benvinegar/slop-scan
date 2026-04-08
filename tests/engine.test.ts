@@ -14,7 +14,7 @@ afterEach(async () => {
 });
 
 async function createTempRepo(files?: Record<string, string>): Promise<string> {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "repo-slop-analyzer-"));
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "slop-scan-"));
   tempDirs.push(rootDir);
 
   if (files) {

@@ -21,7 +21,7 @@ async function writeRepoFiles(rootDir: string, files: Record<string, string>): P
 }
 
 async function createTempRepo(files: Record<string, string>): Promise<string> {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "repo-slop-analyzer-heuristics-"));
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "slop-scan-heuristics-"));
   tempDirs.push(rootDir);
   await writeRepoFiles(rootDir, files);
   return rootDir;
