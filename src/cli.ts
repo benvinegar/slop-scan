@@ -8,17 +8,17 @@ export function formatHelp(): string {
     "slop-analyzer",
     "",
     "Usage:",
-    "  slop-analyzer scan [path] [--json]",
+    "  slop-analyzer scan [path] [--json|--lint]",
     "  slop-analyzer --help",
     "",
     "Development:",
-    "  bun run src/cli.ts scan [path] [--json]",
+    "  bun run src/cli.ts scan [path] [--json|--lint]",
     "",
     "Implemented in this phase:",
     "  - pluggable registry",
     "  - dependency-aware fact provider scheduler",
     "  - repository discovery",
-    "  - text and JSON reporters",
+    "  - text, lint, and JSON reporters",
   ].join("\n");
 }
 
@@ -36,13 +36,23 @@ export async function run(argv: string[]): Promise<number> {
     return 1;
   }
 
+  const useJson = argv.includes("--json");
+  const useLint = argv.includes("--lint");
+  if (useJson && useLint) {
+    console.error("--json and --lint cannot be used together.");
+    return 1;
+  }
+
   const rootDir = path.resolve(targetArg);
   const config = await loadConfig(rootDir);
   const registry = createDefaultRegistry();
   const result = await analyzeRepository(rootDir, config, registry);
-  const reporter = registry.getReporter(argv.includes("--json") ? "json" : "text");
+  const reporter = registry.getReporter(useJson ? "json" : useLint ? "lint" : "text");
+  const output = await reporter.render(result);
 
-  console.log(await reporter.render(result));
+  if (output.length > 0) {
+    console.log(output);
+  }
   return 0;
 }
 

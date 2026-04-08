@@ -62,4 +62,29 @@ describe("fixture regression suite", () => {
     expect(report.directoryScores[0].path).toBe("src/fragments");
     expect(report.fileScores[0].path).toBe("src/service.ts");
   });
+
+  test("CLI lint output lists grouped rule hits with locations", () => {
+    const output = spawnSync("bun", ["run", "src/cli.ts", "scan", fixturePath("slop-heavy"), "--lint"], {
+      encoding: "utf8",
+    });
+
+    expect(output.status).toBe(0);
+    expect(output.stdout).toContain("weak  Found 1 placeholder-style comments  comments.placeholder-comments");
+    expect(output.stdout).toContain("  at src/comments.ts:1:1");
+    expect(output.stdout).toContain("strong  Found 1 defensive try/catch block  defensive.needless-try-catch");
+    expect(output.stdout).toContain("  at src/error.ts:2:1");
+    expect(output.stdout).toContain("medium  File is primarily a barrel with 2 re-export statements  structure.barrel-density");
+    expect(output.stdout).toContain("  at src/index.ts:1:1");
+    expect(output.stdout).toContain("8 findings");
+    expect(output.stdout).not.toContain("slop-analyzer report");
+  });
+
+  test("CLI rejects --json and --lint together", () => {
+    const output = spawnSync("bun", ["run", "src/cli.ts", "scan", fixturePath("slop-heavy"), "--json", "--lint"], {
+      encoding: "utf8",
+    });
+
+    expect(output.status).toBe(1);
+    expect(output.stderr).toContain("--json and --lint cannot be used together.");
+  });
 });

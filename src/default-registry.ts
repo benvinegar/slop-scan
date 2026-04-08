@@ -10,6 +10,7 @@ import { testMockSetupsFactProvider } from "./facts/test-mock-setups";
 import { tryCatchFactProvider } from "./facts/try-catch";
 import { javascriptLikeLanguage } from "./languages/javascript-like";
 import { jsonReporter } from "./reporters/json";
+import { lintReporter } from "./reporters/lint";
 import { textReporter } from "./reporters/text";
 import { placeholderCommentsRule } from "./rules/comments/placeholder-comments";
 import { asyncNoiseRule } from "./rules/defensive/async-noise";
@@ -47,5 +48,6 @@ export function createDefaultRegistry(): Registry {
 
   registry.registerReporter(textReporter);
   registry.registerReporter(jsonReporter);
+  registry.registerReporter(lintReporter);
   return registry;
 }
