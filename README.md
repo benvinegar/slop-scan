@@ -220,7 +220,6 @@ That keeps the analyzer deterministic and extensible without turning it into one
 - benchmark guide: [`benchmarks/README.md`](benchmarks/README.md)
 - pinned benchmark report: [`reports/known-ai-vs-solid-oss-benchmark.md`](reports/known-ai-vs-solid-oss-benchmark.md)
 - exploratory note on non-JS/TS candidates: [`reports/exploratory-vite-astro-openclaw-beads.md`](reports/exploratory-vite-astro-openclaw-beads.md)
-- project spec: [`PROJECT_SPEC.md`](PROJECT_SPEC.md)
 
 ## Contributing
 
