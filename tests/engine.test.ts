@@ -46,6 +46,17 @@ describe("analysis engine", () => {
     expect(result.repoScore).toBe(0);
   });
 
+  test("discovers supported files in hidden directories when not ignored", async () => {
+    const rootDir = await createTempRepo({
+      ".storybook/main.ts": "export default {};\n",
+      "src/index.ts": "export const value = 1;\n",
+    });
+
+    const result = await analyzeRepository(rootDir, DEFAULT_CONFIG, createDefaultRegistry());
+
+    expect(result.files.map((file) => file.path)).toEqual([".storybook/main.ts", "src/index.ts"]);
+  });
+
   test("respects root .gitignore entries", async () => {
     const rootDir = await createTempRepo({
       ".gitignore": ["ignored/*", "!ignored/keep.ts"].join("\n"),

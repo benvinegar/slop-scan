@@ -40,7 +40,7 @@
     "benchmark:update": "bun run benchmark:fetch && bun run benchmark:scan && bun run benchmark:report"
   },
   "dependencies": {
-    "ignore": "^7.0.5",
+    "globby": "^16.2.0",
     "typescript": "^5.8.3"
   }
 }
