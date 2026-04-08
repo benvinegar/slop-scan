@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "benchmarkSetId": "known-ai-vs-solid-oss",
   "benchmarkSetName": "Known AI repos vs older solid OSS repos",
-  "generatedAt": "2026-04-08T21:02:39.680Z",
-  "analyzerVersion": "0.1.3",
+  "generatedAt": "2026-04-08T21:47:10.431Z",
+  "analyzerVersion": "0.2.0",
   "configMode": "default",
   "repos": [
     {

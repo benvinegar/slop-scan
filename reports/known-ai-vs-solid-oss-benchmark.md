@@ -1,7 +1,7 @@
 # Pinned benchmark: Known AI repos vs older solid OSS repos
 
 Date: 2026-04-08
-Analyzer version: 0.1.3
+Analyzer version: 0.2.0
 Config mode: default
 
 ## Goal
