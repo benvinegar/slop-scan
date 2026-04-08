@@ -1,7 +1,7 @@
 import * as ts from "typescript";
 import type { FactProvider } from "../core/types";
 import type { TestMockSetupSummary } from "./types";
-import { fingerprintNodeShape, getExpressionPath, getLineNumber, isTestFile, walk } from "./ts-helpers";
+import { fingerprintNodeShape, getExpressionPath, getLineNumber, isTestFile } from "./ts-helpers";
 
 const MOCK_PATH_PATTERNS = [
   "vi.mock",
@@ -27,26 +27,10 @@ function matchesMockPath(path: string): boolean {
   return MOCK_PATH_PATTERNS.some((pattern) => path === pattern || path.endsWith(`.${pattern}`));
 }
 
-function collectMockPaths(node: ts.Node): string[] {
-  const matches = new Set<string>();
-
-  walk(node, (child) => {
-    if (!ts.isCallExpression(child) && !ts.isNewExpression(child)) {
-      return;
-    }
-
-    const expression = ts.isCallExpression(child) ? child.expression : child.expression;
-    if (!expression) {
-      return;
-    }
-
-    const path = getExpressionPath(expression).join(".");
-    if (path && matchesMockPath(path)) {
-      matches.add(path);
-    }
-  });
-
-  return [...matches].sort();
+interface PendingStatementSummary {
+  node: ts.Statement;
+  line: number;
+  labels: Set<string>;
 }
 
 export const testMockSetupsFactProvider: FactProvider = {
@@ -68,24 +52,56 @@ export const testMockSetupsFactProvider: FactProvider = {
       return { "file.testMockSetups": [] satisfies TestMockSetupSummary[] };
     }
 
-    const setups: TestMockSetupSummary[] = [];
+    const activeStatements: PendingStatementSummary[] = [];
+    const pendingStatements: PendingStatementSummary[] = [];
 
-    walk(sourceFile, (node) => {
-      if (!ts.isStatement(node)) {
-        return;
+    function visit(node: ts.Node): void {
+      let currentStatement: PendingStatementSummary | null = null;
+
+      if (ts.isStatement(node)) {
+        currentStatement = {
+          node,
+          line: getLineNumber(sourceFile, node.getStart(sourceFile)),
+          labels: new Set<string>(),
+        };
+        activeStatements.push(currentStatement);
+        pendingStatements.push(currentStatement);
       }
 
-      const labels = collectMockPaths(node);
+      if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+        const expression = ts.isCallExpression(node) ? node.expression : node.expression;
+        if (expression) {
+          const path = getExpressionPath(expression).join(".");
+          if (path && matchesMockPath(path)) {
+            for (const statement of activeStatements) {
+              statement.labels.add(path);
+            }
+          }
+        }
+      }
+
+      node.forEachChild(visit);
+
+      if (currentStatement) {
+        activeStatements.pop();
+      }
+    }
+
+    visit(sourceFile);
+
+    const setups: TestMockSetupSummary[] = [];
+    for (const statement of pendingStatements) {
+      const labels = [...statement.labels].sort();
       if (labels.length === 0) {
-        return;
+        continue;
       }
 
       setups.push({
-        line: getLineNumber(sourceFile, node.getStart(sourceFile)),
+        line: statement.line,
         label: labels.join(" | "),
-        fingerprint: `${labels.join("|")}::${fingerprintNodeShape(node, 5)}`,
+        fingerprint: `${labels.join("|")}::${fingerprintNodeShape(statement.node, 5)}`,
       });
-    });
+    }
 
     return { "file.testMockSetups": setups };
   },

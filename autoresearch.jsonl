@@ -1,3 +1,6 @@
 {"type":"config","name":"Optimize scanner throughput across representative repos","metricName":"total_ms","metricUnit":"ms","bestDirection":"lower"}
 {"run":1,"commit":"0479266","metric":15205.371,"metrics":{},"status":"keep","description":"Baseline: scanner throughput harness over agent-ci, umami, astro, and openclaw with test+build checks","timestamp":1775663387545,"segment":0}
 {"run":2,"commit":"0479266","metric":15566.403,"metrics":{},"status":"discard","description":"Precompile ignore regexes and switch discovery language lookup to a simple loop","timestamp":1775663501218,"segment":0}
+{"run":3,"commit":"fd45621","metric":10330.611,"metrics":{},"status":"keep","description":"Avoid a second TypeScript source file parse for logical LOC and count physical lines without text.split allocations","timestamp":1775663584137,"segment":0}
+{"run":4,"commit":"fd45621","metric":0,"metrics":{},"status":"crash","description":"Disable AST parent links and pass variable names explicitly for anonymous function names","timestamp":1775663737671,"segment":0}
+{"run":5,"commit":"fd45621","metric":0,"metrics":{},"status":"crash","description":"Disable AST parent links with explicit arrow-function names and path-based logging detection","timestamp":1775663789830,"segment":0}
