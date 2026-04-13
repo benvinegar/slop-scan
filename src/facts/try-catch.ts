@@ -2,6 +2,7 @@ import * as ts from "typescript";
 import type { FactProvider } from "../core/types";
 import type { TryCatchSummary } from "./types";
 import {
+  getEnclosingFunctionName,
   getExpressionPath,
   getLineNumber,
   isDefaultLiteral,
@@ -314,6 +315,7 @@ function summarizeTryStatement(node: ts.TryStatement, sourceFile: ts.SourceFile)
 
   return {
     line: getLineNumber(sourceFile, node.getStart(sourceFile)),
+    enclosingSymbol: getEnclosingFunctionName(node, sourceFile),
     hasCatchClause: Boolean(node.catchClause),
     tryStatementCount,
     catchStatementCount: catchStatements.length,

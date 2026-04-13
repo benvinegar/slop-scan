@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { FINDING_FINGERPRINT_VERSION, createFindingDeltaIdentity } from "../src/delta-identity";
 import {
   buildFindingOccurrences,
   diffReports,
@@ -16,18 +17,18 @@ function createBaseResult(): AnalysisResult {
     summary: {
       fileCount: 4,
       directoryCount: 1,
-      findingCount: 2,
-      repoScore: 4,
+      findingCount: 3,
+      repoScore: 7,
       physicalLineCount: 40,
       logicalLineCount: 30,
       functionCount: 4,
       normalized: {
-        scorePerFile: 1,
-        scorePerKloc: 133.33,
-        scorePerFunction: 1,
-        findingsPerFile: 0.5,
-        findingsPerKloc: 66.67,
-        findingsPerFunction: 0.5,
+        scorePerFile: 1.75,
+        scorePerKloc: 233.33,
+        scorePerFunction: 1.75,
+        findingsPerFile: 0.75,
+        findingsPerKloc: 100,
+        findingsPerFunction: 0.75,
       },
     },
     files: [],
@@ -46,6 +47,36 @@ function createBaseResult(): AnalysisResult {
           { path: "src/a.ts", line: 1, column: 1 },
           { path: "src/b.ts", line: 1, column: 1 },
         ],
+        deltaIdentity: createFindingDeltaIdentity("structure.duplicate-function-signatures", [
+          {
+            groupKey: { clusterFingerprint: "dup-cluster" },
+            occurrenceKey: { clusterFingerprint: "dup-cluster", path: "src/a.ts" },
+            path: "src/a.ts",
+            line: 1,
+          },
+        ]),
+      },
+      {
+        ruleId: "structure.duplicate-function-signatures",
+        family: "structure",
+        severity: "medium",
+        scope: "file",
+        message: "Found 2 duplicated function signatures",
+        evidence: ["normalizeUser", "normalizeTeam"],
+        score: 3,
+        path: "src/b.ts",
+        locations: [
+          { path: "src/a.ts", line: 1, column: 1 },
+          { path: "src/b.ts", line: 1, column: 1 },
+        ],
+        deltaIdentity: createFindingDeltaIdentity("structure.duplicate-function-signatures", [
+          {
+            groupKey: { clusterFingerprint: "dup-cluster" },
+            occurrenceKey: { clusterFingerprint: "dup-cluster", path: "src/b.ts" },
+            path: "src/b.ts",
+            line: 1,
+          },
+        ]),
       },
       {
         ruleId: "defensive.empty-catch",
@@ -57,15 +88,27 @@ function createBaseResult(): AnalysisResult {
         score: 1,
         path: "src/error.ts",
         locations: [{ path: "src/error.ts", line: 10, column: 1 }],
+        deltaIdentity: createFindingDeltaIdentity("defensive.empty-catch", [
+          {
+            path: "src/error.ts",
+            line: 10,
+            occurrenceKey: {
+              path: "src/error.ts",
+              enclosingSymbol: "readConfig",
+              kind: "empty-catch",
+            },
+          },
+        ]),
       },
     ],
     fileScores: [],
     directoryScores: [],
-    repoScore: 4,
+    repoScore: 7,
     metadata: {
-      schemaVersion: 1,
+      schemaVersion: 2,
       tool: { name: "slop-scan", version: "0.2.0" },
       configHash: "same-config",
+      findingFingerprintVersion: FINDING_FINGERPRINT_VERSION,
       plugins: [],
     },
   };
@@ -78,18 +121,18 @@ function createHeadResult(): AnalysisResult {
     summary: {
       fileCount: 5,
       directoryCount: 1,
-      findingCount: 2,
-      repoScore: 5,
+      findingCount: 4,
+      repoScore: 14,
       physicalLineCount: 55,
       logicalLineCount: 42,
       functionCount: 5,
       normalized: {
-        scorePerFile: 1,
-        scorePerKloc: 119.05,
-        scorePerFunction: 1,
-        findingsPerFile: 0.4,
-        findingsPerKloc: 47.62,
-        findingsPerFunction: 0.4,
+        scorePerFile: 2.8,
+        scorePerKloc: 333.33,
+        scorePerFunction: 2.8,
+        findingsPerFile: 0.8,
+        findingsPerKloc: 95.24,
+        findingsPerFunction: 0.8,
       },
     },
     files: [],
@@ -109,6 +152,60 @@ function createHeadResult(): AnalysisResult {
           { path: "src/b.ts", line: 1, column: 1 },
           { path: "src/c.ts", line: 1, column: 1 },
         ],
+        deltaIdentity: createFindingDeltaIdentity("structure.duplicate-function-signatures", [
+          {
+            groupKey: { clusterFingerprint: "dup-cluster" },
+            occurrenceKey: { clusterFingerprint: "dup-cluster", path: "src/a.ts" },
+            path: "src/a.ts",
+            line: 1,
+          },
+        ]),
+      },
+      {
+        ruleId: "structure.duplicate-function-signatures",
+        family: "structure",
+        severity: "medium",
+        scope: "file",
+        message: "Found 3 duplicated function signatures",
+        evidence: ["normalizeUser", "normalizeTeam", "normalizeAccount"],
+        score: 4.5,
+        path: "src/b.ts",
+        locations: [
+          { path: "src/a.ts", line: 1, column: 1 },
+          { path: "src/b.ts", line: 1, column: 1 },
+          { path: "src/c.ts", line: 1, column: 1 },
+        ],
+        deltaIdentity: createFindingDeltaIdentity("structure.duplicate-function-signatures", [
+          {
+            groupKey: { clusterFingerprint: "dup-cluster" },
+            occurrenceKey: { clusterFingerprint: "dup-cluster", path: "src/b.ts" },
+            path: "src/b.ts",
+            line: 1,
+          },
+        ]),
+      },
+      {
+        ruleId: "structure.duplicate-function-signatures",
+        family: "structure",
+        severity: "medium",
+        scope: "file",
+        message: "Found 3 duplicated function signatures",
+        evidence: ["normalizeUser", "normalizeTeam", "normalizeAccount"],
+        score: 4.5,
+        path: "src/c.ts",
+        locations: [
+          { path: "src/a.ts", line: 1, column: 1 },
+          { path: "src/b.ts", line: 1, column: 1 },
+          { path: "src/c.ts", line: 1, column: 1 },
+        ],
+        deltaIdentity: createFindingDeltaIdentity("structure.duplicate-function-signatures", [
+          {
+            groupKey: { clusterFingerprint: "dup-cluster" },
+            occurrenceKey: { clusterFingerprint: "dup-cluster", path: "src/c.ts" },
+            path: "src/c.ts",
+            line: 1,
+          },
+        ]),
       },
       {
         ruleId: "comments.placeholder-comments",
@@ -120,22 +217,45 @@ function createHeadResult(): AnalysisResult {
         score: 0.5,
         path: "src/todo.ts",
         locations: [{ path: "src/todo.ts", line: 5, column: 1 }],
+        deltaIdentity: createFindingDeltaIdentity("comments.placeholder-comments", [
+          {
+            path: "src/todo.ts",
+            line: 5,
+            occurrenceKey: {
+              path: "src/todo.ts",
+              normalizedText: "todo",
+              ordinal: 1,
+            },
+          },
+        ]),
       },
     ],
     fileScores: [],
     directoryScores: [],
-    repoScore: 5,
+    repoScore: 14,
     metadata: {
-      schemaVersion: 1,
+      schemaVersion: 2,
       tool: { name: "slop-scan", version: "0.2.0" },
       configHash: "same-config",
+      findingFingerprintVersion: FINDING_FINGERPRINT_VERSION,
       plugins: [],
     },
   };
 }
 
 describe("delta helpers", () => {
-  test("buildFindingOccurrences splits grouped findings into per-path occurrences", () => {
+  test("buildFindingOccurrences prefers explicit fingerprints over grouped raw locations", () => {
+    const report = createBaseResult();
+    report.findings = [report.findings[0]!];
+
+    const occurrences = buildFindingOccurrences(report);
+
+    expect(occurrences).toHaveLength(1);
+    expect(occurrences[0]?.path).toBe("src/a.ts");
+    expect(occurrences[0]?.fingerprintVersion).toBe(FINDING_FINGERPRINT_VERSION);
+  });
+
+  test("buildFindingOccurrences keeps one explicit occurrence per affected file", () => {
     const occurrences = buildFindingOccurrences(createHeadResult());
 
     expect(
@@ -150,9 +270,9 @@ describe("delta helpers", () => {
     const delta = diffReports(createBaseResult(), createHeadResult());
 
     expect(delta.summary).toMatchObject({
-      baseFindingCount: 2,
-      headFindingCount: 2,
-      netFindingCount: 0,
+      baseFindingCount: 3,
+      headFindingCount: 4,
+      netFindingCount: 1,
       addedCount: 2,
       resolvedCount: 1,
       worsenedCount: 2,
@@ -193,6 +313,9 @@ describe("delta helpers", () => {
         improvedCount: 0,
       },
     ]);
+    expect(delta.paths[0]?.changes[0]?.groupFingerprint).toContain(
+      "structure.duplicate-function-signatures:group:",
+    );
   });
 
   test("formatDeltaText renders a compact human-readable summary", () => {
@@ -211,6 +334,7 @@ describe("delta helpers", () => {
       ...head.metadata!,
       configHash: "different-config",
       tool: { ...head.metadata!.tool, version: "0.2.1" },
+      findingFingerprintVersion: 2,
     };
 
     const delta = diffReports(createBaseResult(), head);
@@ -218,6 +342,7 @@ describe("delta helpers", () => {
     expect(delta.warnings.map((warning) => warning.code)).toEqual([
       "tool-version-mismatch",
       "config-hash-mismatch",
+      "fingerprint-version-mismatch",
     ]);
   });
 

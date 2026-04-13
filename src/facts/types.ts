@@ -24,6 +24,7 @@ export interface ExportSummary {
 
 export interface TryCatchSummary {
   line: number;
+  enclosingSymbol: string;
   hasCatchClause: boolean;
   tryStatementCount: number;
   catchStatementCount: number;

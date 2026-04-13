@@ -1,46 +1,13 @@
-import { createHash } from "node:crypto";
 import packageJson from "../package.json";
 import type { AnalyzerConfig } from "./config";
 import type { AnalysisResult, ReportMetadata, ReportPluginMetadata } from "./core/types";
+import { FINDING_FINGERPRINT_VERSION } from "./delta-identity";
 import type { LoadedPlugin } from "./plugin";
+import { stableHash } from "./stable-hash";
 
-export const REPORT_SCHEMA_VERSION = 1;
+export const REPORT_SCHEMA_VERSION = 2;
 export const TOOL_NAME = "slop-scan";
 export const TOOL_VERSION = typeof packageJson.version === "string" ? packageJson.version : "0.0.0";
-
-function stableSerialize(value: unknown): string {
-  if (value === null) {
-    return "null";
-  }
-
-  if (Array.isArray(value)) {
-    return `[${value.map(stableSerialize).join(",")}]`;
-  }
-
-  switch (typeof value) {
-    case "bigint":
-      return JSON.stringify(value.toString());
-    case "boolean":
-      return value ? "true" : "false";
-    case "number":
-      return Number.isFinite(value) ? JSON.stringify(value) : JSON.stringify(String(value));
-    case "string":
-      return JSON.stringify(value);
-    case "undefined":
-    case "function":
-    case "symbol":
-      return "null";
-    case "object": {
-      const entries = Object.entries(value)
-        .filter(([, entryValue]) => entryValue !== undefined)
-        .sort(([left], [right]) => left.localeCompare(right));
-
-      return `{${entries
-        .map(([key, entryValue]) => `${JSON.stringify(key)}:${stableSerialize(entryValue)}`)
-        .join(",")}}`;
-    }
-  }
-}
 
 function buildPluginMetadata(plugins: LoadedPlugin[]): ReportPluginMetadata[] {
   return plugins
@@ -63,20 +30,18 @@ export function createConfigHash(
   config: AnalyzerConfig,
   plugins: ReportPluginMetadata[] = [],
 ): string {
-  return createHash("sha256")
-    .update(
-      stableSerialize({
-        config,
-        plugins: plugins.map((plugin) => ({
-          namespace: plugin.namespace,
-          name: plugin.name,
-          version: plugin.version,
-          source: plugin.source,
-        })),
-      }),
-    )
-    .digest("hex")
-    .slice(0, 16);
+  return stableHash(
+    {
+      config,
+      plugins: plugins.map((plugin) => ({
+        namespace: plugin.namespace,
+        name: plugin.name,
+        version: plugin.version,
+        source: plugin.source,
+      })),
+    },
+    16,
+  );
 }
 
 export function buildReportMetadata(
@@ -92,10 +57,21 @@ export function buildReportMetadata(
       version: TOOL_VERSION,
     },
     configHash: createConfigHash(config, pluginMetadata),
+    findingFingerprintVersion: FINDING_FINGERPRINT_VERSION,
     plugins: pluginMetadata,
   };
 }
 
 export function getReportMetadata(result: AnalysisResult): ReportMetadata {
-  return result.metadata ?? buildReportMetadata(result.config);
+  if (!result.metadata) {
+    return buildReportMetadata(result.config);
+  }
+
+  return {
+    ...result.metadata,
+    findingFingerprintVersion:
+      typeof result.metadata.findingFingerprintVersion === "number"
+        ? result.metadata.findingFingerprintVersion
+        : 0,
+  };
 }

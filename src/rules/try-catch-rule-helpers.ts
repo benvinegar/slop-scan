@@ -8,6 +8,16 @@ export function formatTryCatchBoundary(summary: TryCatchSummary): string {
   return summary.boundaryCategories.length > 0 ? summary.boundaryCategories.join("|") : "none";
 }
 
+export function buildTryCatchIdentityBase(summary: TryCatchSummary) {
+  return {
+    enclosingSymbol: summary.enclosingSymbol,
+    boundaryCategories: summary.boundaryCategories,
+    boundaryOperationPaths: summary.boundaryOperationPaths,
+    tryStatementCount: summary.tryStatementCount,
+    catchStatementCount: summary.catchStatementCount,
+  };
+}
+
 export function scoreTryCatch(summary: TryCatchSummary): number {
   let score = 3;
 

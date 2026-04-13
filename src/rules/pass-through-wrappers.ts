@@ -1,6 +1,7 @@
+import { createFindingDeltaIdentity } from "../delta-identity";
 import type { RulePlugin } from "../core/types";
 import type { CommentSummary, FunctionSummary } from "../facts/types";
-import { BOUNDARY_WRAPPER_TARGET_PREFIXES } from "./helpers";
+import { BOUNDARY_WRAPPER_TARGET_PREFIXES, assignStableOrdinals } from "./helpers";
 
 // Nearby wording like "alias" or "backward compatibility" usually means the
 // wrapper exists to preserve an API name rather than because the author lazily
@@ -70,6 +71,29 @@ export const passThroughWrappersRule: RulePlugin = {
       return [];
     }
 
+    const deltaOccurrences = assignStableOrdinals(
+      wrappers,
+      (summary) =>
+        JSON.stringify({
+          name: summary.name,
+          parameterCount: summary.parameterCount,
+          passThroughTarget: summary.passThroughTarget,
+          statementCount: summary.statementCount,
+        }),
+      (summary) => summary.line,
+    ).map(({ value, ordinal }) => ({
+      path: context.file!.path,
+      line: value.line,
+      occurrenceKey: {
+        path: context.file!.path,
+        name: value.name,
+        parameterCount: value.parameterCount,
+        passThroughTarget: value.passThroughTarget,
+        statementCount: value.statementCount,
+        ordinal,
+      },
+    }));
+
     return [
       {
         ruleId: "structure.pass-through-wrappers",
@@ -86,6 +110,10 @@ export const passThroughWrappersRule: RulePlugin = {
         // cannot swamp the repo score by itself.
         score: Math.min(5, wrappers.length * 2),
         locations: wrappers.map((summary) => ({ path: context.file!.path, line: summary.line })),
+        deltaIdentity: createFindingDeltaIdentity(
+          "structure.pass-through-wrappers",
+          deltaOccurrences,
+        ),
       },
     ];
   },

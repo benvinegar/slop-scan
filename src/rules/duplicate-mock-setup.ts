@@ -1,3 +1,4 @@
+import { createFindingDeltaIdentity } from "../delta-identity";
 import type { RulePlugin } from "../core/types";
 import type { DuplicateTestSetupIndex } from "../facts/types";
 import { isTestFile } from "../facts/ts-helpers";
@@ -35,6 +36,26 @@ export const duplicateMockSetupRule: RulePlugin = {
       (cluster, index) =>
         clusters.findIndex((candidate) => candidate.fingerprint === cluster.fingerprint) === index,
     );
+    const deltaOccurrences = uniqueClusters.flatMap((cluster) => {
+      const localOccurrences = cluster.occurrences
+        .filter((occurrence) => occurrence.path === context.file!.path)
+        .sort((left, right) => left.line - right.line);
+      const primaryOccurrence = localOccurrences[0];
+
+      if (!primaryOccurrence) {
+        return [];
+      }
+
+      return {
+        groupKey: { clusterFingerprint: cluster.fingerprint },
+        occurrenceKey: {
+          clusterFingerprint: cluster.fingerprint,
+          path: context.file!.path,
+        },
+        path: context.file!.path,
+        line: primaryOccurrence.line,
+      };
+    });
 
     return [
       {
@@ -63,6 +84,7 @@ export const duplicateMockSetupRule: RulePlugin = {
             line: occurrence.line,
           })),
         ),
+        deltaIdentity: createFindingDeltaIdentity("tests.duplicate-mock-setup", deltaOccurrences),
       },
     ];
   },

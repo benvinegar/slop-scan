@@ -34,6 +34,29 @@ export function average(values: number[]): number {
   return values.reduce((sum, value) => sum + value, 0) / values.length;
 }
 
+export function normalizeWhitespace(value: string): string {
+  const trimmed = value.trim();
+  const collapsed = trimmed.replace(/\s+/g, " ");
+  return collapsed.toLowerCase();
+}
+
+export function assignStableOrdinals<T>(
+  values: T[],
+  keyOf: (value: T) => string,
+  lineOf: (value: T) => number,
+): Array<{ value: T; ordinal: number }> {
+  const counts = new Map<string, number>();
+
+  return [...values]
+    .sort((left, right) => lineOf(left) - lineOf(right) || keyOf(left).localeCompare(keyOf(right)))
+    .map((value) => {
+      const key = keyOf(value);
+      const ordinal = (counts.get(key) ?? 0) + 1;
+      counts.set(key, ordinal);
+      return { value, ordinal };
+    });
+}
+
 export function median(values: number[]): number {
   if (values.length === 0) {
     return 0;

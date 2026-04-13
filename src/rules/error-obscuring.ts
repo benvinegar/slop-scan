@@ -1,6 +1,9 @@
+import { createFindingDeltaIdentity } from "../delta-identity";
 import type { RulePlugin } from "../core/types";
 import type { TryCatchSummary } from "../facts/types";
+import { assignStableOrdinals } from "./helpers";
 import {
+  buildTryCatchIdentityBase,
   formatTryCatchBoundary,
   isValidTryCatchTarget,
   scoreTryCatch,
@@ -51,6 +54,25 @@ export const errorObscuringRule: RulePlugin = {
       return [];
     }
 
+    const deltaOccurrences = assignStableOrdinals(
+      flagged,
+      (summary) =>
+        JSON.stringify({
+          ...buildTryCatchIdentityBase(summary),
+          kind: obscuringKind(summary),
+        }),
+      (summary) => summary.line,
+    ).map(({ value, ordinal }) => ({
+      path: context.file!.path,
+      line: value.line,
+      occurrenceKey: {
+        path: context.file!.path,
+        kind: obscuringKind(value),
+        ...buildTryCatchIdentityBase(value),
+        ordinal,
+      },
+    }));
+
     return [
       {
         ruleId: "defensive.error-obscuring",
@@ -68,6 +90,7 @@ export const errorObscuringRule: RulePlugin = {
           flagged.reduce((total, summary) => total + scoreTryCatch(summary), 0),
         ),
         locations: flagged.map((summary) => ({ path: context.file!.path, line: summary.line })),
+        deltaIdentity: createFindingDeltaIdentity("defensive.error-obscuring", deltaOccurrences),
       },
     ];
   },

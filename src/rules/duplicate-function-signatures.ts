@@ -1,3 +1,4 @@
+import { createFindingDeltaIdentity } from "../delta-identity";
 import type { RulePlugin } from "../core/types";
 import type { DuplicateFunctionIndex } from "../facts/types";
 import { isTestFile } from "../facts/ts-helpers";
@@ -32,6 +33,26 @@ export const duplicateFunctionSignaturesRule: RulePlugin = {
       (cluster, index) =>
         clusters.findIndex((candidate) => candidate.fingerprint === cluster.fingerprint) === index,
     );
+    const deltaOccurrences = uniqueClusters.flatMap((cluster) => {
+      const localOccurrences = cluster.occurrences
+        .filter((occurrence) => occurrence.path === context.file!.path)
+        .sort((left, right) => left.line - right.line || left.name.localeCompare(right.name));
+      const primaryOccurrence = localOccurrences[0];
+
+      if (!primaryOccurrence) {
+        return [];
+      }
+
+      return {
+        groupKey: { clusterFingerprint: cluster.fingerprint },
+        occurrenceKey: {
+          clusterFingerprint: cluster.fingerprint,
+          path: context.file!.path,
+        },
+        path: context.file!.path,
+        line: primaryOccurrence.line,
+      };
+    });
 
     return [
       {
@@ -64,6 +85,10 @@ export const duplicateFunctionSignaturesRule: RulePlugin = {
             path: occurrence.path,
             line: occurrence.line,
           })),
+        ),
+        deltaIdentity: createFindingDeltaIdentity(
+          "structure.duplicate-function-signatures",
+          deltaOccurrences,
         ),
       },
     ];

@@ -1,6 +1,9 @@
+import { createFindingDeltaIdentity } from "../delta-identity";
 import type { RulePlugin } from "../core/types";
 import type { TryCatchSummary } from "../facts/types";
+import { assignStableOrdinals } from "./helpers";
 import {
+  buildTryCatchIdentityBase,
   formatTryCatchBoundary,
   isValidTryCatchTarget,
   scoreTryCatch,
@@ -40,6 +43,25 @@ export const emptyCatchRule: RulePlugin = {
       return [];
     }
 
+    const deltaOccurrences = assignStableOrdinals(
+      flagged,
+      (summary) =>
+        JSON.stringify({
+          ...buildTryCatchIdentityBase(summary),
+          kind: "empty-catch",
+        }),
+      (summary) => summary.line,
+    ).map(({ value, ordinal }) => ({
+      path: context.file!.path,
+      line: value.line,
+      occurrenceKey: {
+        path: context.file!.path,
+        kind: "empty-catch",
+        ...buildTryCatchIdentityBase(value),
+        ordinal,
+      },
+    }));
+
     return [
       {
         ruleId: "defensive.empty-catch",
@@ -57,6 +79,7 @@ export const emptyCatchRule: RulePlugin = {
           flagged.reduce((total, summary) => total + scoreTryCatch(summary), 0),
         ),
         locations: flagged.map((summary) => ({ path: context.file!.path, line: summary.line })),
+        deltaIdentity: createFindingDeltaIdentity("defensive.empty-catch", deltaOccurrences),
       },
     ];
   },

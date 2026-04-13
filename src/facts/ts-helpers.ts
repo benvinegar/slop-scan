@@ -165,6 +165,20 @@ export function getFunctionName(
   return `<anonymous:${getLineNumber(sourceFile, node.getStart(sourceFile))}>`;
 }
 
+export function getEnclosingFunctionName(node: ts.Node, sourceFile: ts.SourceFile): string {
+  let current: ts.Node | undefined = node.parent;
+
+  while (current) {
+    if (ts.isFunctionLike(current)) {
+      return getFunctionName(current, sourceFile);
+    }
+
+    current = current.parent;
+  }
+
+  return "<top-level>";
+}
+
 export function hasAwaitExpression(node: ts.Node): boolean {
   let found = false;
   walk(node, (nextNode) => {

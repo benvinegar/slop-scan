@@ -1,5 +1,7 @@
+import { createFindingDeltaIdentity } from "../delta-identity";
 import type { RulePlugin } from "../core/types";
 import type { CommentSummary } from "../facts/types";
+import { assignStableOrdinals, normalizeWhitespace } from "./helpers";
 
 /**
  * Flags filler comments that gesture at future work without explaining current
@@ -38,6 +40,20 @@ export const placeholderCommentsRule: RulePlugin = {
       return [];
     }
 
+    const deltaOccurrences = assignStableOrdinals(
+      matches,
+      (match) => normalizeWhitespace(match.text),
+      (match) => match.line,
+    ).map(({ value, ordinal }) => ({
+      path: context.file!.path,
+      line: value.line,
+      occurrenceKey: {
+        path: context.file!.path,
+        normalizedText: normalizeWhitespace(value.text),
+        ordinal,
+      },
+    }));
+
     return [
       {
         ruleId: "comments.placeholder-comments",
@@ -51,6 +67,10 @@ export const placeholderCommentsRule: RulePlugin = {
         // without overwhelming stronger structural rules.
         score: Math.min(1.5, matches.length * 0.75),
         locations: matches.map((match) => ({ path: context.file!.path, line: match.line })),
+        deltaIdentity: createFindingDeltaIdentity(
+          "comments.placeholder-comments",
+          deltaOccurrences,
+        ),
       },
     ];
   },

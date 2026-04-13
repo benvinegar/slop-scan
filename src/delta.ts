@@ -24,6 +24,8 @@ export type DeltaFailOn = DeltaStatus | "any";
 export interface FindingOccurrence {
   fingerprint: string;
   identityKey: string;
+  fingerprintVersion: number | null;
+  groupFingerprint?: string;
   scope: Scope;
   path: string | null;
   locations: FindingLocation[];
@@ -38,6 +40,8 @@ export interface FindingOccurrence {
 
 export interface DeltaOccurrenceSnapshot {
   fingerprint: string;
+  fingerprintVersion: number | null;
+  groupFingerprint?: string;
   scope: Scope;
   path: string | null;
   locations: FindingLocation[];
@@ -57,12 +61,18 @@ export interface DeltaChange {
   ruleId: string;
   family: string;
   fingerprint: string;
+  fingerprintVersion: number | null;
+  groupFingerprint?: string;
   base: DeltaOccurrenceSnapshot | null;
   head: DeltaOccurrenceSnapshot | null;
 }
 
 export interface DeltaWarning {
-  code: "schema-version-mismatch" | "tool-version-mismatch" | "config-hash-mismatch";
+  code:
+    | "schema-version-mismatch"
+    | "tool-version-mismatch"
+    | "config-hash-mismatch"
+    | "fingerprint-version-mismatch";
   message: string;
 }
 
@@ -209,6 +219,8 @@ function occurrenceFingerprint(occurrence: FindingOccurrence, index: number): st
 function toOccurrenceSnapshot(occurrence: FindingOccurrence): DeltaOccurrenceSnapshot {
   return {
     fingerprint: occurrence.fingerprint,
+    fingerprintVersion: occurrence.fingerprintVersion,
+    groupFingerprint: occurrence.groupFingerprint,
     scope: occurrence.scope,
     path: occurrence.path,
     locations: occurrence.locations,
@@ -222,12 +234,60 @@ function toOccurrenceSnapshot(occurrence: FindingOccurrence): DeltaOccurrenceSna
   };
 }
 
+function buildExplicitFindingOccurrences(finding: Finding): FindingOccurrence[] {
+  if (!finding.deltaIdentity || finding.deltaIdentity.occurrences.length === 0) {
+    return [];
+  }
+
+  const fallbackLocations = uniqueSortedLocations(finding);
+
+  return finding.deltaIdentity.occurrences.map((occurrence) => {
+    const path = occurrence.path ?? finding.path ?? null;
+    const primaryLocation =
+      path && occurrence.line !== undefined
+        ? {
+            path,
+            line: occurrence.line,
+            column: occurrence.column ?? 1,
+          }
+        : null;
+    const locations = primaryLocation
+      ? [primaryLocation]
+      : path
+        ? fallbackLocations.filter((location) => location.path === path)
+        : [];
+
+    return {
+      fingerprint: occurrence.fingerprint,
+      identityKey: occurrence.fingerprint,
+      fingerprintVersion: finding.deltaIdentity!.fingerprintVersion,
+      groupFingerprint: occurrence.groupFingerprint,
+      scope: finding.scope,
+      path,
+      locations,
+      primaryLocation: primaryLocation ?? locations[0] ?? null,
+      ruleId: finding.ruleId,
+      family: finding.family,
+      severity: finding.severity,
+      message: finding.message,
+      evidence: finding.evidence,
+      score: finding.score,
+    };
+  });
+}
+
 export function buildFindingOccurrences(
   report: AnalysisResult | null | undefined,
 ): FindingOccurrence[] {
   const occurrences: FindingOccurrence[] = [];
 
   for (const finding of report?.findings ?? []) {
+    const explicitOccurrences = buildExplicitFindingOccurrences(finding);
+    if (explicitOccurrences.length > 0) {
+      occurrences.push(...explicitOccurrences);
+      continue;
+    }
+
     const locations = uniqueSortedLocations(finding);
     const locationsByPath = new Map<string | null, FindingLocation[]>();
 
@@ -245,6 +305,7 @@ export function buildFindingOccurrences(
       occurrences.push({
         fingerprint: "",
         identityKey: JSON.stringify({ scope: finding.scope, ruleId: finding.ruleId, path }),
+        fingerprintVersion: null,
         scope: finding.scope,
         path,
         locations: scopedLocations,
@@ -272,7 +333,10 @@ export function buildFindingOccurrences(
       const sorted = [...groupedOccurrences].sort(compareOccurrences);
       return sorted.map((occurrence, index) => ({
         ...occurrence,
-        fingerprint: occurrenceFingerprint(occurrence, index),
+        fingerprint:
+          occurrence.fingerprint.length > 0
+            ? occurrence.fingerprint
+            : occurrenceFingerprint(occurrence, index),
       }));
     });
 
@@ -360,18 +424,25 @@ function buildWarnings(baseMetadata: ReportMetadata, headMetadata: ReportMetadat
     });
   }
 
+  if (baseMetadata.findingFingerprintVersion !== headMetadata.findingFingerprintVersion) {
+    warnings.push({
+      code: "fingerprint-version-mismatch",
+      message: `Base/head finding fingerprint versions differ (${baseMetadata.findingFingerprintVersion} vs ${headMetadata.findingFingerprintVersion}).`,
+    });
+  }
+
   return warnings;
 }
 
 function buildPathScoreMap(report: AnalysisResult): Map<string, number> {
   const scores = new Map<string, number>();
 
-  for (const occurrence of buildFindingOccurrences(report)) {
-    if (!occurrence.path) {
+  for (const finding of report.findings) {
+    if (!finding.path) {
       continue;
     }
 
-    scores.set(occurrence.path, (scores.get(occurrence.path) ?? 0) + occurrence.score);
+    scores.set(finding.path, (scores.get(finding.path) ?? 0) + finding.score);
   }
 
   return scores;
@@ -448,6 +519,8 @@ export function diffReports(baseReport: AnalysisResult, headReport: AnalysisResu
           ruleId: headOccurrence.ruleId,
           family: headOccurrence.family,
           fingerprint: headOccurrence.fingerprint,
+          fingerprintVersion: headOccurrence.fingerprintVersion,
+          groupFingerprint: headOccurrence.groupFingerprint,
           base: toOccurrenceSnapshot(baseOccurrence),
           head: toOccurrenceSnapshot(headOccurrence),
         });
@@ -462,6 +535,8 @@ export function diffReports(baseReport: AnalysisResult, headReport: AnalysisResu
           ruleId: headOccurrence.ruleId,
           family: headOccurrence.family,
           fingerprint: headOccurrence.fingerprint,
+          fingerprintVersion: headOccurrence.fingerprintVersion,
+          groupFingerprint: headOccurrence.groupFingerprint,
           base: null,
           head: toOccurrenceSnapshot(headOccurrence),
         });
@@ -476,6 +551,8 @@ export function diffReports(baseReport: AnalysisResult, headReport: AnalysisResu
           ruleId: baseOccurrence.ruleId,
           family: baseOccurrence.family,
           fingerprint: baseOccurrence.fingerprint,
+          fingerprintVersion: baseOccurrence.fingerprintVersion,
+          groupFingerprint: baseOccurrence.groupFingerprint,
           base: toOccurrenceSnapshot(baseOccurrence),
           head: null,
         });

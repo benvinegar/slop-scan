@@ -1,3 +1,4 @@
+import { createFindingDeltaIdentity } from "../delta-identity";
 import type { RulePlugin } from "../core/types";
 import { isTestFile } from "../facts/ts-helpers";
 import type { DirectoryMetrics } from "../facts/types";
@@ -85,6 +86,13 @@ export const overFragmentationRule: RulePlugin = {
         // wrappers/barrels make up a large share of the directory.
         score: 4 + tinyRatio * 3 + ceremonyRatio * 2,
         locations: [{ path: context.directory!.path, line: 1 }],
+        deltaIdentity: createFindingDeltaIdentity("structure.over-fragmentation", [
+          {
+            path: context.directory!.path,
+            line: 1,
+            occurrenceKey: { path: context.directory!.path },
+          },
+        ]),
       },
     ];
   },

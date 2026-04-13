@@ -130,7 +130,8 @@ slop-scan delta --base ../main --fail-on added,worsened
 - base/head scan summaries
 - occurrence-level change classification (`added`, `resolved`, `worsened`, `improved`)
 - per-path score deltas
-- metadata and config hashes so downstream tools can detect mismatched scan conditions
+- report metadata and config hashes so downstream tools can detect mismatched scan conditions
+- stable per-occurrence fingerprints for built-in rules, so grouped findings can match across rescans without relying on rendered message text
 
 ## What it catches
 

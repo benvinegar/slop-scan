@@ -22,6 +22,19 @@ export interface FindingLocation {
   column?: number;
 }
 
+export interface FindingDeltaOccurrenceIdentity {
+  fingerprint: string;
+  groupFingerprint?: string;
+  path?: string;
+  line?: number;
+  column?: number;
+}
+
+export interface FindingDeltaIdentity {
+  fingerprintVersion: number;
+  occurrences: FindingDeltaOccurrenceIdentity[];
+}
+
 export interface Finding {
   ruleId: string;
   family: string;
@@ -32,6 +45,7 @@ export interface Finding {
   score: number;
   locations: FindingLocation[];
   path?: string;
+  deltaIdentity?: FindingDeltaIdentity;
 }
 
 export interface FileScore {
@@ -80,6 +94,7 @@ export interface ReportMetadata {
     version: string;
   };
   configHash: string;
+  findingFingerprintVersion: number;
   plugins: ReportPluginMetadata[];
 }
 

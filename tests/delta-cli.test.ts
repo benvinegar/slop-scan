@@ -58,9 +58,19 @@ describe("delta CLI", () => {
 
       const basePath = path.join(tempDir, "base.json");
       const headPath = path.join(tempDir, "head.json");
+      const baseJson = jsonReporter.render(baseResult);
+      const headJson = jsonReporter.render(headResult);
+      expect(JSON.parse(baseJson).metadata).toMatchObject({
+        schemaVersion: 2,
+        findingFingerprintVersion: 1,
+      });
+      expect(JSON.parse(headJson).metadata).toMatchObject({
+        schemaVersion: 2,
+        findingFingerprintVersion: 1,
+      });
       await Promise.all([
-        writeFile(basePath, jsonReporter.render(baseResult), "utf8"),
-        writeFile(headPath, jsonReporter.render(headResult), "utf8"),
+        writeFile(basePath, baseJson, "utf8"),
+        writeFile(headPath, headJson, "utf8"),
       ]);
 
       const exitCode = await run([
