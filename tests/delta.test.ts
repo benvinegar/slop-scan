@@ -340,7 +340,7 @@ describe("delta helpers", () => {
       ...head.metadata!,
       configHash: "different-config",
       tool: { ...head.metadata!.tool, version: "0.2.1" },
-      findingFingerprintVersion: 2,
+      findingFingerprintVersion: 3,
     };
 
     const delta = diffReports(createBaseResult(), head);

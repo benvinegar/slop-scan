@@ -269,7 +269,7 @@ Supported today:
 `slop-scan` can load third-party rule plugins and plugin preset configs from JSON or module configs.
 
 For plugin setup, naming rules, and authoring examples, see [docs/plugins.md](docs/plugins.md).
-Simple plugin rules can now declare stable delta behavior with helpers like `delta.byPath()` instead of building fingerprints manually.
+Simple plugin rules can now declare stable delta behavior with helpers like `delta.byPath()` / `delta.byLocations()`, and clustered rules can attach lightweight `deltaKeys` instead of building fingerprints manually.
 
 See also:
 

@@ -1,45 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import type { ProviderContext } from "../src/core/types";
 import { createFindingDeltaIdentity, createPathDeltaIdentity } from "../src/delta-identity";
 import { buildFindingDeltaIdentity, delta } from "../src/rule-delta";
-
-const context = {
-  scope: "file",
-  file: {
-    path: "src/example.ts",
-    absolutePath: "/tmp/src/example.ts",
-    extension: ".ts",
-    lineCount: 10,
-    logicalLineCount: 8,
-    languageId: "javascript-like",
-  },
-  runtime: {
-    rootDir: "/tmp",
-    config: { ignores: [], rules: {}, thresholds: {}, overrides: [] },
-    files: [],
-    directories: [],
-    store: {
-      getRepoFact() {
-        return undefined;
-      },
-      getDirectoryFact() {
-        return undefined;
-      },
-      getFileFact() {
-        return undefined;
-      },
-      hasRepoFact() {
-        return false;
-      },
-      hasDirectoryFact() {
-        return false;
-      },
-      hasFileFact() {
-        return false;
-      },
-    },
-  },
-} satisfies ProviderContext;
 
 describe("rule delta strategies", () => {
   test("byPath reuses the stable path fingerprint contract", () => {
@@ -55,12 +16,12 @@ describe("rule delta strategies", () => {
       locations: [{ path: "src/example.ts", line: 7, column: 1 }],
     };
 
-    expect(
-      buildFindingDeltaIdentity("local/contains-word", finding, context, delta.byPath()),
-    ).toEqual(createPathDeltaIdentity("local/contains-word", "src/example.ts", 7));
+    expect(buildFindingDeltaIdentity("local/contains-word", finding, delta.byPath())).toEqual(
+      createPathDeltaIdentity("local/contains-word", "src/example.ts", 7),
+    );
   });
 
-  test("auto mode emits one occurrence per location when a grouped finding spans multiple sites", () => {
+  test("byLocations emits one occurrence per reported location", () => {
     const finding = {
       ruleId: "local/multi-hit",
       family: "local",
@@ -76,7 +37,7 @@ describe("rule delta strategies", () => {
       ],
     };
 
-    expect(buildFindingDeltaIdentity("local/multi-hit", finding, context, delta.auto())).toEqual(
+    expect(buildFindingDeltaIdentity("local/multi-hit", finding, delta.byLocations())).toEqual(
       createFindingDeltaIdentity("local/multi-hit", [
         {
           path: "src/example.ts",
@@ -94,7 +55,7 @@ describe("rule delta strategies", () => {
     );
   });
 
-  test("semantic mode lets rules centralize custom matching logic outside evaluate", () => {
+  test("deltaKeys provide a lightweight semantic escape hatch for clustered rules", () => {
     const finding = {
       ruleId: "local/clustered-duplicates",
       family: "local",
@@ -105,33 +66,21 @@ describe("rule delta strategies", () => {
       evidence: ["normalizeUser repeated elsewhere"],
       score: 2,
       locations: [{ path: "src/example.ts", line: 5, column: 1 }],
+      deltaKeys: [
+        {
+          key: "dup-cluster:src/example.ts",
+          group: "dup-cluster",
+          path: "src/example.ts",
+          line: 5,
+        },
+      ],
     };
 
-    expect(
-      buildFindingDeltaIdentity(
-        "local/clustered-duplicates",
-        finding,
-        context,
-        delta.bySemantic(() => [
-          {
-            groupKey: { clusterFingerprint: "dup-cluster" },
-            occurrenceKey: {
-              clusterFingerprint: "dup-cluster",
-              path: "src/example.ts",
-            },
-            path: "src/example.ts",
-            line: 5,
-          },
-        ]),
-      ),
-    ).toEqual(
+    expect(buildFindingDeltaIdentity("local/clustered-duplicates", finding)).toEqual(
       createFindingDeltaIdentity("local/clustered-duplicates", [
         {
-          groupKey: { clusterFingerprint: "dup-cluster" },
-          occurrenceKey: {
-            clusterFingerprint: "dup-cluster",
-            path: "src/example.ts",
-          },
+          groupKey: "dup-cluster",
+          occurrenceKey: "dup-cluster:src/example.ts",
           path: "src/example.ts",
           line: 5,
         },

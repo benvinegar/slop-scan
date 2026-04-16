@@ -1,8 +1,15 @@
 import type { FindingDeltaIdentity, FindingDeltaOccurrenceIdentity } from "./core/types";
 import { stableHash } from "./stable-hash";
 
-export const FINDING_FINGERPRINT_VERSION = 1;
+export const FINDING_FINGERPRINT_VERSION = 2;
 
+/**
+ * Describes one stable delta occurrence before it is hashed.
+ *
+ * - groupKey: optional shared key for a larger cluster (for example one duplicate family)
+ * - occurrenceKey: the stable "name tag" for this specific member occurrence
+ * - path/line/column: carried through for delta display and path scoping
+ */
 export interface DeltaIdentityDescriptor {
   groupKey?: unknown;
   occurrenceKey?: unknown;

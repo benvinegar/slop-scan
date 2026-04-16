@@ -1,6 +1,3 @@
-import type { Finding } from "../core/types";
-import type { DeltaIdentityDescriptor } from "../delta-identity";
-
 // These segments are intentionally conservative. The goal is to recognize common
 // asset buckets like icon packs without teaching the analyzer that arbitrary
 // directories full of tiny files are always harmless.
@@ -44,74 +41,6 @@ export function average(values: number[]): number {
   }
 
   return values.reduce((sum, value) => sum + value, 0) / values.length;
-}
-
-/**
- * Makes text fingerprints insensitive to indentation and incidental spacing differences.
- */
-export function normalizeWhitespace(value: string): string {
-  const trimmed = value.trim();
-  const collapsed = trimmed.replace(/\s+/g, " ");
-  return collapsed.toLowerCase();
-}
-
-/**
- * Distinguishes repeated identical keys in one file without letting incidental traversal order leak into hashes.
- */
-export function assignStableOrdinals<T>(
-  values: T[],
-  keyOf: (value: T) => string,
-  lineOf: (value: T) => number,
-): Array<{ value: T; ordinal: number }> {
-  const counts = new Map<string, number>();
-
-  return [...values]
-    .sort((left, right) => lineOf(left) - lineOf(right) || keyOf(left).localeCompare(keyOf(right)))
-    .map((value) => {
-      const key = keyOf(value);
-      const ordinal = (counts.get(key) ?? 0) + 1;
-      counts.set(key, ordinal);
-      return { value, ordinal };
-    });
-}
-
-/**
- * Packages the common "same-file occurrence with stable ordinal" pattern used by several rule fingerprints.
- */
-export function buildFileOrdinalDeltaDescriptors<T>(
-  filePath: string,
-  values: T[],
-  keyOf: (value: T) => string,
-  lineOf: (value: T) => number,
-  occurrenceKeyOf: (value: T, ordinal: number) => unknown,
-): DeltaIdentityDescriptor[] {
-  return assignStableOrdinals(values, keyOf, lineOf).map(({ value, ordinal }) => ({
-    path: filePath,
-    line: lineOf(value),
-    occurrenceKey: occurrenceKeyOf(value, ordinal),
-  }));
-}
-
-/**
- * Lets semantic delta builders stay aligned with the finding they are post-processing instead of re-emitting every candidate.
- */
-export function filterValuesByFindingLines<T>(
-  finding: Finding,
-  filePath: string,
-  values: T[],
-  lineOf: (value: T) => number,
-): T[] {
-  const lines = new Set(
-    finding.locations
-      .filter((location) => location.path === filePath)
-      .map((location) => location.line),
-  );
-
-  if (lines.size === 0) {
-    return values;
-  }
-
-  return values.filter((value) => lines.has(lineOf(value)));
 }
 
 /**

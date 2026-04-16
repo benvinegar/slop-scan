@@ -34,6 +34,7 @@ export type {
   AnalysisResult,
   AnalysisSummary,
   AnalyzerRuntime,
+  DeltaKey,
   DirectoryRecord,
   FactProvider,
   FactStoreReader,
@@ -47,11 +48,12 @@ export type {
   ReporterPlugin,
   ReportMetadata,
   ReportPluginMetadata,
+  RuleFinding,
   RulePlugin,
   Scope,
 } from "./core/types";
 export type { DeltaIdentityDescriptor } from "./delta-identity";
-export type { DeltaStrategy, SemanticDeltaBuilder } from "./rule-delta";
+export type { DeltaStrategy } from "./rule-delta";
 export type {
   DeltaChange,
   DeltaEndpoint,

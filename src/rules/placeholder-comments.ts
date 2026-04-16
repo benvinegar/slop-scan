@@ -1,11 +1,6 @@
-import type { Finding, ProviderContext, RulePlugin } from "../core/types";
+import type { RulePlugin } from "../core/types";
 import type { CommentSummary } from "../facts/types";
 import { delta } from "../rule-delta";
-import {
-  buildFileOrdinalDeltaDescriptors,
-  filterValuesByFindingLines,
-  normalizeWhitespace,
-} from "./helpers";
 
 /**
  * Flags filler comments that gesture at future work without explaining current
@@ -28,41 +23,15 @@ function findPlaceholderCommentMatches(comments: CommentSummary[]): CommentSumma
   );
 }
 
-function buildPlaceholderCommentDeltaDescriptors(finding: Finding, context: ProviderContext) {
-  const filePath = context.file?.path ?? finding.path;
-  if (!filePath) {
-    return [];
-  }
-
-  const comments =
-    context.runtime.store.getFileFact<CommentSummary[]>(filePath, "file.comments") ?? [];
-  const matches = filterValuesByFindingLines(
-    finding,
-    filePath,
-    findPlaceholderCommentMatches(comments),
-    (match) => match.line,
-  );
-
-  return buildFileOrdinalDeltaDescriptors(
-    filePath,
-    matches,
-    (match) => normalizeWhitespace(match.text),
-    (match) => match.line,
-    (match, ordinal) => ({
-      path: filePath,
-      normalizedText: normalizeWhitespace(match.text),
-      ordinal,
-    }),
-  );
-}
-
 export const placeholderCommentsRule: RulePlugin = {
   id: "comments.placeholder-comments",
   family: "comments",
   severity: "weak",
   scope: "file",
   requires: ["file.comments"],
-  delta: delta.bySemantic(buildPlaceholderCommentDeltaDescriptors),
+  // Placeholder comments usually remain attached to the same lines, so simple
+  // location matching is easier to understand than re-deriving semantic keys.
+  delta: delta.byLocations(),
   supports(context) {
     return context.scope === "file" && Boolean(context.file);
   },

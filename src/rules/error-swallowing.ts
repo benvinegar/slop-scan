@@ -1,9 +1,7 @@
-import type { Finding, ProviderContext, RulePlugin } from "../core/types";
+import type { RulePlugin } from "../core/types";
 import type { TryCatchSummary } from "../facts/types";
 import { delta } from "../rule-delta";
-import { buildFileOrdinalDeltaDescriptors, filterValuesByFindingLines } from "./helpers";
 import {
-  buildTryCatchIdentityBase,
   formatTryCatchBoundary,
   isValidTryCatchTarget,
   scoreTryCatch,
@@ -13,39 +11,6 @@ function findErrorSwallowingSummaries(summaries: TryCatchSummary[]): TryCatchSum
   return summaries.filter(
     (summary) =>
       isValidTryCatchTarget(summary) && summary.tryStatementCount <= 2 && summary.catchLogsOnly,
-  );
-}
-
-function buildErrorSwallowingDeltaDescriptors(finding: Finding, context: ProviderContext) {
-  const filePath = context.file?.path ?? finding.path;
-  if (!filePath) {
-    return [];
-  }
-
-  const summaries =
-    context.runtime.store.getFileFact<TryCatchSummary[]>(filePath, "file.tryCatchSummaries") ?? [];
-  const flagged = filterValuesByFindingLines(
-    finding,
-    filePath,
-    findErrorSwallowingSummaries(summaries),
-    (summary) => summary.line,
-  );
-
-  return buildFileOrdinalDeltaDescriptors(
-    filePath,
-    flagged,
-    (summary) =>
-      JSON.stringify({
-        ...buildTryCatchIdentityBase(summary),
-        kind: "log-only",
-      }),
-    (summary) => summary.line,
-    (summary, ordinal) => ({
-      path: filePath,
-      kind: "log-only",
-      ...buildTryCatchIdentityBase(summary),
-      ordinal,
-    }),
   );
 }
 
@@ -60,7 +25,9 @@ export const errorSwallowingRule: RulePlugin = {
   severity: "strong",
   scope: "file",
   requires: ["file.tryCatchSummaries"],
-  delta: delta.bySemantic(buildErrorSwallowingDeltaDescriptors),
+  // These catches are stable enough in practice that path+line matching keeps
+  // delta code far simpler than rebuilding custom semantic descriptors.
+  delta: delta.byLocations(),
   supports(context) {
     return context.scope === "file" && Boolean(context.file);
   },

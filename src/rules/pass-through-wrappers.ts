@@ -1,11 +1,7 @@
-import type { Finding, ProviderContext, RulePlugin } from "../core/types";
+import type { RulePlugin } from "../core/types";
 import type { CommentSummary, FunctionSummary } from "../facts/types";
 import { delta } from "../rule-delta";
-import {
-  BOUNDARY_WRAPPER_TARGET_PREFIXES,
-  buildFileOrdinalDeltaDescriptors,
-  filterValuesByFindingLines,
-} from "./helpers";
+import { BOUNDARY_WRAPPER_TARGET_PREFIXES } from "./helpers";
 
 // Nearby wording like "alias" or "backward compatibility" usually means the
 // wrapper exists to preserve an API name rather than because the author lazily
@@ -47,45 +43,6 @@ function findPassThroughWrappers(
   );
 }
 
-function buildPassThroughWrapperDeltaDescriptors(finding: Finding, context: ProviderContext) {
-  const filePath = context.file?.path ?? finding.path;
-  if (!filePath) {
-    return [];
-  }
-
-  const functions =
-    context.runtime.store.getFileFact<FunctionSummary[]>(filePath, "file.functionSummaries") ?? [];
-  const comments =
-    context.runtime.store.getFileFact<CommentSummary[]>(filePath, "file.comments") ?? [];
-  const wrappers = filterValuesByFindingLines(
-    finding,
-    filePath,
-    findPassThroughWrappers(functions, comments),
-    (summary) => summary.line,
-  );
-
-  return buildFileOrdinalDeltaDescriptors(
-    filePath,
-    wrappers,
-    (summary) =>
-      JSON.stringify({
-        name: summary.name,
-        parameterCount: summary.parameterCount,
-        passThroughTarget: summary.passThroughTarget,
-        statementCount: summary.statementCount,
-      }),
-    (summary) => summary.line,
-    (summary, ordinal) => ({
-      path: filePath,
-      name: summary.name,
-      parameterCount: summary.parameterCount,
-      passThroughTarget: summary.passThroughTarget,
-      statementCount: summary.statementCount,
-      ordinal,
-    }),
-  );
-}
-
 /**
  * Flags trivial pass-through wrappers that mostly just rename or forward a call.
  *
@@ -100,7 +57,9 @@ export const passThroughWrappersRule: RulePlugin = {
   severity: "strong",
   scope: "file",
   requires: ["file.functionSummaries", "file.comments"],
-  delta: delta.bySemantic(buildPassThroughWrapperDeltaDescriptors),
+  // These wrappers rarely hop around enough to justify custom semantic keys;
+  // one occurrence per reported line keeps delta behavior easy to follow.
+  delta: delta.byLocations(),
   supports(context) {
     return context.scope === "file" && Boolean(context.file);
   },

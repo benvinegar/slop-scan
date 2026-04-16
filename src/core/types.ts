@@ -49,6 +49,22 @@ export interface Finding {
   deltaIdentity?: FindingDeltaIdentity;
 }
 
+export interface DeltaKey {
+  /** Stable semantic key for one occurrence, supplied directly by the rule when path/line matching is not enough. */
+  key: string;
+  /** Optional stable cluster key shared by related occurrences. */
+  group?: string;
+  /** Optional display location carried through into delta output. */
+  path?: string;
+  line?: number;
+  column?: number;
+}
+
+export interface RuleFinding extends Finding {
+  /** Lightweight semantic escape hatch for clustered rules; stripped before findings are stored in reports. */
+  deltaKeys?: DeltaKey[];
+}
+
 export interface FileScore {
   path: string;
   score: number;
@@ -135,9 +151,9 @@ export interface FactProvider extends ProviderBase {
 export interface RulePlugin extends ProviderBase {
   family: string;
   severity: "strong" | "medium" | "weak";
-  /** Optional matching policy used when the rule does not set deltaIdentity explicitly. */
+  /** Optional matching policy used when the rule does not set deltaIdentity or semantic deltaKeys explicitly. */
   delta?: DeltaStrategy;
-  evaluate(context: ProviderContext): Promise<Finding[]> | Finding[];
+  evaluate(context: ProviderContext): Promise<RuleFinding[]> | RuleFinding[];
 }
 
 export interface ReporterPlugin {

@@ -1,46 +1,19 @@
-import type { Finding, FindingDeltaIdentity, FindingLocation, ProviderContext } from "./core/types";
-import {
-  createFindingDeltaIdentity,
-  createPathDeltaIdentity,
-  type DeltaIdentityDescriptor,
-} from "./delta-identity";
+import type { FindingDeltaIdentity, FindingLocation, RuleFinding } from "./core/types";
+import { createFindingDeltaIdentity, createPathDeltaIdentity } from "./delta-identity";
 
-export interface SemanticDeltaBuilder {
-  (finding: Finding, context: ProviderContext): DeltaIdentityDescriptor[];
-}
-
-export type DeltaStrategy =
-  | { mode: "auto" }
-  | { mode: "path" }
-  | { mode: "primary-location" }
-  | { mode: "all-locations" }
-  | {
-      mode: "semantic";
-      build: SemanticDeltaBuilder;
-    };
+export type DeltaStrategy = { mode: "path" } | { mode: "locations" };
 
 /**
- * Exposes the common matching modes so rule authors can declare intent without hand-rolling fingerprints.
+ * Keeps the public delta API intentionally small: either match one problem per path,
+ * or match one problem per reported location.
  */
 export const delta = {
-  auto(): DeltaStrategy {
-    return { mode: "auto" };
-  },
-
   byPath(): DeltaStrategy {
     return { mode: "path" };
   },
 
-  byPrimaryLocation(): DeltaStrategy {
-    return { mode: "primary-location" };
-  },
-
   byLocations(): DeltaStrategy {
-    return { mode: "all-locations" };
-  },
-
-  bySemantic(build: SemanticDeltaBuilder): DeltaStrategy {
-    return { mode: "semantic", build };
+    return { mode: "locations" };
   },
 };
 
@@ -53,9 +26,9 @@ function compareLocations(left: FindingLocation, right: FindingLocation): number
 }
 
 /**
- * Mirrors delta diffing's location cleanup so strategy-derived identities stay deterministic.
+ * Normalizes and deduplicates reported locations so path/line-based fingerprints do not depend on traversal order.
  */
-function uniqueSortedLocations(finding: Finding): FindingLocation[] {
+function uniqueSortedLocations(finding: RuleFinding): FindingLocation[] {
   const fallbackLocations = finding.path
     ? [
         {
@@ -80,9 +53,9 @@ function uniqueSortedLocations(finding: Finding): FindingLocation[] {
 }
 
 /**
- * Provides a last-resort identity for repo-scoped or locationless findings so auto mode still emits explicit fingerprints.
+ * Gives pathless findings a weak but explicit identity so delta JSON can still stay on the fingerprinted code path.
  */
-function createFallbackDeltaIdentity(ruleId: string, finding: Finding): FindingDeltaIdentity {
+function createFallbackDeltaIdentity(ruleId: string, finding: RuleFinding): FindingDeltaIdentity {
   return createFindingDeltaIdentity(ruleId, [
     {
       occurrenceKey: {
@@ -95,9 +68,9 @@ function createFallbackDeltaIdentity(ruleId: string, finding: Finding): FindingD
 }
 
 /**
- * Uses the finding's declared path as the semantic key, while keeping the best available display line.
+ * Uses the finding path as the stable identity and keeps the best available line only for display.
  */
-function buildPathDeltaIdentity(ruleId: string, finding: Finding): FindingDeltaIdentity {
+function buildPathDeltaIdentity(ruleId: string, finding: RuleFinding): FindingDeltaIdentity {
   const primaryLocation = uniqueSortedLocations(finding)[0];
   const path = finding.path ?? primaryLocation?.path;
 
@@ -109,37 +82,13 @@ function buildPathDeltaIdentity(ruleId: string, finding: Finding): FindingDeltaI
 }
 
 /**
- * Matches a single concrete location when the rule naturally reports one occurrence per finding.
+ * Treats every reported location as a separate occurrence. This is the cheap, easy-to-reason-about option for most file rules.
  */
-function buildPrimaryLocationDeltaIdentity(ruleId: string, finding: Finding): FindingDeltaIdentity {
-  const primaryLocation = uniqueSortedLocations(finding)[0];
-
-  if (!primaryLocation) {
-    return buildPathDeltaIdentity(ruleId, finding);
-  }
-
-  return createFindingDeltaIdentity(ruleId, [
-    {
-      path: primaryLocation.path,
-      line: primaryLocation.line,
-      column: primaryLocation.column,
-      occurrenceKey: {
-        path: primaryLocation.path,
-        line: primaryLocation.line,
-        column: primaryLocation.column ?? 1,
-      },
-    },
-  ]);
-}
-
-/**
- * Treats every reported location as its own occurrence so grouped findings can diff without custom rule code.
- */
-function buildAllLocationsDeltaIdentity(ruleId: string, finding: Finding): FindingDeltaIdentity {
+function buildLocationsDeltaIdentity(ruleId: string, finding: RuleFinding): FindingDeltaIdentity {
   const locations = uniqueSortedLocations(finding);
 
   if (locations.length === 0) {
-    return buildPrimaryLocationDeltaIdentity(ruleId, finding);
+    return buildPathDeltaIdentity(ruleId, finding);
   }
 
   return createFindingDeltaIdentity(
@@ -158,34 +107,59 @@ function buildAllLocationsDeltaIdentity(ruleId: string, finding: Finding): Findi
 }
 
 /**
- * Centralizes strategy execution so rules can opt into better matching without owning hash construction.
+ * Semantic delta keys are the minimal custom escape hatch: rules attach the stable string key while they already have the match in hand,
+ * and the engine turns those keys into the standard hashed delta identity payload.
+ */
+function buildSemanticKeysDeltaIdentity(
+  ruleId: string,
+  finding: RuleFinding,
+): FindingDeltaIdentity | null {
+  if (!finding.deltaKeys || finding.deltaKeys.length === 0) {
+    return null;
+  }
+
+  return createFindingDeltaIdentity(
+    ruleId,
+    finding.deltaKeys.map((deltaKey) => ({
+      groupKey: deltaKey.group,
+      occurrenceKey: deltaKey.key,
+      path: deltaKey.path ?? finding.path,
+      line: deltaKey.line,
+      column: deltaKey.column,
+    })),
+  );
+}
+
+/**
+ * Defaults to location-based matching when the rule already reported concrete locations, otherwise falls back to one occurrence per path.
+ */
+function defaultDeltaStrategy(finding: RuleFinding): DeltaStrategy {
+  return uniqueSortedLocations(finding).length > 0 ? delta.byLocations() : delta.byPath();
+}
+
+/**
+ * Builds the explicit delta payload attached to emitted findings.
+ *
+ * Order of precedence:
+ * 1. a rule can still set deltaIdentity directly
+ * 2. a rule can attach semantic deltaKeys for hard clustered cases
+ * 3. otherwise we use a simple declared strategy (or a cheap default)
  */
 export function buildFindingDeltaIdentity(
   ruleId: string,
-  finding: Finding,
-  context: ProviderContext,
-  strategy: DeltaStrategy,
+  finding: RuleFinding,
+  strategy?: DeltaStrategy,
 ): FindingDeltaIdentity {
-  switch (strategy.mode) {
+  const semanticIdentity = buildSemanticKeysDeltaIdentity(ruleId, finding);
+  if (semanticIdentity) {
+    return semanticIdentity;
+  }
+
+  const effectiveStrategy = strategy ?? defaultDeltaStrategy(finding);
+  switch (effectiveStrategy.mode) {
     case "path":
       return buildPathDeltaIdentity(ruleId, finding);
-    case "primary-location":
-      return buildPrimaryLocationDeltaIdentity(ruleId, finding);
-    case "all-locations":
-      return buildAllLocationsDeltaIdentity(ruleId, finding);
-    case "semantic":
-      return createFindingDeltaIdentity(ruleId, strategy.build(finding, context));
-    case "auto": {
-      const locations = uniqueSortedLocations(finding);
-      if (locations.length > 1) {
-        return buildAllLocationsDeltaIdentity(ruleId, finding);
-      }
-
-      if (finding.path || locations.length === 1) {
-        return buildPathDeltaIdentity(ruleId, finding);
-      }
-
-      return createFallbackDeltaIdentity(ruleId, finding);
-    }
+    case "locations":
+      return buildLocationsDeltaIdentity(ruleId, finding);
   }
 }

@@ -127,8 +127,33 @@ export default definePlugin({
 });
 ```
 
-Use `delta.bySemantic(...)` only for rules whose occurrences need a custom
-semantic key, such as duplication clusters that span multiple files.
+For the rare clustered rule where path/line matching is not enough, return
+`deltaKeys` from `evaluate()` with a stable `key` string per occurrence and an
+optional shared `group` string for the cluster.
+
+```ts
+return [
+  {
+    ruleId: "acme/duplicate-helper",
+    family: "acme",
+    severity: "medium",
+    scope: "file",
+    path: context.file.path,
+    message: "Found 1 duplicate helper cluster",
+    evidence: ["normalizeUser also appears in other files"],
+    score: 2,
+    locations: [{ path: context.file.path, line: 12 }],
+    deltaKeys: [
+      {
+        key: `${cluster.fingerprint}:${context.file.path}`,
+        group: cluster.fingerprint,
+        path: context.file.path,
+        line: 12,
+      },
+    ],
+  },
+];
+```
 
 ## Naming rules
 

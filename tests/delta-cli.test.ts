@@ -64,11 +64,11 @@ describe("delta CLI", () => {
       const headJson = jsonReporter.render(headResult);
       expect(JSON.parse(baseJson).metadata).toMatchObject({
         schemaVersion: 2,
-        findingFingerprintVersion: 1,
+        findingFingerprintVersion: 2,
       });
       expect(JSON.parse(headJson).metadata).toMatchObject({
         schemaVersion: 2,
-        findingFingerprintVersion: 1,
+        findingFingerprintVersion: 2,
       });
       await Promise.all([
         writeFile(basePath, baseJson, "utf8"),

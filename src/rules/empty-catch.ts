@@ -1,9 +1,7 @@
-import type { Finding, ProviderContext, RulePlugin } from "../core/types";
+import type { RulePlugin } from "../core/types";
 import type { TryCatchSummary } from "../facts/types";
 import { delta } from "../rule-delta";
-import { buildFileOrdinalDeltaDescriptors, filterValuesByFindingLines } from "./helpers";
 import {
-  buildTryCatchIdentityBase,
   formatTryCatchBoundary,
   isValidTryCatchTarget,
   scoreTryCatch,
@@ -19,39 +17,6 @@ function findEmptyCatchSummaries(summaries: TryCatchSummary[]): TryCatchSummary[
   );
 }
 
-function buildEmptyCatchDeltaDescriptors(finding: Finding, context: ProviderContext) {
-  const filePath = context.file?.path ?? finding.path;
-  if (!filePath) {
-    return [];
-  }
-
-  const summaries =
-    context.runtime.store.getFileFact<TryCatchSummary[]>(filePath, "file.tryCatchSummaries") ?? [];
-  const flagged = filterValuesByFindingLines(
-    finding,
-    filePath,
-    findEmptyCatchSummaries(summaries),
-    (summary) => summary.line,
-  );
-
-  return buildFileOrdinalDeltaDescriptors(
-    filePath,
-    flagged,
-    (summary) =>
-      JSON.stringify({
-        ...buildTryCatchIdentityBase(summary),
-        kind: "empty-catch",
-      }),
-    (summary) => summary.line,
-    (summary, ordinal) => ({
-      path: filePath,
-      kind: "empty-catch",
-      ...buildTryCatchIdentityBase(summary),
-      ordinal,
-    }),
-  );
-}
-
 /**
  * Flags empty catch clauses, which suppress failures without even leaving a log
  * trail. A narrow exception is allowed for documented local fallback code,
@@ -64,7 +29,9 @@ export const emptyCatchRule: RulePlugin = {
   severity: "strong",
   scope: "file",
   requires: ["file.tryCatchSummaries"],
-  delta: delta.bySemantic(buildEmptyCatchDeltaDescriptors),
+  // Try/catch blocks do not usually move much in normal edits, so line-based
+  // matching is a cheaper tradeoff than rebuilding semantic identities.
+  delta: delta.byLocations(),
   supports(context) {
     return context.scope === "file" && Boolean(context.file);
   },

@@ -1,11 +1,7 @@
-import type { Finding, ProviderContext, RulePlugin } from "../core/types";
+import type { RulePlugin } from "../core/types";
 import type { FunctionSummary } from "../facts/types";
 import { delta } from "../rule-delta";
-import {
-  BOUNDARY_WRAPPER_TARGET_PREFIXES,
-  buildFileOrdinalDeltaDescriptors,
-  filterValuesByFindingLines,
-} from "./helpers";
+import { BOUNDARY_WRAPPER_TARGET_PREFIXES } from "./helpers";
 
 type AsyncNoiseMatch = {
   summary: FunctionSummary;
@@ -35,45 +31,6 @@ function findAsyncNoiseMatches(functions: FunctionSummary[]): AsyncNoiseMatch[] 
   ];
 }
 
-function buildAsyncNoiseDeltaDescriptors(finding: Finding, context: ProviderContext) {
-  const filePath = context.file?.path ?? finding.path;
-  if (!filePath) {
-    return [];
-  }
-
-  const functions =
-    context.runtime.store.getFileFact<FunctionSummary[]>(filePath, "file.functionSummaries") ?? [];
-  const noisy = filterValuesByFindingLines(
-    finding,
-    filePath,
-    findAsyncNoiseMatches(functions),
-    ({ summary }) => summary.line,
-  );
-
-  return buildFileOrdinalDeltaDescriptors(
-    filePath,
-    noisy,
-    ({ summary, kind }) =>
-      JSON.stringify({
-        kind,
-        name: summary.name,
-        parameterCount: summary.parameterCount,
-        passThroughTarget: summary.passThroughTarget,
-        statementCount: summary.statementCount,
-      }),
-    ({ summary }) => summary.line,
-    ({ summary, kind }, ordinal) => ({
-      path: filePath,
-      kind,
-      name: summary.name,
-      parameterCount: summary.parameterCount,
-      passThroughTarget: summary.passThroughTarget,
-      statementCount: summary.statementCount,
-      ordinal,
-    }),
-  );
-}
-
 /**
  * Flags async-related ceremony that adds little value:
  * - `return await` around a direct call
@@ -88,7 +45,9 @@ export const asyncNoiseRule: RulePlugin = {
   severity: "medium",
   scope: "file",
   requires: ["file.functionSummaries"],
-  delta: delta.bySemantic(buildAsyncNoiseDeltaDescriptors),
+  // Async-noise sites usually stay on the same lines, so simple path+line
+  // matching is easier to maintain than a heavier semantic fingerprint.
+  delta: delta.byLocations(),
   supports(context) {
     return context.scope === "file" && Boolean(context.file);
   },

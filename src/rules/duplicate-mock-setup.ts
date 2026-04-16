@@ -1,7 +1,6 @@
-import type { Finding, ProviderContext, RulePlugin } from "../core/types";
+import type { RulePlugin } from "../core/types";
 import type { DuplicateTestSetupIndex } from "../facts/types";
 import { isTestFile } from "../facts/ts-helpers";
-import { delta } from "../rule-delta";
 
 function findUniqueDuplicateMockSetupClusters(
   duplication: DuplicateTestSetupIndex | undefined,
@@ -15,33 +14,28 @@ function findUniqueDuplicateMockSetupClusters(
   );
 }
 
-function buildDuplicateMockSetupDeltaDescriptors(finding: Finding, context: ProviderContext) {
-  const filePath = context.file?.path ?? finding.path;
-  if (!filePath) {
-    return [];
-  }
-
-  const duplication = context.runtime.store.getRepoFact<DuplicateTestSetupIndex>(
-    "repo.testMockDuplication",
-  );
+/**
+ * Uses the repo-level duplicate-cluster fingerprint as the stable group key,
+ * then combines it with the local file path for this file's occurrence key.
+ */
+function buildDuplicateMockSetupDeltaKeys(
+  duplication: DuplicateTestSetupIndex | undefined,
+  filePath: string,
+) {
   const uniqueClusters = findUniqueDuplicateMockSetupClusters(duplication, filePath);
 
   return uniqueClusters.flatMap((cluster) => {
-    const localOccurrences = cluster.occurrences
+    const primaryOccurrence = cluster.occurrences
       .filter((occurrence) => occurrence.path === filePath)
-      .sort((left, right) => left.line - right.line);
-    const primaryOccurrence = localOccurrences[0];
+      .sort((left, right) => left.line - right.line)[0];
 
     if (!primaryOccurrence) {
       return [];
     }
 
     return {
-      groupKey: { clusterFingerprint: cluster.fingerprint },
-      occurrenceKey: {
-        clusterFingerprint: cluster.fingerprint,
-        path: filePath,
-      },
+      key: `${cluster.fingerprint}:${filePath}`,
+      group: cluster.fingerprint,
       path: filePath,
       line: primaryOccurrence.line,
     };
@@ -61,7 +55,6 @@ export const duplicateMockSetupRule: RulePlugin = {
   severity: "medium",
   scope: "file",
   requires: ["repo.testMockDuplication"],
-  delta: delta.bySemantic(buildDuplicateMockSetupDeltaDescriptors),
   supports(context) {
     return context.scope === "file" && Boolean(context.file) && isTestFile(context.file!.path);
   },
@@ -102,6 +95,7 @@ export const duplicateMockSetupRule: RulePlugin = {
             line: occurrence.line,
           })),
         ),
+        deltaKeys: buildDuplicateMockSetupDeltaKeys(duplication, context.file!.path),
       },
     ];
   },

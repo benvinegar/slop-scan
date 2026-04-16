@@ -1,7 +1,6 @@
-import type { Finding, ProviderContext, RulePlugin } from "../core/types";
+import type { RulePlugin } from "../core/types";
 import type { DuplicateFunctionIndex } from "../facts/types";
 import { isTestFile } from "../facts/ts-helpers";
-import { delta } from "../rule-delta";
 
 function findUniqueDuplicateFunctionClusters(
   duplication: DuplicateFunctionIndex | undefined,
@@ -15,36 +14,28 @@ function findUniqueDuplicateFunctionClusters(
   );
 }
 
-function buildDuplicateFunctionSignatureDeltaDescriptors(
-  finding: Finding,
-  context: ProviderContext,
+/**
+ * Uses the repo-level cluster fingerprint as the group key, then adds the local
+ * file path to distinguish this file's member occurrence inside that cluster.
+ */
+function buildDuplicateFunctionSignatureDeltaKeys(
+  duplication: DuplicateFunctionIndex | undefined,
+  filePath: string,
 ) {
-  const filePath = context.file?.path ?? finding.path;
-  if (!filePath) {
-    return [];
-  }
-
-  const duplication = context.runtime.store.getRepoFact<DuplicateFunctionIndex>(
-    "repo.duplicateFunctionSignatures",
-  );
   const uniqueClusters = findUniqueDuplicateFunctionClusters(duplication, filePath);
 
   return uniqueClusters.flatMap((cluster) => {
-    const localOccurrences = cluster.occurrences
+    const primaryOccurrence = cluster.occurrences
       .filter((occurrence) => occurrence.path === filePath)
-      .sort((left, right) => left.line - right.line || left.name.localeCompare(right.name));
-    const primaryOccurrence = localOccurrences[0];
+      .sort((left, right) => left.line - right.line || left.name.localeCompare(right.name))[0];
 
     if (!primaryOccurrence) {
       return [];
     }
 
     return {
-      groupKey: { clusterFingerprint: cluster.fingerprint },
-      occurrenceKey: {
-        clusterFingerprint: cluster.fingerprint,
-        path: filePath,
-      },
+      key: `${cluster.fingerprint}:${filePath}`,
+      group: cluster.fingerprint,
       path: filePath,
       line: primaryOccurrence.line,
     };
@@ -64,7 +55,6 @@ export const duplicateFunctionSignaturesRule: RulePlugin = {
   severity: "medium",
   scope: "file",
   requires: ["repo.duplicateFunctionSignatures"],
-  delta: delta.bySemantic(buildDuplicateFunctionSignatureDeltaDescriptors),
   supports(context) {
     return context.scope === "file" && Boolean(context.file) && !isTestFile(context.file!.path);
   },
@@ -110,6 +100,7 @@ export const duplicateFunctionSignaturesRule: RulePlugin = {
             line: occurrence.line,
           })),
         ),
+        deltaKeys: buildDuplicateFunctionSignatureDeltaKeys(duplication, context.file!.path),
       },
     ];
   },
