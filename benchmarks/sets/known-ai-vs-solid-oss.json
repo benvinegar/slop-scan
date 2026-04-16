@@ -109,15 +109,15 @@
       "notes": "Local GitHub Actions orchestration layer for agent workflows; useful benchmark for command-heavy CI tooling with strong AI involvement."
     },
     {
-      "id": "ni",
-      "repo": "antfu-collective/ni",
-      "url": "https://github.com/antfu-collective/ni.git",
+      "id": "zustand",
+      "repo": "pmndrs/zustand",
+      "url": "https://github.com/pmndrs/zustand.git",
       "cohort": "mature-oss",
-      "ref": "6d9690555dcc75c2ef5badd2e61e7cfe5d605ffd",
-      "createdAt": "2020-11-05T07:56:23Z",
-      "stars": 8146,
-      "provenance": "Mature TypeScript package-manager CLI by Anthony Fu.",
-      "notes": "Original manual baseline for universal-pm."
+      "ref": "2e6d8813095c6a79ca208bae4c2cf5edc12049a1",
+      "createdAt": "2019-04-09T09:10:06Z",
+      "stars": 57758,
+      "provenance": "Mature React state management library by pmndrs.",
+      "notes": "Pinned to the latest default-branch commit on or before 2025-01-01 to test a later mature-OSS baseline without using a package-manager CLI."
     },
     {
       "id": "node-notifier",

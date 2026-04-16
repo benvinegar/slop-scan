@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "benchmarkSetId": "known-ai-vs-solid-oss",
   "benchmarkSetName": "Known AI repos vs older solid OSS repos",
-  "generatedAt": "2026-04-09T00:24:29.081Z",
-  "analyzerVersion": "0.2.0",
+  "generatedAt": "2026-04-16T19:59:11.953Z",
+  "analyzerVersion": "0.3.0",
   "configMode": "default",
   "repos": [
     {
@@ -14,23 +14,23 @@
       "summary": {
         "fileCount": 139,
         "directoryCount": 29,
-        "findingCount": 47,
-        "repoScore": 184.8111111111111,
+        "findingCount": 46,
+        "repoScore": 176.3111111111111,
         "physicalLineCount": 33794,
         "logicalLineCount": 22270,
         "functionCount": 491,
         "normalized": {
-          "scorePerFile": 1.3295763389288568,
-          "scorePerKloc": 8.298657885546076,
-          "scorePerFunction": 0.37639737497171305,
-          "findingsPerFile": 0.3381294964028777,
-          "findingsPerKloc": 2.110462505612932,
-          "findingsPerFunction": 0.09572301425661914
+          "scorePerFile": 1.2684252597921661,
+          "scorePerKloc": 7.9169784962330985,
+          "scorePerFunction": 0.3590857660104096,
+          "findingsPerFile": 0.33093525179856115,
+          "findingsPerKloc": 2.0655590480466994,
+          "findingsPerFunction": 0.09368635437881874
         }
       },
-      "blendedScore": 3.476442610225084,
+      "blendedScore": 3.2962912972341845,
       "ruleCounts": {
-        "tests.duplicate-mock-setup": 26,
+        "tests.duplicate-mock-setup": 25,
         "structure.duplicate-function-signatures": 5,
         "structure.pass-through-wrappers": 5,
         "defensive.empty-catch": 4,
@@ -100,7 +100,7 @@
           "findingsPerFunction": 0.09523809523809523
         }
       },
-      "blendedScore": 3.7700791509994427,
+      "blendedScore": 3.699433275157329,
       "ruleCounts": {
         "defensive.error-swallowing": 10,
         "defensive.empty-catch": 1,
@@ -165,7 +165,7 @@
           "findingsPerFunction": 0.0627177700348432
         }
       },
-      "blendedScore": 2.4020591614138374,
+      "blendedScore": 2.357048018017109,
       "ruleCounts": {
         "defensive.error-swallowing": 11,
         "defensive.error-obscuring": 5,
@@ -229,23 +229,23 @@
       "summary": {
         "fileCount": 10465,
         "directoryCount": 423,
-        "findingCount": 3398,
-        "repoScore": 11272.93866868018,
+        "findingCount": 3322,
+        "repoScore": 10933.93866868018,
         "physicalLineCount": 1939647,
         "logicalLineCount": 1031409,
         "functionCount": 40348,
         "normalized": {
-          "scorePerFile": 1.0772038861615079,
-          "scorePerKloc": 10.929649313395734,
-          "scorePerFunction": 0.27939274979379847,
-          "findingsPerFile": 0.3247013855709508,
-          "findingsPerKloc": 3.2945223475847114,
-          "findingsPerFunction": 0.0842173094081491
+          "scorePerFile": 1.0448101928982494,
+          "scorePerKloc": 10.600972716623744,
+          "scorePerFunction": 0.2709908463537271,
+          "findingsPerFile": 0.31743908265647397,
+          "findingsPerKloc": 3.2208367388688672,
+          "findingsPerFunction": 0.08233369683751363
         }
       },
-      "blendedScore": 3.5018198889368195,
+      "blendedScore": 3.3460806688158877,
       "ruleCounts": {
-        "tests.duplicate-mock-setup": 1003,
+        "tests.duplicate-mock-setup": 927,
         "structure.pass-through-wrappers": 618,
         "structure.barrel-density": 412,
         "defensive.error-obscuring": 370,
@@ -319,28 +319,28 @@
       "summary": {
         "fileCount": 1072,
         "directoryCount": 306,
-        "findingCount": 243,
-        "repoScore": 803.2525793650789,
+        "findingCount": 239,
+        "repoScore": 787.2525793650789,
         "physicalLineCount": 257938,
         "logicalLineCount": 120432,
         "functionCount": 3513,
         "normalized": {
-          "scorePerFile": 0.7493027792584691,
-          "scorePerKloc": 6.669760357422271,
-          "scorePerFunction": 0.2286514601096154,
-          "findingsPerFile": 0.22667910447761194,
-          "findingsPerKloc": 2.017736149860502,
-          "findingsPerFunction": 0.06917164816396243
+          "scorePerFile": 0.7343774061241407,
+          "scorePerKloc": 6.536905302287423,
+          "scorePerFunction": 0.22409694829635038,
+          "findingsPerFile": 0.22294776119402984,
+          "findingsPerKloc": 1.9845223860767902,
+          "findingsPerFunction": 0.06803302021064617
         }
       },
-      "blendedScore": 2.466144516579107,
+      "blendedScore": 2.3759103455366057,
       "ruleCounts": {
         "structure.duplicate-function-signatures": 55,
         "defensive.empty-catch": 40,
         "structure.barrel-density": 34,
         "defensive.error-obscuring": 27,
         "structure.pass-through-wrappers": 27,
-        "tests.duplicate-mock-setup": 25,
+        "tests.duplicate-mock-setup": 21,
         "structure.directory-fanout-hotspot": 17,
         "defensive.error-swallowing": 13,
         "defensive.async-noise": 5
@@ -422,7 +422,7 @@
           "findingsPerFunction": 0.11057692307692307
         }
       },
-      "blendedScore": 5.938129873491111,
+      "blendedScore": 5.826857836757937,
       "ruleCounts": {
         "defensive.empty-catch": 55,
         "defensive.error-obscuring": 19,
@@ -488,7 +488,7 @@
           "findingsPerFunction": 0.027925531914893616
         }
       },
-      "blendedScore": 1.317830861442671,
+      "blendedScore": 1.293136601272111,
       "ruleCounts": {
         "defensive.error-obscuring": 6,
         "structure.pass-through-wrappers": 6,
@@ -564,7 +564,7 @@
           "findingsPerFunction": 0.05622214604045252
         }
       },
-      "blendedScore": 2.2121663068836055,
+      "blendedScore": 2.170713483216289,
       "ruleCounts": {
         "structure.duplicate-function-signatures": 50,
         "structure.pass-through-wrappers": 29,
@@ -654,7 +654,7 @@
           "findingsPerFunction": 0.1318181818181818
         }
       },
-      "blendedScore": 3.97630246756507,
+      "blendedScore": 3.9017922625578834,
       "ruleCounts": {
         "defensive.empty-catch": 18,
         "defensive.error-obscuring": 3,
@@ -699,43 +699,72 @@
       ]
     },
     {
-      "id": "ni",
-      "repo": "antfu-collective/ni",
+      "id": "zustand",
+      "repo": "pmndrs/zustand",
       "cohort": "mature-oss",
-      "ref": "6d9690555dcc75c2ef5badd2e61e7cfe5d605ffd",
+      "ref": "2e6d8813095c6a79ca208bae4c2cf5edc12049a1",
       "summary": {
-        "fileCount": 87,
-        "directoryCount": 16,
-        "findingCount": 2,
-        "repoScore": 10,
-        "physicalLineCount": 3569,
-        "logicalLineCount": 2138,
-        "functionCount": 99,
+        "fileCount": 48,
+        "directoryCount": 15,
+        "findingCount": 9,
+        "repoScore": 22.7,
+        "physicalLineCount": 8814,
+        "logicalLineCount": 7096,
+        "functionCount": 161,
         "normalized": {
-          "scorePerFile": 0.11494252873563218,
-          "scorePerKloc": 4.677268475210477,
-          "scorePerFunction": 0.10101010101010101,
-          "findingsPerFile": 0.022988505747126436,
-          "findingsPerKloc": 0.9354536950420954,
-          "findingsPerFunction": 0.020202020202020204
+          "scorePerFile": 0.47291666666666665,
+          "scorePerKloc": 3.198985343855693,
+          "scorePerFunction": 0.14099378881987576,
+          "findingsPerFile": 0.1875,
+          "findingsPerKloc": 1.2683201803833146,
+          "findingsPerFunction": 0.055900621118012424
         }
       },
-      "blendedScore": 0.7263097619002122,
+      "blendedScore": 1.583262552356157,
       "ruleCounts": {
-        "structure.barrel-density": 1,
-        "structure.over-fragmentation": 1
+        "structure.barrel-density": 3,
+        "structure.directory-fanout-hotspot": 2,
+        "defensive.empty-catch": 1,
+        "defensive.error-obscuring": 1,
+        "defensive.error-swallowing": 1,
+        "structure.pass-through-wrappers": 1
       },
       "topFiles": [
         {
-          "path": "src/index.ts",
+          "path": "src/middleware/devtools.ts",
+          "score": 4.7,
+          "findingCount": 2
+        },
+        {
+          "path": "src/middleware.ts",
           "score": 3,
+          "findingCount": 1
+        },
+        {
+          "path": "src/middleware/persist.ts",
+          "score": 3,
+          "findingCount": 1
+        },
+        {
+          "path": "examples/demo/src/utils/copy-to-clipboard.js",
+          "score": 2,
+          "findingCount": 1
+        },
+        {
+          "path": "src/index.ts",
+          "score": 2,
           "findingCount": 1
         }
       ],
       "topDirectories": [
         {
-          "path": "bin",
-          "score": 7,
+          "path": "examples/demo/src/components",
+          "score": 3,
+          "findingCount": 1
+        },
+        {
+          "path": "src/middleware",
+          "score": 3,
           "findingCount": 1
         }
       ]
@@ -762,7 +791,7 @@
           "findingsPerFunction": 0.023809523809523808
         }
       },
-      "blendedScore": 0.45939108356274544,
+      "blendedScore": 0.45078275356422437,
       "ruleCounts": {
         "defensive.empty-catch": 1
       },
@@ -797,7 +826,7 @@
           "findingsPerFunction": 0.02857142857142857
         }
       },
-      "blendedScore": 1.025474222156771,
+      "blendedScore": 1.0062583060775108,
       "ruleCounts": {
         "structure.pass-through-wrappers": 2,
         "defensive.error-obscuring": 1,
@@ -845,7 +874,7 @@
           "findingsPerFunction": 0.027777777777777776
         }
       },
-      "blendedScore": 0.9872814122923419,
+      "blendedScore": 0.9687811746897597,
       "ruleCounts": {
         "defensive.empty-catch": 11,
         "structure.directory-fanout-hotspot": 7,
@@ -931,7 +960,7 @@
           "findingsPerFunction": 0.0033619723571161747
         }
       },
-      "blendedScore": 0.45729755371185776,
+      "blendedScore": 0.4487284534599796,
       "ruleCounts": {
         "defensive.error-swallowing": 8,
         "structure.pass-through-wrappers": 5,
@@ -990,7 +1019,7 @@
           "findingsPerFunction": 0.033085194375516956
         }
       },
-      "blendedScore": 1.0127185877076579,
+      "blendedScore": 0.9937416939224892,
       "ruleCounts": {
         "structure.duplicate-function-signatures": 14,
         "defensive.error-obscuring": 7,
@@ -1065,20 +1094,20 @@
         "fileCount": 1432,
         "directoryCount": 618,
         "findingCount": 114,
-        "repoScore": 370.44093704675544,
+        "repoScore": 377.94093704675544,
         "physicalLineCount": 95795,
         "logicalLineCount": 46589,
         "functionCount": 2299,
         "normalized": {
-          "scorePerFile": 0.2586878052002482,
-          "scorePerKloc": 7.951253236745916,
-          "scorePerFunction": 0.1611313340786235,
+          "scorePerFile": 0.26392523536784596,
+          "scorePerKloc": 8.112235442846067,
+          "scorePerFunction": 0.16439362202990668,
           "findingsPerFile": 0.07960893854748603,
           "findingsPerKloc": 2.4469295327223164,
           "findingsPerFunction": 0.049586776859504134
         }
       },
-      "blendedScore": 1.6464595022309005,
+      "blendedScore": 1.631880166211122,
       "ruleCounts": {
         "structure.pass-through-wrappers": 27,
         "structure.directory-fanout-hotspot": 20,
@@ -1103,17 +1132,17 @@
           "findingCount": 2
         },
         {
+          "path": "packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts",
+          "score": 8.5,
+          "findingCount": 2
+        },
+        {
           "path": "packages/vite/src/node/config.ts",
           "score": 8,
           "findingCount": 3
         },
         {
           "path": "packages/vite/src/node/plugins/worker.ts",
-          "score": 8,
-          "findingCount": 2
-        },
-        {
-          "path": "packages/vite/src/node/ssr/__tests__/ssrLoadModule.spec.ts",
           "score": 8,
           "findingCount": 2
         }
@@ -1168,7 +1197,7 @@
           "findingsPerFunction": 0.06079376003670567
         }
       },
-      "blendedScore": 1.6300105660915536,
+      "blendedScore": 1.599466506017136,
       "ruleCounts": {
         "structure.pass-through-wrappers": 55,
         "defensive.empty-catch": 46,
@@ -1242,24 +1271,24 @@
       "medians": {
         "scorePerFile": 0.9875000000000002,
         "scorePerKloc": 9.510586363885691,
-        "scorePerFunction": 0.2286514601096154,
+        "scorePerFunction": 0.22409694829635038,
         "findingsPerFile": 0.30851063829787234,
         "findingsPerKloc": 2.96198782293895,
-        "findingsPerFunction": 0.0842173094081491
+        "findingsPerFunction": 0.08233369683751363
       },
-      "blendedScoreMedian": 3.476442610225084
+      "blendedScoreMedian": 3.2962912972341845
     },
     "mature-oss": {
       "repoCount": 8,
       "medians": {
-        "scorePerFile": 0.19086548662498448,
-        "scorePerKloc": 4.422142801664107,
+        "scorePerFile": 0.2376173795886849,
+        "scorePerKloc": 3.8863626598386656,
         "scorePerFunction": 0.09195482875096181,
-        "findingsPerFile": 0.06947805977819406,
+        "findingsPerFile": 0.08147113594040968,
         "findingsPerKloc": 1.3961844005945103,
-        "findingsPerFunction": 0.02817460317460317
+        "findingsPerFunction": 0.030828311473472765
       },
-      "blendedScoreMedian": 0.9999999999999999
+      "blendedScoreMedian": 1
     }
   },
   "pairings": [
@@ -1281,12 +1310,12 @@
       "solidRepoId": "umami",
       "notes": "Full-stack analytics-adjacent SaaS-style app comparison and negative control.",
       "ratios": {
-        "scorePerFile": 8.650958615274876,
-        "scorePerKloc": 1.9915103851024067,
-        "scorePerFunction": 4.393027752529381,
-        "findingsPerFile": 5.6974820143884894,
-        "findingsPerKloc": 1.311599685675797,
-        "findingsPerFunction": 2.8932281059063136
+        "scorePerFile": 8.253075891732202,
+        "scorePerKloc": 1.899915035820657,
+        "scorePerFunction": 4.190979641504011,
+        "findingsPerFile": 5.576258992805755,
+        "findingsPerKloc": 1.2836933093848226,
+        "findingsPerFunction": 2.8316700610997962
       }
     },
     {
@@ -1294,9 +1323,9 @@
       "solidRepoId": "vite",
       "notes": "AI-built Vite-based framework layer vs the mature Vite baseline.",
       "ratios": {
-        "scorePerFile": 1.8744623580899764,
-        "scorePerKloc": 1.1567146190988122,
-        "scorePerFunction": 1.164743216238166,
+        "scorePerFile": 1.8372648324778313,
+        "scorePerKloc": 1.1337603455791703,
+        "scorePerFunction": 1.14162962026191,
         "findingsPerFile": 1.8246857178375522,
         "findingsPerKloc": 1.1259978819922476,
         "findingsPerFunction": 1.133813278482459
