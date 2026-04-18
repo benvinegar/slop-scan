@@ -177,6 +177,7 @@ export function renderBenchmarkReport(set: BenchmarkSet, snapshot: BenchmarkSnap
     "## Notes",
     "",
     "- This benchmark is intentionally pinned to exact commit SHAs so future reruns can reproduce the same cohort.",
+    "- Why before 2025-01-01? The intent is to use a mature-OSS cutoff from before AI coding had materially changed mainstream repository shape and review norms.",
     "- AI provenance in the set may come from README disclosures or user-provided provenance recorded in the manifest.",
     "- The benchmark scanner uses the analyzer's default config for every repo to keep results comparable.",
     "- The analyzer still only scans JS/TS-family files, so non-JS/TS portions of mixed-language repos are out of scope.",

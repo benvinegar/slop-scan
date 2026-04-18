@@ -177,7 +177,9 @@ Current language support:
 
 ## Benchmarks
 
-The repo ships with a **pinned, recreatable benchmark set** comparing known AI-generated repos against older solid OSS repos.
+The repo ships with a **pinned, recreatable benchmark set** comparing known AI-generated repos against well-regarded OSS repos, with the mature-OSS cohort pinned to the latest default-branch commit on or before **2025-01-01**.
+
+_Why before Jan 1, 2025?_ Because this cutoff aims to catch mature OSS before AI coding had materially changed mainstream repository shape and review norms.
 
 **Blended score** = geometric mean of the six normalized-metric ratios versus the mature OSS cohort medians, then rescaled so the mature OSS cohort median is **1.00**. Higher means a repo is consistently noisier across the benchmark dimensions.
 
@@ -185,13 +187,13 @@ The repo ships with a **pinned, recreatable benchmark set** comparing known AI-g
 
 | Metric              | AI median | Mature OSS median |     Ratio |
 | ------------------- | --------: | ----------------: | --------: |
-| Blended score       |  **3.48** |          **1.00** | **3.48x** |
-| Score / file        |  **0.99** |          **0.19** | **5.17x** |
-| Score / KLOC        |  **9.51** |          **4.42** | **2.15x** |
-| Score / function    |  **0.23** |          **0.09** | **2.49x** |
-| Findings / file     |  **0.31** |          **0.07** | **4.44x** |
-| Findings / KLOC     |  **2.96** |          **1.40** | **2.12x** |
-| Findings / function |  **0.08** |          **0.03** | **2.99x** |
+| Blended score       |  **3.02** |          **1.00** | **3.02x** |
+| Score / file        |  **0.99** |          **0.24** | **4.11x** |
+| Score / KLOC        |  **9.51** |          **4.04** | **2.35x** |
+| Score / function    |  **0.22** |          **0.10** | **2.28x** |
+| Findings / file     |  **0.31** |          **0.08** | **3.74x** |
+| Findings / KLOC     |  **2.96** |          **1.38** | **2.14x** |
+| Findings / function |  **0.08** |          **0.04** | **2.21x** |
 
 ### Pinned benchmark snapshot
 
@@ -199,23 +201,24 @@ Ordered by blended score.
 
 | Repository                                                            | Cohort     | Ref       |  Blended | Score/file | Score/KLOC | Findings/file | Findings/KLOC |
 | --------------------------------------------------------------------- | ---------- | --------- | -------: | ---------: | ---------: | ------------: | ------------: |
-| [`garrytan/gstack`](https://github.com/garrytan/gstack)               | ai         | `6cc094c` | **5.94** |       2.34 |      21.71 |          0.52 |          4.85 |
-| [`redwoodjs/agent-ci`](https://github.com/redwoodjs/agent-ci)         | ai         | `4de00d6` | **3.98** |       0.99 |      10.95 |          0.31 |          3.42 |
-| [`jiayun/DevWorkbench`](https://github.com/jiayun/DevWorkbench)       | ai         | `ea50862` | **3.77** |       1.00 |      10.76 |          0.44 |          4.69 |
-| [`openclaw/openclaw`](https://github.com/openclaw/openclaw)           | ai         | `44cf747` | **3.50** |       1.08 |      10.93 |          0.32 |          3.29 |
-| [`robinebers/openusage`](https://github.com/robinebers/openusage)     | ai         | `857f537` | **3.48** |       1.33 |       8.30 |          0.34 |          2.11 |
-| [`emdash-cms/emdash`](https://github.com/emdash-cms/emdash)           | ai         | `dbaf8c6` | **2.47** |       0.75 |       6.67 |          0.23 |          2.02 |
-| [`FullAgent/fulling`](https://github.com/FullAgent/fulling)           | ai         | `d95060f` | **2.40** |       0.53 |       9.51 |          0.16 |          2.96 |
-| [`cloudflare/vinext`](https://github.com/cloudflare/vinext)           | ai         | `28980b0` | **2.21** |       0.48 |       9.20 |          0.15 |          2.76 |
-| [`vitejs/vite`](https://github.com/vitejs/vite)                       | mature-oss | `bdc53ab` | **1.65** |       0.26 |       7.95 |          0.08 |          2.45 |
-| [`withastro/astro`](https://github.com/withastro/astro)               | mature-oss | `2c9bf5e` | **1.63** |       0.27 |       5.68 |          0.09 |          2.02 |
-| [`modem-dev/hunk`](https://github.com/modem-dev/hunk)                 | ai         | `b37663f` | **1.32** |       0.38 |       4.71 |          0.13 |          1.55 |
-| [`egoist/tsup`](https://github.com/egoist/tsup)                       | mature-oss | `b906f86` | **1.03** |       0.21 |       3.61 |          0.08 |          1.42 |
-| [`umami-software/umami`](https://github.com/umami-software/umami)     | mature-oss | `0a83864` | **1.01** |       0.15 |       4.17 |          0.06 |          1.61 |
-| [`sindresorhus/execa`](https://github.com/sindresorhus/execa)         | mature-oss | `f3a2e84` | **0.99** |       0.17 |       4.85 |          0.05 |          1.37 |
-| [`antfu-collective/ni`](https://github.com/antfu-collective/ni)       | mature-oss | `6d96905` | **0.73** |       0.11 |       4.68 |          0.02 |          0.94 |
-| [`mikaelbr/node-notifier`](https://github.com/mikaelbr/node-notifier) | mature-oss | `b36c237` | **0.46** |       0.08 |       0.90 |          0.04 |          0.47 |
-| [`vercel/hyper`](https://github.com/vercel/hyper)                     | mature-oss | `2a7bb18` | **0.46** |       0.65 |       1.12 |          0.16 |          0.28 |
+| [`garrytan/gstack`](https://github.com/garrytan/gstack)               | ai         | `6cc094c` | **5.33** |       2.34 |      21.71 |          0.52 |          4.85 |
+| [`redwoodjs/agent-ci`](https://github.com/redwoodjs/agent-ci)         | ai         | `4de00d6` | **3.57** |       0.99 |      10.95 |          0.31 |          3.42 |
+| [`jiayun/DevWorkbench`](https://github.com/jiayun/DevWorkbench)       | ai         | `ea50862` | **3.39** |       1.00 |      10.76 |          0.44 |          4.69 |
+| [`openclaw/openclaw`](https://github.com/openclaw/openclaw)           | ai         | `44cf747` | **3.06** |       1.04 |      10.60 |          0.32 |          3.22 |
+| [`robinebers/openusage`](https://github.com/robinebers/openusage)     | ai         | `857f537` | **3.02** |       1.27 |       7.92 |          0.33 |          2.07 |
+| [`emdash-cms/emdash`](https://github.com/emdash-cms/emdash)           | ai         | `dbaf8c6` | **2.17** |       0.73 |       6.54 |          0.22 |          1.98 |
+| [`FullAgent/fulling`](https://github.com/FullAgent/fulling)           | ai         | `d95060f` | **2.16** |       0.53 |       9.51 |          0.16 |          2.96 |
+| [`cloudflare/vinext`](https://github.com/cloudflare/vinext)           | ai         | `28980b0` | **1.99** |       0.48 |       9.20 |          0.15 |          2.76 |
+| [`withastro/astro`](https://github.com/withastro/astro)               | mature-oss | `f706899` | **1.58** |       0.28 |       6.75 |          0.10 |          2.31 |
+| [`payloadcms/payload`](https://github.com/payloadcms/payload)         | mature-oss | `f3f36d8` | **1.47** |       0.24 |       4.04 |          0.08 |          1.38 |
+| [`vitejs/vite`](https://github.com/vitejs/vite)                       | mature-oss | `a492253` | **1.47** |       0.25 |       8.19 |          0.08 |          2.52 |
+| [`pmndrs/zustand`](https://github.com/pmndrs/zustand)                 | mature-oss | `2e6d881` | **1.45** |       0.47 |       3.20 |          0.19 |          1.27 |
+| [`modem-dev/hunk`](https://github.com/modem-dev/hunk)                 | ai         | `b37663f` | **1.18** |       0.38 |       4.71 |          0.13 |          1.55 |
+| [`umami-software/umami`](https://github.com/umami-software/umami)     | mature-oss | `227b255` | **1.00** |       0.17 |       4.36 |          0.07 |          1.66 |
+| [`egoist/tsup`](https://github.com/egoist/tsup)                       | mature-oss | `cd03e1e` | **0.95** |       0.22 |       3.83 |          0.09 |          1.50 |
+| [`sindresorhus/execa`](https://github.com/sindresorhus/execa)         | mature-oss | `99d1741` | **0.89** |       0.17 |       4.86 |          0.05 |          1.37 |
+| [`mikaelbr/node-notifier`](https://github.com/mikaelbr/node-notifier) | mature-oss | `b36c237` | **0.41** |       0.08 |       0.90 |          0.04 |          0.47 |
+| [`vercel/hyper`](https://github.com/vercel/hyper)                     | mature-oss | `2a7bb18` | **0.41** |       0.65 |       1.12 |          0.16 |          0.28 |
 
 Full benchmark assets:
 
