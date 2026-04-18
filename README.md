@@ -1,5 +1,17 @@
 # slop-scan
 
+<p align="center">
+  <a href="https://github.com/modem-dev/slop-scan/actions/workflows/ci.yml?query=branch%3Amain">
+    <img alt="CI status" src="https://img.shields.io/github/actions/workflow/status/modem-dev/slop-scan/ci.yml?branch=main&style=for-the-badge&label=CI" />
+  </a>
+  <a href="https://github.com/modem-dev/slop-scan/releases">
+    <img alt="Latest release" src="https://img.shields.io/github/v/release/modem-dev/slop-scan?style=for-the-badge&label=release" />
+  </a>
+  <a href="LICENSE">
+    <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" />
+  </a>
+</p>
+
 Deterministic CLI for finding **AI-associated slop patterns** in JavaScript and TypeScript repositories.
 
 Scan a repo, surface the hotspots, and compare codebases using normalized slop metrics.
