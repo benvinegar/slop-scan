@@ -136,6 +136,7 @@ Current checks focus on patterns that often show up in unreviewed generated code
 - [empty catch blocks](src/rules/empty-catch/README.md)
 - [promise `.catch()` default fallbacks](src/rules/promise-default-fallbacks/README.md)
 - [generic status envelopes](src/rules/generic-status-envelopes/README.md)
+- [generic record casts](src/rules/generic-record-casts/README.md)
 - [stringified unknown errors](src/rules/stringified-unknown-errors/README.md)
 - [async wrapper / `return await` noise](src/rules/async-noise/README.md)
 - [pass-through wrappers](src/rules/pass-through-wrappers/README.md)
