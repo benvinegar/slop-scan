@@ -44,6 +44,11 @@ describe("heuristic rule pack", () => {
         "  }",
         "}",
         "",
+        "export function getErrorMessage(error: unknown) {",
+        "  const message = error instanceof Error ? error.message : String(error);",
+        "  return { message };",
+        "}",
+        "",
       ].join("\n"),
       "src/service.ts": [
         "function getData(id: string) {",
@@ -80,6 +85,7 @@ describe("heuristic rule pack", () => {
     expect(ruleIds.has("comments.placeholder-comments")).toBe(true);
     expect(ruleIds.has("defensive.error-obscuring")).toBe(true);
     expect(ruleIds.has("defensive.promise-default-fallbacks")).toBe(true);
+    expect(ruleIds.has("defensive.stringified-unknown-errors")).toBe(true);
     expect(ruleIds.has("defensive.async-noise")).toBe(true);
     expect(ruleIds.has("structure.pass-through-wrappers")).toBe(true);
     expect(ruleIds.has("structure.barrel-density")).toBe(true);

@@ -18,6 +18,7 @@ import { emptyCatchRule } from "./rules/empty-catch";
 import { errorObscuringRule } from "./rules/error-obscuring";
 import { errorSwallowingRule } from "./rules/error-swallowing";
 import { promiseDefaultFallbacksRule } from "./rules/promise-default-fallbacks";
+import { stringifiedUnknownErrorsRule } from "./rules/stringified-unknown-errors";
 import { barrelDensityRule } from "./rules/barrel-density";
 import { directoryFanoutHotspotRule } from "./rules/directory-fanout-hotspot";
 import { duplicateFunctionSignaturesRule } from "./rules/duplicate-function-signatures";
@@ -45,6 +46,7 @@ export function createDefaultRegistry(): Registry {
   registry.registerRule(errorObscuringRule);
   registry.registerRule(emptyCatchRule);
   registry.registerRule(promiseDefaultFallbacksRule);
+  registry.registerRule(stringifiedUnknownErrorsRule);
   registry.registerRule(barrelDensityRule);
   registry.registerRule(passThroughWrappersRule);
   registry.registerRule(duplicateFunctionSignaturesRule);
