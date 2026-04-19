@@ -60,6 +60,14 @@ bun run benchmark:history --recorded-at 2026-04-06T12:00:00Z
 | [mikaelbr/node-notifier](https://github.com/mikaelbr/node-notifier) | 4 | ▅▅▅▅ | `master@b36c237` | **0.40** | **0.41** | **0.41** | 0.00 | 0.00 | 0.08 | 0.04 |
 | [vercel/hyper](https://github.com/vercel/hyper) | 4 | ▅▅▅▅ | `canary@2a7bb18` | **0.40** | **0.41** | **0.41** | 0.00 | 0.00 | 0.65 | 0.16 |
 
+## Table legend
+
+- `Current blended` = latest repo score vs the current mature-OSS medians from the same rolling run.
+- `Latest pinned` = latest repo score vs the frozen pinned mature-OSS baseline snapshot.
+- `Highest pinned` = highest stored repo score on that same pinned baseline.
+- `Δ prev (pinned)` = latest pinned - previous week's pinned score.
+- `Δ first (pinned)` = latest pinned - first stored pinned score for that repo.
+
 ## Biggest increases vs previous week
 
 - [redwoodjs/agent-ci](https://github.com/redwoodjs/agent-ci) — +0.51 vs previous week (pinned blended)
@@ -78,9 +86,6 @@ bun run benchmark:history --recorded-at 2026-04-06T12:00:00Z
 
 ## Notes
 
-- `Current blended` is relative to the latest mature-OSS cohort medians from the same run, so it is best for week-by-week ranking.
-- `Latest pinned` is the newest stored score relative to the frozen pinned benchmark baseline.
-- `Highest pinned` is the peak stored pinned-blended value for that repo across its weekly history.
 - `Trend (pinned)` is a mini sparkline of the repo's stored pinned-blended values across recent weekly points.
 - Each repo stores one JSONL datapoint per UTC week; reruns in the same week replace that week's datapoint instead of appending duplicates.
 - Older backfills can have fewer points for newer repos because the history job skips weeks before a repo had any commit on its current default branch.

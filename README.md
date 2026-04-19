@@ -199,7 +199,13 @@ Latest default-branch history, still normalized against the frozen pinned baseli
 | [`mikaelbr/node-notifier`](https://github.com/mikaelbr/node-notifier) | mature-oss | `master@b36c237` |        **0.40** |      **0.41** |       **0.41** |   0.00 |   0.00 |
 | [`vercel/hyper`](https://github.com/vercel/hyper)                     | mature-oss | `canary@2a7bb18` |        **0.40** |      **0.41** |       **0.41** |   0.00 |   0.00 |
 
-`Δ peak` = latest pinned - highest pinned, so more negative means a repo is below its own historical high.
+Legend:
+
+- `Current blended` = latest repo score vs the current mature-OSS medians from the same rolling run
+- `Latest pinned` = latest repo score vs the frozen pinned mature-OSS baseline snapshot
+- `Highest pinned` = highest stored repo score on that same pinned baseline
+- `Δ prev` = latest pinned - previous week's pinned score
+- `Δ peak` = latest pinned - highest pinned score, so more negative means the repo is below its own historical high
 
 For exact pinned SHAs and the full per-metric breakdowns, see the saved snapshot and pinned benchmark report.
 
