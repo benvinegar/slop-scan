@@ -311,7 +311,6 @@ Sponsored by [Modem](https://modem.dev?utm_source=github&utm_medium=oss&utm_camp
   </picture>
 </a>
 
-Turning support, chat, and product signals into developer-ready context.
 
 ## License
 
