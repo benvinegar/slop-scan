@@ -53,3 +53,13 @@ Pass-through wrappers are excluded, and a duplicate that only appears in 2 files
 ## Scoring
 
 Each duplicate cluster adds `1.25 + 0.5 * (fileCount - 3)` for the current file, capped at `6`.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#9 of 11**
+- Signal score: **0.32 / 1.00**
+- Best separating metric: **findings / file (0.40)**
+- Hit rate: **2/6 AI repos** vs **4/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#structureduplicate-function-signatures)

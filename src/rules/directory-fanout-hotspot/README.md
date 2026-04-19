@@ -51,3 +51,13 @@ Asset-like buckets and test-matrix directories are intentionally suppressed beca
 
 The rule starts at `2` and adds a bounded amount based on how far the directory is above the computed threshold.
 The total directory contribution stays capped at `6`.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#10 of 11**
+- Signal score: **0.22 / 1.00**
+- Best separating metric: **findings / file (0.50)**
+- Hit rate: **6/6 AI repos** vs **5/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#structuredirectory-fanout-hotspot)

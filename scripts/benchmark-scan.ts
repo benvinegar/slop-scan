@@ -1,8 +1,8 @@
-import { spawnSync } from "node:child_process";
 import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import packageJson from "../package.json";
 import { getOption } from "./lib/get-option";
+import { readHeadRef } from "../src/benchmarks/checkouts";
 import {
   DEFAULT_BENCHMARK_SET_PATH,
   loadBenchmarkSet,
@@ -19,19 +19,6 @@ async function assertExists(targetPath: string, message: string): Promise<void> 
   } catch {
     throw new Error(message);
   }
-}
-
-function readHeadRef(checkoutPath: string): string {
-  const result = spawnSync("git", ["rev-parse", "HEAD"], {
-    cwd: checkoutPath,
-    encoding: "utf8",
-  });
-
-  if (result.status !== 0) {
-    throw new Error(`Unable to read HEAD for ${checkoutPath}: ${result.stderr}`);
-  }
-
-  return result.stdout.trim();
 }
 
 const manifestPath = getOption(process.argv.slice(2), "--manifest", DEFAULT_BENCHMARK_SET_PATH);

@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "id": "rule-signal-mini",
+  "name": "Per-rule signal mini benchmark",
+  "description": "Run each built-in rule in isolation against a smaller pinned cohort of explicit-AI and mature-OSS repositories so we can compare which rules separate the cohorts most cleanly. The mature-OSS repos stay pinned to exact pre-2025 commit SHAs.",
+  "artifacts": {
+    "checkoutsDir": "benchmarks/.cache/checkouts/known-ai-vs-solid-oss",
+    "snapshotPath": "benchmarks/results/rule-signal-mini.json",
+    "reportPath": "reports/rule-signal-mini.md"
+  },
+  "repos": [
+    {
+      "id": "openusage",
+      "repo": "robinebers/openusage",
+      "url": "https://github.com/robinebers/openusage.git",
+      "cohort": "explicit-ai",
+      "ref": "857f537a243483acf98ccd9ea32e20b380c63823",
+      "createdAt": "2026-02-01T07:37:03Z",
+      "stars": 1715,
+      "provenance": "README: \"Not a single line of code in this project was read or written by hand. 100% AI-generated, AI-reviewed, AI-shipped\"",
+      "notes": "Useful negative control because it does not look uniformly slop-heavy on every normalized metric."
+    },
+    {
+      "id": "devworkbench",
+      "repo": "jiayun/DevWorkbench",
+      "url": "https://github.com/jiayun/DevWorkbench.git",
+      "cohort": "explicit-ai",
+      "ref": "ea50862107c377b0cdd6e508073ad0330b367576",
+      "createdAt": "2025-06-25T03:39:53Z",
+      "stars": 17,
+      "provenance": "README: \"100% AI-Generated Code - A Totally Vibed Application\"",
+      "notes": "Desktop-style TypeScript application with explicit AI-generation disclosure."
+    },
+    {
+      "id": "gstack",
+      "repo": "garrytan/gstack",
+      "url": "https://github.com/garrytan/gstack.git",
+      "cohort": "explicit-ai",
+      "ref": "6cc094cd4190e3fac65b69fb29e0c3cae7e0f214",
+      "createdAt": "2026-03-11T21:22:45Z",
+      "stars": 65613,
+      "provenance": "User-provided provenance: repo is AI-generated.",
+      "notes": "Popular AI-coding workflow/tooling repo with a substantial TypeScript surface and very high try/catch density."
+    },
+    {
+      "id": "hunk",
+      "repo": "modem-dev/hunk",
+      "url": "https://github.com/modem-dev/hunk.git",
+      "cohort": "explicit-ai",
+      "ref": "b37663f3c3055f860290587865199192e15d9f35",
+      "createdAt": "2026-03-17T19:16:15Z",
+      "stars": 352,
+      "provenance": "User-provided provenance: repo is AI-generated.",
+      "notes": "Review-first terminal diff viewer that serves as a lower-slop AI-generated benchmark example."
+    },
+    {
+      "id": "vinext",
+      "repo": "cloudflare/vinext",
+      "url": "https://github.com/cloudflare/vinext.git",
+      "cohort": "explicit-ai",
+      "ref": "28980b01f1692b47756a6768fc5733712c290f84",
+      "createdAt": "2026-02-24T05:07:41Z",
+      "stars": 7709,
+      "provenance": "README: \"The vast majority of the code, tests, and documentation were written by AI (Claude Code). Humans direct architecture, priorities, and design decisions, but have not reviewed most of the code line-by-line.\"",
+      "notes": "Polished, company-backed Vite-based reimplementation of the Next.js API surface built as an AI-driven software-development experiment."
+    },
+    {
+      "id": "agent-ci",
+      "repo": "redwoodjs/agent-ci",
+      "url": "https://github.com/redwoodjs/agent-ci.git",
+      "cohort": "explicit-ai",
+      "ref": "4de00d69487e275d5bc37e30f7818a9303b22352",
+      "createdAt": "2026-02-09T20:24:25Z",
+      "stars": 120,
+      "provenance": "User-provided provenance: repo is almost entirely Claude-authored.",
+      "notes": "Local GitHub Actions orchestration layer for agent workflows; useful benchmark for command-heavy CI tooling with strong AI involvement."
+    },
+    {
+      "id": "payload",
+      "repo": "payloadcms/payload",
+      "url": "https://github.com/payloadcms/payload.git",
+      "cohort": "mature-oss",
+      "ref": "f3f36d801010f3c95ae74655ff22a09ea66ab1ac",
+      "createdAt": "2021-01-05T18:49:45Z",
+      "stars": 41856,
+      "provenance": "Mature open-source full-stack Next.js CMS/framework by Payload.",
+      "notes": "Pinned to the latest default-branch commit on or before 2025-01-01 to test a later mature-OSS full-stack app/framework baseline."
+    },
+    {
+      "id": "execa",
+      "repo": "sindresorhus/execa",
+      "url": "https://github.com/sindresorhus/execa.git",
+      "cohort": "mature-oss",
+      "ref": "99d1741d2525eca71b986282148bbf2983356428",
+      "createdAt": "2015-12-05T22:57:03Z",
+      "stars": 7481,
+      "provenance": "Long-lived process execution library for Node.js.",
+      "notes": "Helpful benchmark for command-heavy code that still avoids extreme normalized scores."
+    },
+    {
+      "id": "umami",
+      "repo": "umami-software/umami",
+      "url": "https://github.com/umami-software/umami.git",
+      "cohort": "mature-oss",
+      "ref": "227b2554b4a373e63ceb7f48decdc60c8d3e6eaf",
+      "createdAt": "2020-07-17T07:59:00Z",
+      "stars": 36012,
+      "provenance": "Mature privacy-focused analytics platform with a large TypeScript codebase.",
+      "notes": "Good counterweight for explicit-AI full-stack app comparisons."
+    },
+    {
+      "id": "vite",
+      "repo": "vitejs/vite",
+      "url": "https://github.com/vitejs/vite.git",
+      "cohort": "mature-oss",
+      "ref": "a4922537a8d705da7769d30626a0d846511fc124",
+      "createdAt": "2020-04-21T05:03:57Z",
+      "stars": 79637,
+      "provenance": "Mature frontend tooling project with a large TypeScript codebase.",
+      "notes": "Added as a stress-test baseline to check that the analyzer does not overfit against only smaller mature repos."
+    },
+    {
+      "id": "astro",
+      "repo": "withastro/astro",
+      "url": "https://github.com/withastro/astro.git",
+      "cohort": "mature-oss",
+      "ref": "f7068995aa451dced13853789b0d51433c2373b5",
+      "createdAt": "2021-03-15T17:19:47Z",
+      "stars": 58212,
+      "provenance": "Mature web framework with a very large TypeScript/JavaScript monorepo.",
+      "notes": "Added as a stress-test baseline for a large, actively maintained modern framework codebase."
+    }
+  ],
+  "pairings": []
+}

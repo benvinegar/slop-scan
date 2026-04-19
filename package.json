@@ -52,6 +52,7 @@
     "benchmark:scan": "bun run scripts/benchmark-scan.ts",
     "benchmark:report": "bun run scripts/benchmark-report.ts",
     "benchmark:history": "bun run scripts/benchmark-history.ts",
+    "benchmark:rules": "bun run scripts/benchmark-rule-signals.ts",
     "benchmark:update": "bun run benchmark:fetch && bun run benchmark:scan && bun run benchmark:report"
   },
   "dependencies": {

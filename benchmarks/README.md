@@ -79,6 +79,22 @@ If a repo did not exist yet for an older backfill date, that weekly point is ski
 
 The rolling history is intentionally separate from the pinned benchmark snapshot so reproducible benchmark claims still point at exact SHAs.
 
+## Per-rule signal benchmark
+
+A separate pinned mini cohort runs each built-in rule **in isolation** so we can compare which rules separate the explicit-AI and mature-OSS cohorts most cleanly.
+
+Refresh it locally with:
+
+```bash
+bun run benchmark:rules
+```
+
+That writes:
+
+- an aggregate JSON summary at `benchmarks/results/rule-signal-mini.json`
+- a markdown leaderboard/report at `reports/rule-signal-mini.md`
+- benchmark summary sections into each `src/rules/*/README.md`
+
 ## Artifacts
 
 For the current pinned set:
@@ -92,6 +108,13 @@ For rolling history:
 - per-repo JSONL: `benchmarks/history/known-ai-vs-solid-oss/*.jsonl`
 - latest summary: `benchmarks/history/known-ai-vs-solid-oss/latest.json`
 - generated history report: `reports/known-ai-vs-solid-oss-history.md`
+
+For per-rule signal benchmarking:
+
+- manifest: `benchmarks/sets/rule-signal-mini.json`
+- summary: `benchmarks/results/rule-signal-mini.json`
+- generated report: `reports/rule-signal-mini.md`
+- per-rule docs: `src/rules/*/README.md`
 
 ## Notes
 

@@ -43,3 +43,13 @@ export function getJson(url: string) {
 ## Scoring
 
 Each wrapper adds `2` points, capped at `5` for the file.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#3 of 11**
+- Signal score: **0.67 / 1.00**
+- Best separating metric: **findings / file (0.85)**
+- Hit rate: **5/6 AI repos** vs **4/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#structurepass-through-wrappers)

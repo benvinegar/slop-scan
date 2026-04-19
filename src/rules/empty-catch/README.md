@@ -48,3 +48,13 @@ export function loadTheme() {
 
 Each flagged catch uses the shared try/catch scoring helper, then the file total is capped at `8`.
 Boundary-oriented catches are downweighted instead of fully ignored.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#2 of 11**
+- Signal score: **0.67 / 1.00**
+- Best separating metric: **findings / file (0.93)**
+- Hit rate: **6/6 AI repos** vs **5/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#defensiveempty-catch)

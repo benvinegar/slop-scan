@@ -51,3 +51,13 @@ Asset buckets and test-heavy directories are suppressed, and a directory full of
 
 The score is `4 + tinyRatio * 3 + ceremonyRatio * 2`.
 That weights tiny-file prevalence most heavily and adds extra pressure when wrappers and barrels make up a large share of the directory.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#11 of 11**
+- Signal score: **0.17 / 1.00**
+- Best separating metric: **findings / file (0.18)**
+- Hit rate: **1/6 AI repos** vs **4/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#structureover-fragmentation)

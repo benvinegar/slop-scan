@@ -39,3 +39,13 @@ export { type Store } from "./types";
 ## Scoring
 
 The score starts at `1` and adds `0.5` per re-export statement, capped at `3`.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#8 of 11**
+- Signal score: **0.35 / 1.00**
+- Best separating metric: **findings / function (0.50)**
+- Hit rate: **3/6 AI repos** vs **5/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#structurebarrel-density)

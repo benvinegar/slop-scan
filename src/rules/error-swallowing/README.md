@@ -42,3 +42,13 @@ export async function syncUser(id: string) {
 ## Scoring
 
 Each flagged catch uses the shared try/catch scoring helper, then the file total is capped at `8`.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#1 of 11**
+- Signal score: **0.72 / 1.00**
+- Best separating metric: **findings / file (0.87)**
+- Hit rate: **6/6 AI repos** vs **3/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#defensiveerror-swallowing)

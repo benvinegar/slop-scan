@@ -50,3 +50,13 @@ export function legacyMode() {
 ## Scoring
 
 Each matching comment adds `0.75` to the file score, capped at `1.5`.
+
+## Benchmark signal
+
+Small pinned rule benchmark ([manifest](../../../benchmarks/sets/rule-signal-mini.json)):
+
+- Signal rank: **#6 of 11**
+- Signal score: **0.50 / 1.00**
+- Best separating metric: **findings / file (0.50)**
+- Hit rate: **0/6 AI repos** vs **0/5 mature OSS repos**
+- Full results: [rule signal report](../../../reports/rule-signal-mini.md#commentsplaceholder-comments)
