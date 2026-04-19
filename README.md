@@ -8,8 +8,6 @@ Deterministic CLI for finding **AI-associated slop patterns** in JavaScript and 
 
 Scan a repo, surface the hotspots, and compare codebases using normalized slop metrics.
 
-> `slop-scan` is a **slop scanner**, not an authorship detector. It reports explainable patterns and suspicious density. It does **not** claim who wrote the code.
-
 ## Why use it
 
 - **Find the hotspots fast** — see which files and directories concentrate the most suspicious patterns
@@ -23,6 +21,10 @@ Scan a repo, surface the hotspots, and compare codebases using normalized slop m
 - comparing known AI-generated repos to mature OSS baselines
 - finding low-judgment boilerplate in your own codebase
 - iterating on deterministic slop heuristics
+
+## Why can you trust it?
+
+Every rule is tested and benchmarked against popular, mature OSS repos pinned to exact commit SHAs from before AI coding was common. See [Benchmarks](#benchmarks).
 
 ## Install
 
