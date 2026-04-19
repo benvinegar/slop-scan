@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "benchmarkSetId": "known-ai-vs-solid-oss",
+  "benchmarkSetName": "Known AI repos vs older solid OSS repos",
+  "generatedAt": "2026-04-19T13:55:19.897Z",
+  "analyzerVersion": "0.3.0",
+  "artifacts": {
+    "manifestPath": "benchmarks/sets/known-ai-vs-solid-oss.json",
+    "summaryPath": "benchmarks/results/autoresearch-candidate-rule.json",
+    "reportPath": "reports/autoresearch-candidate-rule.md"
+  },
+  "rules": [
+    {
+      "ruleId": "defensive.promise-default-fallbacks",
+      "ruleSlug": "promise-default-fallbacks",
+      "family": "defensive",
+      "severity": "strong",
+      "scope": "file",
+      "requires": [
+        "file.ast"
+      ],
+      "signalScore": 0.9670781893004116,
+      "bestMetric": "scorePerFunction",
+      "bestMetricAuc": 0.9876543209876543,
+      "metricAucs": {
+        "scorePerFile": 0.9506172839506173,
+        "scorePerKloc": 0.9753086419753086,
+        "scorePerFunction": 0.9876543209876543,
+        "findingsPerFile": 0.9629629629629629,
+        "findingsPerKloc": 0.9506172839506173,
+        "findingsPerFunction": 0.9753086419753086
+      },
+      "cohorts": {
+        "explicit-ai": {
+          "repoCount": 9,
+          "hitCount": 9,
+          "hitRate": 1,
+          "repoScoreMedian": 10,
+          "findingCountMedian": 3,
+          "medians": {
+            "scorePerFile": 0.10638297872340426,
+            "scorePerKloc": 1.180080245456691,
+            "scorePerFunction": 0.02982516283853274,
+            "findingsPerFile": 0.03125,
+            "findingsPerKloc": 0.3247984068395757,
+            "findingsPerFunction": 0.008302765936353722
+          }
+        },
+        "mature-oss": {
+          "repoCount": 9,
+          "hitCount": 5,
+          "hitRate": 0.5555555555555556,
+          "repoScoreMedian": 2,
+          "findingCountMedian": 1,
+          "medians": {
+            "scorePerFile": 0.0014170996693434106,
+            "scorePerKloc": 0.023810279691418777,
+            "scorePerFunction": 0.0014942099364960778,
+            "findingsPerFile": 0.0007085498346717053,
+            "findingsPerKloc": 0.011905139845709388,
+            "findingsPerFunction": 0.00018677624206200972
+          }
+        }
+      },
+      "repos": [
+        {
+          "id": "devworkbench",
+          "repo": "jiayun/DevWorkbench",
+          "cohort": "explicit-ai",
+          "ref": "ea50862107c377b0cdd6e508073ad0330b367576",
+          "summary": {
+            "fileCount": 32,
+            "directoryCount": 7,
+            "findingCount": 1,
+            "repoScore": 8,
+            "physicalLineCount": 9408,
+            "logicalLineCount": 2986,
+            "functionCount": 147,
+            "normalized": {
+              "scorePerFile": 0.25,
+              "scorePerKloc": 2.6791694574681846,
+              "scorePerFunction": 0.05442176870748299,
+              "findingsPerFile": 0.03125,
+              "findingsPerKloc": 0.3348961821835231,
+              "findingsPerFunction": 0.006802721088435374
+            }
+          }
+        },
+        {
+          "id": "gstack",
+          "repo": "garrytan/gstack",
+          "cohort": "explicit-ai",
+          "ref": "6cc094cd4190e3fac65b69fb29e0c3cae7e0f214",
+          "summary": {
+            "fileCount": 176,
+            "directoryCount": 19,
+            "findingCount": 7,
+            "repoScore": 40,
+            "physicalLineCount": 62616,
+            "logicalLineCount": 18958,
+            "functionCount": 832,
+            "normalized": {
+              "scorePerFile": 0.22727272727272727,
+              "scorePerKloc": 2.109927207511341,
+              "scorePerFunction": 0.04807692307692308,
+              "findingsPerFile": 0.03977272727272727,
+              "findingsPerKloc": 0.3692372613144847,
+              "findingsPerFunction": 0.008413461538461538
+            }
+          }
+        },
+        {
+          "id": "vinext",
+          "repo": "cloudflare/vinext",
+          "cohort": "explicit-ai",
+          "ref": "28980b01f1692b47756a6768fc5733712c290f84",
+          "summary": {
+            "fileCount": 1129,
+            "directoryCount": 486,
+            "findingCount": 30,
+            "repoScore": 87,
+            "physicalLineCount": 150365,
+            "logicalLineCount": 59523,
+            "functionCount": 2917,
+            "normalized": {
+              "scorePerFile": 0.07705934455270151,
+              "scorePerKloc": 1.461619878030341,
+              "scorePerFunction": 0.02982516283853274,
+              "findingsPerFile": 0.026572187776793623,
+              "findingsPerKloc": 0.5040068544932211,
+              "findingsPerFunction": 0.010284538909838875
+            }
+          }
+        },
+        {
+          "id": "emdash",
+          "repo": "emdash-cms/emdash",
+          "cohort": "explicit-ai",
+          "ref": "dbaf8c6f857456b6a449e68d26c5000c1143fadb",
+          "summary": {
+            "fileCount": 1072,
+            "directoryCount": 306,
+            "findingCount": 39,
+            "repoScore": 144,
+            "physicalLineCount": 257938,
+            "logicalLineCount": 120432,
+            "functionCount": 3513,
+            "normalized": {
+              "scorePerFile": 0.13432835820895522,
+              "scorePerKloc": 1.1956954962136308,
+              "scorePerFunction": 0.04099060631938514,
+              "findingsPerFile": 0.036380597014925374,
+              "findingsPerKloc": 0.3238341968911917,
+              "findingsPerFunction": 0.011101622544833475
+            }
+          }
+        },
+        {
+          "id": "agent-ci",
+          "repo": "redwoodjs/agent-ci",
+          "cohort": "explicit-ai",
+          "ref": "4de00d69487e275d5bc37e30f7818a9303b22352",
+          "summary": {
+            "fileCount": 94,
+            "directoryCount": 24,
+            "findingCount": 3,
+            "repoScore": 10,
+            "physicalLineCount": 17222,
+            "logicalLineCount": 8474,
+            "functionCount": 220,
+            "normalized": {
+              "scorePerFile": 0.10638297872340426,
+              "scorePerKloc": 1.180080245456691,
+              "scorePerFunction": 0.045454545454545456,
+              "findingsPerFile": 0.031914893617021274,
+              "findingsPerKloc": 0.35402407363700733,
+              "findingsPerFunction": 0.013636363636363636
+            }
+          }
+        },
+        {
+          "id": "openclaw",
+          "repo": "openclaw/openclaw",
+          "cohort": "explicit-ai",
+          "ref": "44cf74717b4507245648a0263f3b0df85aa2a813",
+          "summary": {
+            "fileCount": 10465,
+            "directoryCount": 423,
+            "findingCount": 335,
+            "repoScore": 1140,
+            "physicalLineCount": 1939647,
+            "logicalLineCount": 1031409,
+            "functionCount": 40348,
+            "normalized": {
+              "scorePerFile": 0.10893454371715242,
+              "scorePerKloc": 1.1052841307376606,
+              "scorePerFunction": 0.02825418855953207,
+              "findingsPerFile": 0.03201146679407549,
+              "findingsPerKloc": 0.3247984068395757,
+              "findingsPerFunction": 0.008302765936353722
+            }
+          }
+        },
+        {
+          "id": "hunk",
+          "repo": "modem-dev/hunk",
+          "cohort": "explicit-ai",
+          "ref": "b37663f3c3055f860290587865199192e15d9f35",
+          "summary": {
+            "fileCount": 166,
+            "directoryCount": 36,
+            "findingCount": 3,
+            "repoScore": 10,
+            "physicalLineCount": 32498,
+            "logicalLineCount": 13564,
+            "functionCount": 752,
+            "normalized": {
+              "scorePerFile": 0.060240963855421686,
+              "scorePerKloc": 0.7372456502506635,
+              "scorePerFunction": 0.013297872340425532,
+              "findingsPerFile": 0.018072289156626505,
+              "findingsPerKloc": 0.22117369507519904,
+              "findingsPerFunction": 0.003989361702127659
+            }
+          }
+        },
+        {
+          "id": "openusage",
+          "repo": "robinebers/openusage",
+          "cohort": "explicit-ai",
+          "ref": "857f537a243483acf98ccd9ea32e20b380c63823",
+          "summary": {
+            "fileCount": 139,
+            "directoryCount": 29,
+            "findingCount": 1,
+            "repoScore": 4,
+            "physicalLineCount": 33794,
+            "logicalLineCount": 22270,
+            "functionCount": 491,
+            "normalized": {
+              "scorePerFile": 0.02877697841726619,
+              "scorePerKloc": 0.1796138302649304,
+              "scorePerFunction": 0.008146639511201629,
+              "findingsPerFile": 0.007194244604316547,
+              "findingsPerKloc": 0.0449034575662326,
+              "findingsPerFunction": 0.002036659877800407
+            }
+          }
+        },
+        {
+          "id": "fulling",
+          "repo": "FullAgent/fulling",
+          "cohort": "explicit-ai",
+          "ref": "d95060f8421b5888564fc8517c1fe99ded463985",
+          "summary": {
+            "fileCount": 219,
+            "directoryCount": 78,
+            "findingCount": 1,
+            "repoScore": 2,
+            "physicalLineCount": 26787,
+            "logicalLineCount": 12154,
+            "functionCount": 574,
+            "normalized": {
+              "scorePerFile": 0.0091324200913242,
+              "scorePerKloc": 0.1645548790521639,
+              "scorePerFunction": 0.003484320557491289,
+              "findingsPerFile": 0.0045662100456621,
+              "findingsPerKloc": 0.08227743952608195,
+              "findingsPerFunction": 0.0017421602787456446
+            }
+          }
+        },
+        {
+          "id": "astro",
+          "repo": "withastro/astro",
+          "cohort": "mature-oss",
+          "ref": "f7068995aa451dced13853789b0d51433c2373b5",
+          "summary": {
+            "fileCount": 1949,
+            "directoryCount": 852,
+            "findingCount": 9,
+            "repoScore": 20.5,
+            "physicalLineCount": 138854,
+            "logicalLineCount": 80948,
+            "functionCount": 3018,
+            "normalized": {
+              "scorePerFile": 0.01051821446895844,
+              "scorePerKloc": 0.2532489993576123,
+              "scorePerFunction": 0.006792577866136514,
+              "findingsPerFile": 0.004617752693689072,
+              "findingsPerKloc": 0.11118248752285419,
+              "findingsPerFunction": 0.002982107355864811
+            }
+          }
+        },
+        {
+          "id": "vite",
+          "repo": "vitejs/vite",
+          "cohort": "mature-oss",
+          "ref": "a4922537a8d705da7769d30626a0d846511fc124",
+          "summary": {
+            "fileCount": 1229,
+            "directoryCount": 525,
+            "findingCount": 3,
+            "repoScore": 6,
+            "physicalLineCount": 77629,
+            "logicalLineCount": 37251,
+            "functionCount": 1904,
+            "normalized": {
+              "scorePerFile": 0.004882017900732303,
+              "scorePerKloc": 0.1610695014898929,
+              "scorePerFunction": 0.0031512605042016808,
+              "findingsPerFile": 0.0024410089503661514,
+              "findingsPerKloc": 0.08053475074494645,
+              "findingsPerFunction": 0.0015756302521008404
+            }
+          }
+        },
+        {
+          "id": "hyper",
+          "repo": "vercel/hyper",
+          "cohort": "mature-oss",
+          "ref": "2a7bb18259d975f27b30b502af1be7576f6f5656",
+          "summary": {
+            "fileCount": 113,
+            "directoryCount": 21,
+            "findingCount": 1,
+            "repoScore": 8,
+            "physicalLineCount": 162735,
+            "logicalLineCount": 65075,
+            "functionCount": 5354,
+            "normalized": {
+              "scorePerFile": 0.07079646017699115,
+              "scorePerKloc": 0.12293507491356127,
+              "scorePerFunction": 0.0014942099364960778,
+              "findingsPerFile": 0.008849557522123894,
+              "findingsPerKloc": 0.01536688436419516,
+              "findingsPerFunction": 0.00018677624206200972
+            }
+          }
+        },
+        {
+          "id": "execa",
+          "repo": "sindresorhus/execa",
+          "cohort": "mature-oss",
+          "ref": "99d1741d2525eca71b986282148bbf2983356428",
+          "summary": {
+            "fileCount": 580,
+            "directoryCount": 46,
+            "findingCount": 1,
+            "repoScore": 2,
+            "physicalLineCount": 35995,
+            "logicalLineCount": 20374,
+            "functionCount": 1007,
+            "normalized": {
+              "scorePerFile": 0.0034482758620689655,
+              "scorePerKloc": 0.09816432708353785,
+              "scorePerFunction": 0.0019860973187686196,
+              "findingsPerFile": 0.0017241379310344827,
+              "findingsPerKloc": 0.049082163541768926,
+              "findingsPerFunction": 0.0009930486593843098
+            }
+          }
+        },
+        {
+          "id": "payload",
+          "repo": "payloadcms/payload",
+          "cohort": "mature-oss",
+          "ref": "f3f36d801010f3c95ae74655ff22a09ea66ab1ac",
+          "summary": {
+            "fileCount": 4234,
+            "directoryCount": 1837,
+            "findingCount": 3,
+            "repoScore": 6,
+            "physicalLineCount": 384327,
+            "logicalLineCount": 251992,
+            "functionCount": 3544,
+            "normalized": {
+              "scorePerFile": 0.0014170996693434106,
+              "scorePerKloc": 0.023810279691418777,
+              "scorePerFunction": 0.001693002257336343,
+              "findingsPerFile": 0.0007085498346717053,
+              "findingsPerKloc": 0.011905139845709388,
+              "findingsPerFunction": 0.0008465011286681715
+            }
+          }
+        },
+        {
+          "id": "tsup",
+          "repo": "egoist/tsup",
+          "cohort": "mature-oss",
+          "ref": "cd03e1e00ec2bd6676ae1837cbc7e618ab6a2362",
+          "summary": {
+            "fileCount": 46,
+            "directoryCount": 8,
+            "findingCount": 0,
+            "repoScore": 0,
+            "physicalLineCount": 6456,
+            "logicalLineCount": 2668,
+            "functionCount": 140,
+            "normalized": {
+              "scorePerFile": 0,
+              "scorePerKloc": 0,
+              "scorePerFunction": 0,
+              "findingsPerFile": 0,
+              "findingsPerKloc": 0,
+              "findingsPerFunction": 0
+            }
+          }
+        },
+        {
+          "id": "node-notifier",
+          "repo": "mikaelbr/node-notifier",
+          "cohort": "mature-oss",
+          "ref": "b36c237f0d913f9df3a2bd45adc08b33ff717f6a",
+          "summary": {
+            "fileCount": 24,
+            "directoryCount": 5,
+            "findingCount": 0,
+            "repoScore": 0,
+            "physicalLineCount": 2716,
+            "logicalLineCount": 2114,
+            "functionCount": 42,
+            "normalized": {
+              "scorePerFile": 0,
+              "scorePerKloc": 0,
+              "scorePerFunction": 0,
+              "findingsPerFile": 0,
+              "findingsPerKloc": 0,
+              "findingsPerFunction": 0
+            }
+          }
+        },
+        {
+          "id": "zustand",
+          "repo": "pmndrs/zustand",
+          "cohort": "mature-oss",
+          "ref": "2e6d8813095c6a79ca208bae4c2cf5edc12049a1",
+          "summary": {
+            "fileCount": 48,
+            "directoryCount": 15,
+            "findingCount": 0,
+            "repoScore": 0,
+            "physicalLineCount": 8814,
+            "logicalLineCount": 7096,
+            "functionCount": 161,
+            "normalized": {
+              "scorePerFile": 0,
+              "scorePerKloc": 0,
+              "scorePerFunction": 0,
+              "findingsPerFile": 0,
+              "findingsPerKloc": 0,
+              "findingsPerFunction": 0
+            }
+          }
+        },
+        {
+          "id": "umami",
+          "repo": "umami-software/umami",
+          "cohort": "mature-oss",
+          "ref": "227b2554b4a373e63ceb7f48decdc60c8d3e6eaf",
+          "summary": {
+            "fileCount": 512,
+            "directoryCount": 87,
+            "findingCount": 0,
+            "repoScore": 0,
+            "physicalLineCount": 29677,
+            "logicalLineCount": 20508,
+            "functionCount": 911,
+            "normalized": {
+              "scorePerFile": 0,
+              "scorePerKloc": 0,
+              "scorePerFunction": 0,
+              "findingsPerFile": 0,
+              "findingsPerKloc": 0,
+              "findingsPerFunction": 0
+            }
+          }
+        }
+      ],
+      "rank": 1
+    }
+  ]
+}

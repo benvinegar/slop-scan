@@ -1,0 +1,3 @@
+- Investigate a lower-overfit comment rule around formulaic doc-comments that restate function names with generic imperative verbs (`build`, `create`, `resolve`, `detect`, `check whether`).
+- Investigate whether promise `.catch()` handlers that only log and implicitly return `undefined` form a strong separate rule or are too close to existing swallowing/obscuring rules.
+- Investigate fallback-comment patterns (`fall through to`, `fall back to`) only if the AST-based promise-catch idea stalls; treat this as higher overfit risk.
