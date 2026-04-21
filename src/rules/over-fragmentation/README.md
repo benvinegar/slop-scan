@@ -47,6 +47,25 @@ src/icons/
 
 Asset buckets and test-heavy directories are suppressed, and a directory full of small but substantial implementation files can also avoid a finding.
 
+## How to fix / do this better
+
+Prefer module boundaries that follow behavior, not just naming.
+
+Better options:
+
+- merge ultra-thin wrapper files back into a cohesive module
+- split by domain or workflow only when each file has meaningful independent behavior
+- keep supporting types/helpers near the implementation they actually serve
+
+```text
+src/payments/
+├── service.ts
+├── types.ts
+└── gateways/
+```
+
+The goal is not fewer files at all costs. It is to avoid architecture that looks modular on disk while forcing readers to jump through many tiny files to understand one behavior.
+
 ## Scoring
 
 The score is `4 + tinyRatio * 3 + ceremonyRatio * 2`.

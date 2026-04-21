@@ -50,6 +50,26 @@ export function getUser(id: string) {
 
 Pass-through wrappers are excluded, and a duplicate that only appears in 2 files is below the reporting threshold.
 
+## How to fix / do this better
+
+When the same helper shape appears across multiple files, prefer one of these:
+
+- extract the shared logic into a single reusable helper
+- create a small configurable normalizer instead of copy-pasting near-identical functions
+- keep duplication only when the domain concepts are truly diverging and deserve separate behavior
+
+```ts
+function normalizePersonLike(input: { name?: string; email?: string; active?: boolean }) {
+  return {
+    name: input.name?.trim() ?? "",
+    email: input.email?.toLowerCase() ?? "",
+    active: Boolean(input.active),
+  };
+}
+```
+
+The point is not to eliminate all repetition. It is to avoid silent copy-paste drift when several files are maintaining the same logic independently.
+
 ## Scoring
 
 Each duplicate cluster adds `1.25 + 0.5 * (fileCount - 3)` for the current file, capped at `6`.

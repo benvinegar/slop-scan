@@ -47,6 +47,30 @@ src/icons/
 
 Asset-like buckets and test-matrix directories are intentionally suppressed because wide directory shapes are expected there.
 
+## How to fix / do this better
+
+A wide directory is usually a sign that one of these is missing:
+
+- a stronger domain split
+- a deeper subdirectory boundary
+- a more cohesive module with fewer one-file-per-concept fragments
+
+Better patterns:
+
+- group related files into subdomains once a folder becomes a grab bag
+- merge ultra-thin files when the split adds naming overhead but not conceptual clarity
+- separate generated output from hand-written source when possible
+
+```text
+src/
+└── billing/
+    ├── invoices/
+    ├── subscriptions/
+    └── shared/
+```
+
+The goal is not tiny directories everywhere. It is to avoid a single hotspot folder becoming the dumping ground for too many loosely related files.
+
 ## Scoring
 
 The rule starts at `2` and adds a bounded amount based on how far the directory is above the computed threshold.

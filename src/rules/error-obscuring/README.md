@@ -50,6 +50,28 @@ export function readConfig(raw: string) {
 }
 ```
 
+## How to fix / do this better
+
+Prefer preserving failure meaning instead of replacing it with a cheap fallback.
+
+Better patterns:
+
+- rethrow the original error
+- wrap with context while preserving `cause`
+- return a deliberate result type that makes the failure explicit instead of pretending the operation succeeded
+
+```ts
+export function loadProfile(id: string) {
+  try {
+    return fetchProfile(id);
+  } catch (error) {
+    throw new Error(`Failed to load profile ${id}`, { cause: error });
+  }
+}
+```
+
+If you truly need a fallback value, keep it narrow, document why it is safe, and avoid erasing the original failure in code paths that still need diagnosis.
+
 ## Scoring
 
 Each flagged catch uses the shared try/catch scoring helper, then the file total is capped at `8`.

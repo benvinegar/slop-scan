@@ -40,6 +40,32 @@ const token = value as { token: string };
 const metadata = input as Map<string, string>;
 ```
 
+## How to fix / do this better
+
+Treat unknown input as unknown for longer, then validate or narrow it at the boundary.
+
+Better options:
+
+- parse into a real domain type with a schema or decoder
+- keep the value as `unknown` until you prove the fields you need
+- use a very local cast only when you immediately narrow and contain it
+
+```ts
+const input: unknown = JSON.parse(raw);
+const parsed = UserConfigSchema.parse(input);
+```
+
+Or, without a schema library:
+
+```ts
+const input: unknown = JSON.parse(raw);
+if (!isUserConfig(input)) {
+  throw new Error("Invalid user config");
+}
+```
+
+The goal is to avoid turning uncertain external data into a roaming generic object bag that downstream code has to keep guessing about.
+
 ## Scoring
 
 Each generic record cast adds `2` points.

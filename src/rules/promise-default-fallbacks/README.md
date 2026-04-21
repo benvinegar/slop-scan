@@ -52,6 +52,29 @@ export async function loadConfigResult() {
 }
 ```
 
+## How to fix / do this better
+
+A promise catch should usually preserve failure meaning instead of converting it into a cheap sentinel.
+
+Better options:
+
+- let the rejection propagate
+- transform the error while preserving context
+- return an explicit result type when the caller truly needs a non-throwing contract
+- narrow the fallback to a boundary where a default is genuinely safe
+
+```ts
+export async function loadConfig() {
+  try {
+    return await fetchConfig();
+  } catch (error) {
+    throw new Error("Failed to load config", { cause: error });
+  }
+}
+```
+
+If a fallback is intentional, make it domain-shaped and explicit rather than `null`, `false`, or an empty object that hides why the operation failed.
+
 ## Scoring
 
 Each flagged promise catch adds `2` points.

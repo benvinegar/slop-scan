@@ -41,6 +41,27 @@ async function getJson(url: string) {
 }
 ```
 
+## How to fix / do this better
+
+Prefer one of these instead:
+
+- remove `async` entirely when the function is just forwarding a promise
+- remove redundant `await` when you are immediately returning the awaited value
+- keep the wrapper only if it adds real behavior such as validation, normalization, retries, metrics, or error context
+
+```ts
+function getUser(id: string) {
+  return fetchUser(id);
+}
+
+async function loadUser(id: string) {
+  const user = await fetchUser(id);
+  return normalizeUser(user);
+}
+```
+
+The goal is not "never use async". It is to avoid wrapper ceremony that makes the call graph larger without making behavior clearer.
+
 ## Scoring
 
 Redundant `return await` sites add `1.5` each.

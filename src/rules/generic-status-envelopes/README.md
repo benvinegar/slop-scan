@@ -35,6 +35,25 @@ return { success: true, user };
 return { error: "missing" };
 ```
 
+## How to fix / do this better
+
+Prefer API shapes that express the actual domain outcome instead of wrapping everything in a shallow boolean envelope.
+
+Better options:
+
+- return the domain object directly on success
+- use typed result variants when callers really need success/failure branching
+- model specific failure cases instead of pushing everything into generic `message` / `error` strings
+
+```ts
+type CreateRepoResult =
+  | { kind: "created"; repository: Repository }
+  | { kind: "forbidden" }
+  | { kind: "conflict"; reason: string };
+```
+
+A small `{ ok, data }` wrapper is sometimes fine, but if it becomes the default shape for every operation it usually means the API is describing transport status rather than domain meaning.
+
 ## Scoring
 
 Each generic status envelope adds `2` points.

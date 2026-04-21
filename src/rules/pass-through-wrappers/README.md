@@ -40,6 +40,28 @@ export function getJson(url: string) {
 }
 ```
 
+## How to fix / do this better
+
+A wrapper should earn its existence.
+Keep it only if it adds something real, such as:
+
+- validation
+- normalization
+- retries or metrics
+- naming a stable compatibility layer
+- adapting one API shape into another
+
+Otherwise, call the underlying function directly or merge the wrapper away.
+
+```ts
+export async function saveUser(input: UserInput) {
+  const normalized = normalizeUserInput(input);
+  return persistUser(normalized);
+}
+```
+
+The goal is to reduce indirection that makes the codebase feel larger without adding behavior or clearer boundaries.
+
 ## Scoring
 
 Each wrapper adds `2` points, capped at `5` for the file.

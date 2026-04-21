@@ -47,6 +47,25 @@ export function legacyMode() {
 }
 ```
 
+## How to fix / do this better
+
+Comments should explain current constraints, intent, or tradeoffs — not vaguely promise future completeness.
+
+Better options:
+
+- replace the placeholder with a concrete TODO that names the missing case
+- document why the current implementation is intentionally partial
+- remove the comment entirely if the code already says everything useful
+
+```ts
+// TODO(ben): validate locale-specific edge cases before enabling CSV import.
+export function normalizeName(input: string) {
+  return input.trim();
+}
+```
+
+A good comment tells the next reader what is true now or what exact work remains. A weak placeholder just signals uncertainty.
+
 ## Scoring
 
 Each matching comment adds `0.75` to the file score, capped at `1.5`.

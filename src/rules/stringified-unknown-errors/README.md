@@ -44,6 +44,26 @@ catch (error) {
 }
 ```
 
+## How to fix / do this better
+
+Prefer preserving structured error information over collapsing everything into a string.
+
+Better options:
+
+- propagate the original error object
+- log structured fields and keep the original error attached
+- map errors into typed domain variants instead of generic message strings
+- stringify only at the final UI or logging boundary
+
+```ts
+catch (error) {
+  logger.error({ error });
+  return { success: false, error };
+}
+```
+
+If the UI really needs a display string, derive it at the edge of the system rather than erasing the richer error earlier in the flow.
+
 ## Scoring
 
 Each unknown-error stringification site adds `2` points.

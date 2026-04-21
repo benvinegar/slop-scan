@@ -44,6 +44,27 @@ export function loadTheme() {
 }
 ```
 
+## How to fix / do this better
+
+An empty catch should usually become one of these instead:
+
+- rethrow the error
+- return a deliberate typed fallback with a comment explaining the boundary behavior
+- log meaningful context and then rethrow
+- validate earlier so the exceptional path is narrower and more intentional
+
+```ts
+export function parseConfig(raw: string) {
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    throw new Error("Invalid config JSON", { cause: error });
+  }
+}
+```
+
+If swallowing the error is truly intentional, document why the fallback is safe and keep the scope local.
+
 ## Scoring
 
 Each flagged catch uses the shared try/catch scoring helper, then the file total is capped at `8`.

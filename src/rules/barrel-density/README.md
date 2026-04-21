@@ -36,6 +36,23 @@ export function createStore() {
 export { type Store } from "./types";
 ```
 
+## How to fix / do this better
+
+Prefer barrels only when they improve discoverability without hiding module boundaries.
+
+Better options:
+
+- keep a barrel small and intentional
+- export a stable public surface from one place, but avoid creating layers of barrel-to-barrel indirection
+- import directly from the implementation module when a barrel adds little value
+
+```ts
+export { createStore } from "./store";
+export { type Store } from "./types";
+```
+
+If a file is just a wide list of re-exports, ask whether it is actually helping API design or only adding another place to chase symbols through.
+
 ## Scoring
 
 The score starts at `1` and adds `0.5` per re-export statement, capped at `3`.

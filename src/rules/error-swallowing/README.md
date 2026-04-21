@@ -39,6 +39,28 @@ export async function syncUser(id: string) {
 }
 ```
 
+## How to fix / do this better
+
+Logging is not a substitute for control flow.
+If the caller still needs to know the operation failed, prefer one of these:
+
+- log and rethrow
+- return an explicit result type such as `{ ok: false, error }`
+- handle the failure completely at this layer only when you can prove continuing is safe
+
+```ts
+export async function syncUser(id: string) {
+  try {
+    await pushUser(id);
+  } catch (error) {
+    logger.error({ error, id }, "failed to sync user");
+    throw error;
+  }
+}
+```
+
+The key is to make failure visible in the API contract instead of only visible in logs.
+
 ## Scoring
 
 Each flagged catch uses the shared try/catch scoring helper, then the file total is capped at `8`.

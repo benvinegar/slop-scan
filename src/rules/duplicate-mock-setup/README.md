@@ -39,6 +39,24 @@ vi.clearAllMocks();
 
 Generic mock declarations and cleanup-only statements do not contribute to this rule.
 
+## How to fix / do this better
+
+When the same mock setup keeps reappearing, prefer shared test helpers over repeating the setup inline.
+
+Better options:
+
+- move repeated mock wiring into a factory or fixture helper
+- centralize common setup in `beforeEach` when it is truly shared
+- expose small scenario builders so tests vary only the interesting values
+
+```ts
+function mockUserFetch(overrides: Partial<User> = {}) {
+  vi.mocked(api.fetchUser).mockResolvedValue({ id: 1, name: "Ada", ...overrides });
+}
+```
+
+That keeps test intent focused on what changes per case instead of duplicating the same mock plumbing in every file.
+
 ## Scoring
 
 Each duplicate setup cluster adds `1 + 0.5 * (fileCount - 2)` for the current file, capped at `5`.
