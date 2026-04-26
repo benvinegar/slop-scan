@@ -28,19 +28,18 @@ describe("fixture regression suite", () => {
       createDefaultRegistry(),
     );
 
-    expect(result.repoScore).toBeCloseTo(10.8666666667, 6);
-    expect(result.findings).toHaveLength(4);
+    expect(result.repoScore).toBeCloseTo(7.7, 6);
+    expect(result.findings).toHaveLength(3);
     expect([...new Set(result.findings.map((finding) => finding.ruleId))].sort()).toEqual([
       "defensive.async-noise",
       "defensive.error-obscuring",
-      "structure.directory-fanout-hotspot",
       "structure.pass-through-wrappers",
     ]);
     expect(result.fileScores.map((score) => score.path)).toEqual([
       "src/service.ts",
       "src/error.ts",
     ]);
-    expect(result.directoryScores.map((score) => score.path)).toEqual(["src/fragments"]);
+    expect(result.directoryScores).toHaveLength(0);
   });
 
   test("mixed fixture localizes hotspots to the slop subtree", async () => {
@@ -50,9 +49,9 @@ describe("fixture regression suite", () => {
       createDefaultRegistry(),
     );
 
-    expect(result.repoScore).toBeCloseTo(9.7, 6);
+    expect(result.repoScore).toBeCloseTo(6.7, 6);
     expect(result.fileScores[0]?.path).toBe("src/slop/service.ts");
-    expect(result.directoryScores[0]?.path).toBe("src/slop");
+    expect(result.directoryScores).toHaveLength(0);
     expect(result.fileScores.every((score) => score.path.startsWith("src/slop/"))).toBe(true);
   });
 
@@ -68,9 +67,9 @@ describe("fixture regression suite", () => {
     expect(output.status).toBe(0);
 
     const report = JSON.parse(output.stdout);
-    expect(report.summary.repoScore).toBeCloseTo(10.8666666667, 6);
-    expect(report.summary.findingCount).toBe(4);
-    expect(report.directoryScores[0].path).toBe("src/fragments");
+    expect(report.summary.repoScore).toBeCloseTo(7.7, 6);
+    expect(report.summary.findingCount).toBe(3);
+    expect(report.directoryScores).toHaveLength(0);
     expect(report.fileScores[0].path).toBe("src/service.ts");
   });
 
@@ -88,11 +87,7 @@ describe("fixture regression suite", () => {
       "strong  Found 1 error-obscuring catch block  defensive.error-obscuring",
     );
     expect(output.stdout).toContain("  at src/error.ts:2:1");
-    expect(output.stdout).toContain(
-      "medium  Directory fan-out is a repo hotspot (7 files vs baseline 1.0)  structure.directory-fanout-hotspot",
-    );
-    expect(output.stdout).toContain("  at src/fragments:1:1");
-    expect(output.stdout).toContain("4 findings");
+    expect(output.stdout).toContain("3 findings");
     expect(output.stdout).not.toContain("slop-scan report");
   });
 

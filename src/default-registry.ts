@@ -20,7 +20,6 @@ import { promiseDefaultFallbacksRule } from "./rules/promise-default-fallbacks";
 import { genericStatusEnvelopesRule } from "./rules/generic-status-envelopes";
 import { genericRecordCastsRule } from "./rules/generic-record-casts";
 import { stringifiedUnknownErrorsRule } from "./rules/stringified-unknown-errors";
-import { directoryFanoutHotspotRule } from "./rules/directory-fanout-hotspot";
 import { duplicateFunctionSignaturesRule } from "./rules/duplicate-function-signatures";
 import { passThroughWrappersRule } from "./rules/pass-through-wrappers";
 import { duplicateMockSetupRule } from "./rules/duplicate-mock-setup";
@@ -49,7 +48,6 @@ export function createDefaultRegistry(): Registry {
   registry.registerRule(stringifiedUnknownErrorsRule);
   registry.registerRule(passThroughWrappersRule);
   registry.registerRule(duplicateFunctionSignaturesRule);
-  registry.registerRule(directoryFanoutHotspotRule);
   registry.registerRule(duplicateMockSetupRule);
 
   registry.registerReporter(textReporter);

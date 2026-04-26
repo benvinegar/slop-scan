@@ -98,10 +98,9 @@ describe("heuristic rule pack", () => {
     expect(ruleIds.has("defensive.stringified-unknown-errors")).toBe(true);
     expect(ruleIds.has("defensive.async-noise")).toBe(true);
     expect(ruleIds.has("structure.pass-through-wrappers")).toBe(true);
-    expect(ruleIds.has("structure.directory-fanout-hotspot")).toBe(true);
 
     expect(result.fileScores.some((score) => score.path === "src/service.ts")).toBe(true);
-    expect(result.directoryScores[0]?.path).toBe("src/fragments");
+    expect(result.directoryScores).toHaveLength(0);
     expect(result.repoScore).toBeGreaterThan(0);
   });
 

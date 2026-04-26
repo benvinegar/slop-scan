@@ -141,7 +141,6 @@ Current checks focus on patterns that often show up in unreviewed generated code
 - [async wrapper / `return await` noise](src/rules/async-noise/README.md)
 - [pass-through wrappers](src/rules/pass-through-wrappers/README.md)
 - [duplicate helper/function signatures across source files](src/rules/duplicate-function-signatures/README.md)
-- [directory fan-out hotspots](src/rules/directory-fanout-hotspot/README.md)
 - [duplicated test mock/setup patterns](src/rules/duplicate-mock-setup/README.md)
 
 `scan` reports raw + normalized scores, hotspot tables, and grouped findings. Use `--json` when you want the full evidence payload.
@@ -240,7 +239,6 @@ The analyzer reads `slop-scan.config.ts`, `slop-scan.config.js`, `slop-scan.conf
     {
       "files": ["src/rules/**"],
       "rules": {
-        "structure.directory-fanout-hotspot": { "enabled": false },
         "structure.over-fragmentation": { "enabled": false }
       }
     }
