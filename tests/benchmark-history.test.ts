@@ -208,10 +208,10 @@ describe("benchmark history support", () => {
     expect(summary.repos.every((repo) => repo.series.length === 2)).toBe(true);
     expect(
       summary.repos.find((repo) => repo.id === "slop-heavy")?.deltaFromPrevious?.repoScore,
-    ).toBe(2);
-    expect(summary.repos.find((repo) => repo.id === "mixed")?.deltaFromPrevious?.repoScore).toBe(
-      -1,
-    );
+    ).toBeCloseTo(2, 6);
+    expect(
+      summary.repos.find((repo) => repo.id === "mixed")?.deltaFromPrevious?.repoScore,
+    ).toBeCloseTo(-1, 6);
     expect(
       summary.repos.find((repo) => repo.id === "slop-heavy")?.highest?.blendedVsPinnedBaseline,
     ).toBe(adjustedSlopHeavyWeekTwo.blended.vsPinnedBaseline);
