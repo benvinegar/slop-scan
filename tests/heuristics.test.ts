@@ -91,7 +91,6 @@ describe("heuristic rule pack", () => {
     const result = await analyzeRepository(rootDir, DEFAULT_CONFIG, createDefaultRegistry());
     const ruleIds = new Set(result.findings.map((finding) => finding.ruleId));
 
-    expect(ruleIds.has("comments.placeholder-comments")).toBe(true);
     expect(ruleIds.has("defensive.error-obscuring")).toBe(true);
     expect(ruleIds.has("defensive.promise-default-fallbacks")).toBe(true);
     expect(ruleIds.has("api.generic-status-envelopes")).toBe(true);
@@ -99,8 +98,6 @@ describe("heuristic rule pack", () => {
     expect(ruleIds.has("defensive.stringified-unknown-errors")).toBe(true);
     expect(ruleIds.has("defensive.async-noise")).toBe(true);
     expect(ruleIds.has("structure.pass-through-wrappers")).toBe(true);
-    expect(ruleIds.has("structure.barrel-density")).toBe(true);
-    expect(ruleIds.has("structure.over-fragmentation")).toBe(true);
     expect(ruleIds.has("structure.directory-fanout-hotspot")).toBe(true);
 
     expect(result.fileScores.some((score) => score.path === "src/service.ts")).toBe(true);

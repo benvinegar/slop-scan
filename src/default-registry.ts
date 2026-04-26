@@ -12,7 +12,6 @@ import { javascriptLikeLanguage } from "./languages/javascript-like";
 import { jsonReporter } from "./reporters/json";
 import { lintReporter } from "./reporters/lint";
 import { textReporter } from "./reporters/text";
-import { placeholderCommentsRule } from "./rules/placeholder-comments";
 import { asyncNoiseRule } from "./rules/async-noise";
 import { emptyCatchRule } from "./rules/empty-catch";
 import { errorObscuringRule } from "./rules/error-obscuring";
@@ -21,10 +20,8 @@ import { promiseDefaultFallbacksRule } from "./rules/promise-default-fallbacks";
 import { genericStatusEnvelopesRule } from "./rules/generic-status-envelopes";
 import { genericRecordCastsRule } from "./rules/generic-record-casts";
 import { stringifiedUnknownErrorsRule } from "./rules/stringified-unknown-errors";
-import { barrelDensityRule } from "./rules/barrel-density";
 import { directoryFanoutHotspotRule } from "./rules/directory-fanout-hotspot";
 import { duplicateFunctionSignaturesRule } from "./rules/duplicate-function-signatures";
-import { overFragmentationRule } from "./rules/over-fragmentation";
 import { passThroughWrappersRule } from "./rules/pass-through-wrappers";
 import { duplicateMockSetupRule } from "./rules/duplicate-mock-setup";
 
@@ -42,7 +39,6 @@ export function createDefaultRegistry(): Registry {
   registry.registerFactProvider(directoryMetricsFactProvider);
   registry.registerFactProvider(testDuplicationFactProvider);
 
-  registry.registerRule(placeholderCommentsRule);
   registry.registerRule(asyncNoiseRule);
   registry.registerRule(errorSwallowingRule);
   registry.registerRule(errorObscuringRule);
@@ -51,10 +47,8 @@ export function createDefaultRegistry(): Registry {
   registry.registerRule(genericStatusEnvelopesRule);
   registry.registerRule(genericRecordCastsRule);
   registry.registerRule(stringifiedUnknownErrorsRule);
-  registry.registerRule(barrelDensityRule);
   registry.registerRule(passThroughWrappersRule);
   registry.registerRule(duplicateFunctionSignaturesRule);
-  registry.registerRule(overFragmentationRule);
   registry.registerRule(directoryFanoutHotspotRule);
   registry.registerRule(duplicateMockSetupRule);
 

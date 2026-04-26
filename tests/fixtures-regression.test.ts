@@ -28,24 +28,19 @@ describe("fixture regression suite", () => {
       createDefaultRegistry(),
     );
 
-    expect(result.repoScore).toBeCloseTo(28.2833333333, 6);
-    expect(result.findings).toHaveLength(8);
+    expect(result.repoScore).toBeCloseTo(10.8666666667, 6);
+    expect(result.findings).toHaveLength(4);
     expect([...new Set(result.findings.map((finding) => finding.ruleId))].sort()).toEqual([
-      "comments.placeholder-comments",
       "defensive.async-noise",
       "defensive.error-obscuring",
-      "structure.barrel-density",
       "structure.directory-fanout-hotspot",
-      "structure.over-fragmentation",
       "structure.pass-through-wrappers",
     ]);
     expect(result.fileScores.map((score) => score.path)).toEqual([
       "src/service.ts",
-      "src/index.ts",
       "src/error.ts",
-      "src/comments.ts",
     ]);
-    expect(result.directoryScores.map((score) => score.path)).toEqual(["src/fragments", "src"]);
+    expect(result.directoryScores.map((score) => score.path)).toEqual(["src/fragments"]);
   });
 
   test("mixed fixture localizes hotspots to the slop subtree", async () => {
@@ -55,7 +50,7 @@ describe("fixture regression suite", () => {
       createDefaultRegistry(),
     );
 
-    expect(result.repoScore).toBeCloseTo(27.1166666667, 6);
+    expect(result.repoScore).toBeCloseTo(9.7, 6);
     expect(result.fileScores[0]?.path).toBe("src/slop/service.ts");
     expect(result.directoryScores[0]?.path).toBe("src/slop");
     expect(result.fileScores.every((score) => score.path.startsWith("src/slop/"))).toBe(true);
@@ -73,8 +68,8 @@ describe("fixture regression suite", () => {
     expect(output.status).toBe(0);
 
     const report = JSON.parse(output.stdout);
-    expect(report.summary.repoScore).toBeCloseTo(28.2833333333, 6);
-    expect(report.summary.findingCount).toBe(8);
+    expect(report.summary.repoScore).toBeCloseTo(10.8666666667, 6);
+    expect(report.summary.findingCount).toBe(4);
     expect(report.directoryScores[0].path).toBe("src/fragments");
     expect(report.fileScores[0].path).toBe("src/service.ts");
   });
@@ -90,18 +85,14 @@ describe("fixture regression suite", () => {
 
     expect(output.status).toBe(0);
     expect(output.stdout).toContain(
-      "weak  Found 1 placeholder-style comments  comments.placeholder-comments",
-    );
-    expect(output.stdout).toContain("  at src/comments.ts:1:1");
-    expect(output.stdout).toContain(
       "strong  Found 1 error-obscuring catch block  defensive.error-obscuring",
     );
     expect(output.stdout).toContain("  at src/error.ts:2:1");
     expect(output.stdout).toContain(
-      "medium  File is primarily a barrel with 2 re-export statements  structure.barrel-density",
+      "medium  Directory fan-out is a repo hotspot (7 files vs baseline 1.0)  structure.directory-fanout-hotspot",
     );
-    expect(output.stdout).toContain("  at src/index.ts:1:1");
-    expect(output.stdout).toContain("8 findings");
+    expect(output.stdout).toContain("  at src/fragments:1:1");
+    expect(output.stdout).toContain("4 findings");
     expect(output.stdout).not.toContain("slop-scan report");
   });
 

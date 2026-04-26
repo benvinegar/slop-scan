@@ -19,7 +19,7 @@ async function createTempRepo(): Promise<string> {
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "src", "comments.ts"),
-    "// Add more validation if needed\nexport const commentExample = true;\n",
+    "function loadValue(input: string) {\n  return Promise.resolve(input);\n}\n\nexport async function fetchData(id: string) {\n  return await loadValue(id);\n}\n",
   );
   return rootDir;
 }
@@ -52,11 +52,13 @@ describe("rule config support", () => {
     const rootDir = await createTempRepo();
     const result = await analyzeRepository(
       rootDir,
-      withRuleConfig("comments.placeholder-comments", { enabled: false }),
+      withRuleConfig("defensive.async-noise", { enabled: false }),
       createDefaultRegistry(),
     );
 
-    expect(result.findings).toHaveLength(0);
+    expect(
+      result.findings.filter((finding) => finding.ruleId === "defensive.async-noise"),
+    ).toHaveLength(0);
   });
 
   test("can weight a rule via config", async () => {
@@ -64,13 +66,20 @@ describe("rule config support", () => {
     const baseline = await analyzeRepository(rootDir, DEFAULT_CONFIG, createDefaultRegistry());
     const weighted = await analyzeRepository(
       rootDir,
-      withRuleConfig("comments.placeholder-comments", { weight: 2 }),
+      withRuleConfig("defensive.async-noise", { weight: 2 }),
       createDefaultRegistry(),
     );
 
-    expect(baseline.findings).toHaveLength(1);
-    expect(weighted.findings).toHaveLength(1);
-    expect(weighted.findings[0]?.score).toBeCloseTo((baseline.findings[0]?.score ?? 0) * 2, 6);
+    const baselineAsyncNoise = baseline.findings.find(
+      (finding) => finding.ruleId === "defensive.async-noise",
+    );
+    const weightedAsyncNoise = weighted.findings.find(
+      (finding) => finding.ruleId === "defensive.async-noise",
+    );
+
+    expect(baselineAsyncNoise).toBeDefined();
+    expect(weightedAsyncNoise).toBeDefined();
+    expect(weightedAsyncNoise?.score).toBeCloseTo((baselineAsyncNoise?.score ?? 0) * 2, 6);
   });
 
   test("loadConfig reads slop-scan.config.json", async () => {
@@ -104,47 +113,56 @@ describe("rule config support", () => {
     const rootDir = await createTempRepo();
     await writeFile(
       path.join(rootDir, "src", "nested.ts"),
-      "// Add more validation if needed\nexport const nested = true;\n",
+      "function fetchRemote(input: string) {\n  return Promise.resolve(input);\n}\n\nexport async function loadValue(id: string) {\n  return await fetchRemote(id);\n}\n",
     );
 
     const result = await analyzeRepository(
       rootDir,
       withPathOverride(["src/comments.ts"], {
-        "comments.placeholder-comments": { enabled: false },
+        "defensive.async-noise": { enabled: false },
       }),
       createDefaultRegistry(),
     );
 
-    expect(result.findings).toHaveLength(1);
-    expect(result.findings[0]?.path).toBe("src/nested.ts");
+    const asyncNoiseFindings = result.findings.filter(
+      (finding) => finding.ruleId === "defensive.async-noise",
+    );
+
+    expect(asyncNoiseFindings).toHaveLength(1);
+    expect(asyncNoiseFindings[0]?.path).toBe("src/nested.ts");
   });
 
   test("can apply a path-scoped directory override", async () => {
     const rootDir = await createTempRepo();
 
-    for (const dirName of ["src/rules/defensive", "src/other/defensive"]) {
-      for (let index = 0; index < 6; index += 1) {
-        await mkdir(path.join(rootDir, dirName), { recursive: true });
-        await writeFile(
-          path.join(rootDir, dirName, `file-${index}.ts`),
-          `export const value${index} = ${index};\n`,
-        );
-      }
-    }
+    await mkdir(path.join(rootDir, "src/rules/defensive"), { recursive: true });
+    await writeFile(
+      path.join(rootDir, "src/rules/defensive/service.ts"),
+      "function fetchRule(input: string) {\n  return Promise.resolve(input);\n}\n\nexport async function loadRule(id: string) {\n  return await fetchRule(id);\n}\n",
+    );
+
+    await mkdir(path.join(rootDir, "src/other/defensive"), { recursive: true });
+    await writeFile(
+      path.join(rootDir, "src/other/defensive/service.ts"),
+      "function fetchOther(input: string) {\n  return Promise.resolve(input);\n}\n\nexport async function loadOther(id: string) {\n  return await fetchOther(id);\n}\n",
+    );
 
     const result = await analyzeRepository(
       rootDir,
       withPathOverride(["src/rules/**"], {
-        "structure.over-fragmentation": { enabled: false },
+        "defensive.async-noise": { enabled: false },
       }),
       createDefaultRegistry(),
     );
 
-    const fragmentationFindings = result.findings.filter(
-      (finding) => finding.ruleId === "structure.over-fragmentation",
+    const asyncNoiseFindings = result.findings.filter(
+      (finding) => finding.ruleId === "defensive.async-noise",
     );
 
-    expect(fragmentationFindings.map((finding) => finding.path)).toEqual(["src/other/defensive"]);
+    expect(asyncNoiseFindings.map((finding) => finding.path).sort()).toEqual([
+      "src/comments.ts",
+      "src/other/defensive/service.ts",
+    ]);
   });
 
   test("loadConfig reads path-scoped overrides", async () => {
@@ -156,7 +174,7 @@ describe("rule config support", () => {
           {
             files: ["src/comments.ts"],
             rules: {
-              "comments.placeholder-comments": { enabled: false },
+              "defensive.async-noise": { enabled: false },
             },
           },
         ],
@@ -169,7 +187,7 @@ describe("rule config support", () => {
       {
         files: ["src/comments.ts"],
         rules: {
-          "comments.placeholder-comments": { enabled: false },
+          "defensive.async-noise": { enabled: false },
         },
       },
     ]);
