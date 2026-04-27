@@ -1,6 +1,6 @@
 {
   "name": "slop-scan",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Deterministic CLI for finding AI-associated slop patterns in JavaScript and TypeScript repositories.",
   "keywords": [
     "ai",

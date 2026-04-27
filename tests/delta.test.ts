@@ -109,7 +109,7 @@ function createBaseResult(): AnalysisResult {
     repoScore: 7,
     metadata: {
       schemaVersion: 2,
-      tool: { name: "slop-scan", version: "0.3.0" },
+      tool: { name: "slop-scan", version: "0.4.0" },
       configHash: "same-config",
       findingFingerprintVersion: FINDING_FINGERPRINT_VERSION,
       plugins: [],
@@ -241,7 +241,7 @@ function createHeadResult(): AnalysisResult {
     repoScore: 14,
     metadata: {
       schemaVersion: 2,
-      tool: { name: "slop-scan", version: "0.3.0" },
+      tool: { name: "slop-scan", version: "0.4.0" },
       configHash: "same-config",
       findingFingerprintVersion: FINDING_FINGERPRINT_VERSION,
       plugins: [],
